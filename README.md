@@ -49,6 +49,15 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
+## Documentation
+
+Comprehensive documentation for all public components and pages is available in the `docs/` directory:
+
+- [Overview](docs/README.md)
+- [Layout](docs/layout.md)
+- [Components](docs/components.md)
+- [Pages](docs/pages.md)
+
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
