@@ -6,6 +6,7 @@ interface Props {
 const { title } = Astro.props;
 import "@fontsource/inter";
 import "@fontsource-variable/inter";
+import ThemeToggle from "../components/theme-toggle.astro";
 ---
 
 <!doctype html>
@@ -19,11 +20,12 @@ import "@fontsource-variable/inter";
     <title>{title}</title>
   </head>
   <body
-    class="bg-slate-900 leading-relaxed text-slate-400 antialiased selection:bg-teal-300 selection:text-teal-900"
+    class="bg-white leading-relaxed text-slate-700 antialiased selection:bg-teal-300 selection:text-teal-900 transition-colors duration-300 dark:bg-slate-900 dark:text-slate-400"
   >
     <div class="inset-0 z-30 transition duration-300">
       <slot />
     </div>
+    <ThemeToggle />
   </body>
 
   <style is:global>
@@ -51,8 +53,15 @@ import "@fontsource-variable/inter";
       }
     }
     html {
-      background: rgb(15 23 42 / var(--tw-bg-opacity));
-      background-size: 224px;
+      transition: background-color 0.3s ease;
+    }
+    
+    html.dark {
+      background: rgb(15 23 42);
+    }
+    
+    html:not(.dark) {
+      background: rgb(255 255 255);
     }
   </style>
 </html>
