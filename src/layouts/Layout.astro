@@ -10,14 +10,104 @@ import ThemeToggle from "../components/theme-toggle.astro";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Carlos Zabaleta Developer Portfolio" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
     <title>{title}</title>
+    <meta name="title" content="Carlos Zabaleta - Software Engineer | Toronto, Canada" />
+    <meta name="description" content="Carlos Zabaleta is a skilled Software Engineer based in Toronto, Canada. Specializing in full-stack development, web applications, and modern JavaScript frameworks. Building pixel-perfect, engaging, and accessible digital experiences." />
+    <meta name="keywords" content="Carlos Zabaleta, Software Engineer, Developer, Toronto, Canada, Full Stack Developer, JavaScript, React, Web Development, Frontend, Backend, Portfolio" />
+    <meta name="author" content="Carlos Zabaleta" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://carloszabaleta.dev/" />
+    <meta property="og:title" content="Carlos Zabaleta - Software Engineer | Toronto, Canada" />
+    <meta property="og:description" content="Skilled Software Engineer in Toronto, Canada. Specializing in full-stack development and modern web technologies. Building exceptional digital experiences." />
+    <meta property="og:image" content="https://carloszabaleta.dev/og-image.jpg" />
+    <meta property="og:site_name" content="Carlos Zabaleta Portfolio" />
+    <meta property="og:locale" content="en_CA" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://carloszabaleta.dev/" />
+    <meta property="twitter:title" content="Carlos Zabaleta - Software Engineer | Toronto, Canada" />
+    <meta property="twitter:description" content="Skilled Software Engineer in Toronto, Canada. Building pixel-perfect, engaging, and accessible digital experiences." />
+    <meta property="twitter:image" content="https://carloszabaleta.dev/og-image.jpg" />
+    <meta property="twitter:creator" content="@czabalet" />
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="geo.region" content="CA-ON" />
+    <meta name="geo.placename" content="Toronto" />
+    <meta name="geo.position" content="43.6532;-79.3832" />
+    <meta name="ICBM" content="43.6532, -79.3832" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://carloszabaleta.dev/" />
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- Generator -->
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Carlos Zabaleta",
+        "jobTitle": "Software Engineer",
+        "description": "Skilled Software Engineer specializing in full-stack development and modern web technologies",
+        "url": "https://carloszabaleta.dev",
+        "image": "https://carloszabaleta.dev/og-image.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Toronto",
+          "addressRegion": "Ontario",
+          "addressCountry": "Canada"
+        },
+        "sameAs": [
+          "https://github.com/c-zab",
+          "https://www.linkedin.com/in/czabalet/",
+          "https://codepen.io/c-zab",
+          "https://www.instagram.com/czabalet.dev/"
+        ],
+        "knowsAbout": [
+          "JavaScript",
+          "TypeScript",
+          "React",
+          "Node.js",
+          "Full Stack Development",
+          "Web Development",
+          "Software Engineering",
+          "Frontend Development",
+          "Backend Development"
+        ],
+        "alumniOf": {
+          "@type": "Organization",
+          "name": "Software Engineering"
+        },
+        "workLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Toronto",
+            "addressRegion": "Ontario",
+            "addressCountry": "Canada"
+          }
+        }
+      }
+    </script>
   </head>
   <body
     class="bg-white leading-relaxed text-slate-700 antialiased selection:bg-teal-300 selection:text-teal-900 transition-colors duration-300 dark:bg-slate-900 dark:text-slate-400"

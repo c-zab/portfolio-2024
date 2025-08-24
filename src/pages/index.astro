@@ -6,14 +6,27 @@ import "@fontsource/inter";
 import "@fontsource/inter/400.css";
 ---
 
-<Layout title="Welcome to CZ">
+<Layout title="Carlos Zabaleta - Software Engineer | Toronto, Canada">
   <div
     class="flex flex-col justify-center mx-auto min-h-screen max-w-screen-xl px-6 py-12 font-sans md:px-12 md:py-20 lg:px-24 lg:py-0"
+    itemscope 
+    itemtype="https://schema.org/Person"
   >
     <div class="lg:flex lg:justify-between lg:gap-4">
       <HeaderLeftSide />
-      <main class="pt-24 lg:w-1/2 lg:py-24">
+      <main class="pt-24 lg:w-1/2 lg:py-24" role="main">
         <CommingSoon />
+        
+        <!-- Hidden content for SEO -->
+        <div class="sr-only">
+          <h1>Carlos Zabaleta - Professional Software Engineer in Toronto</h1>
+          <p>Experienced software engineer and full-stack developer based in Toronto, Ontario, Canada. Specializing in JavaScript, React, Node.js, and modern web development technologies. Available for software development projects and consulting.</p>
+          <address itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+            <span itemprop="addressLocality">Toronto</span>,
+            <span itemprop="addressRegion">Ontario</span>,
+            <span itemprop="addressCountry">Canada</span>
+          </address>
+        </div>
       </main>
     </div>
   </div>
