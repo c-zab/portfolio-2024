@@ -7,7 +7,7 @@ import Navbar from "../components/navbar.astro";
 >
   <div>
     <h1
-      class="ml11 text-4xl font-bold tracking-tight text-slate-200 sm:text-5xl"
+      class="ml11 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl dark:text-slate-200"
       aria-label="Carlos Zabaleta"
     >
       <span class="text-wrapper" aria-hidden="true">
@@ -16,11 +16,11 @@ import Navbar from "../components/navbar.astro";
       </span>
     </h1>
     <h2
-      class="mt-3 text-lg font-medium tracking-tight text-slate-200 sm:text-xl"
+      class="mt-3 text-lg font-medium tracking-tight text-slate-900 sm:text-xl dark:text-slate-200"
     >
       Software Engineer
     </h2>
-    <p class="mt-4 max-w-xs leading-normal">
+    <p class="mt-4 max-w-xs leading-normal text-slate-600 dark:text-slate-400">
       I build pixel-perfect, engaging, and accessible digital experiences.
     </p>
   </div>
@@ -89,8 +89,13 @@ import Navbar from "../components/navbar.astro";
     left: 0;
     height: 100%;
     width: 3px;
-    background-color: #fff;
+    background-color: #0f172a;
     transform-origin: 0 50%;
+    transition: background-color 0.3s ease;
+  }
+  
+  .dark .ml11 .line {
+    background-color: #fff;
   }
 
   .ml11 .line1 {
