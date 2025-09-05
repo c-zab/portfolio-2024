@@ -1,0 +1,399 @@
+---
+import { getTranslation, getLocaleFromPath } from "../utils/i18n";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = (key: string) => getTranslation(locale, key);
+---
+
+<div class="relative w-full h-full overflow-hidden">
+  <!-- Tech elements container -->
+  <div id="tech-container" class="absolute inset-0 w-full h-full">
+    <!-- Tech elements will be dynamically created here -->
+  </div>
+</div>
+
+<script>
+  import anime from "animejs";
+
+  // Tech stack data
+  const techItems = [
+    "React",
+    "Vue",
+    "Next.js",
+    "TypeScript",
+    "Node.js",
+    "Express",
+    "MongoDB",
+    "PostgreSQL",
+    "Docker",
+    "AWSish",
+    "Git",
+    "Vercel",
+    "Tailwind",
+    "JavaScript",
+    "GraphQL",
+    "Redis",
+    "FileMaker",
+    "MySQL",
+    "Astro",
+    "and more...",
+  ];
+
+  let currentElements: HTMLElement[] = [];
+  let currentTechIndex = 0;
+  let animationInterval: number | null = null;
+  let lastPositions: { x: number; y: number }[] = []; // Remember last 3 positions
+
+  function createTechElement(text: string, position?: { x: number; y: number }): HTMLElement {
+    const element = document.createElement("div");
+    element.textContent = text;
+    element.className =
+      "tech-element absolute text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-600 via-slate-500 to-slate-400 dark:from-slate-500 dark:via-slate-400 dark:to-slate-300 cursor-pointer select-none";
+    element.style.opacity = "0";
+    element.style.transform = "scale(0.7) rotate(0deg)";
+    element.style.zIndex = "10"; // Ensure elements are visible
+
+    // Use provided position or get a non-overlapping position
+    const pos = position || getNonOverlappingPosition();
+    element.style.left = `${pos.x}px`;
+    element.style.top = `${pos.y}px`;
+
+    // Random rotation
+    const rotation = (Math.random() - 0.5) * 30;
+    element.style.transform = `scale(0.7) rotate(${rotation}deg)`;
+
+    // Add hover effect
+    element.addEventListener("mouseenter", () => {
+      anime({
+        targets: element,
+        scale: 1.1,
+        duration: 600,
+        easing: "easeOutQuart",
+      });
+    });
+
+    element.addEventListener("mouseleave", () => {
+      anime({
+        targets: element,
+        scale: 1,
+        duration: 600,
+        easing: "easeOutQuart",
+      });
+    });
+
+    return element;
+  }
+
+  function getNonOverlappingPosition(): { x: number; y: number } {
+    const container = document.getElementById("tech-container");
+    const containerRect = container?.getBoundingClientRect();
+    const containerWidth = containerRect ? containerRect.width : window.innerWidth;
+    const containerHeight = containerRect ? containerRect.height : window.innerHeight;
+
+    // Calculate margins based on container size (10% margins)
+    const marginX = containerWidth * 0.1; // 10% of container width
+    const marginY = containerHeight * 0.1; // 10% of container height
+    const elementWidth = containerWidth < 768 ? 120 : 150; // Smaller on mobile
+    const elementHeight = containerWidth < 768 ? 40 : 50; // Smaller on mobile
+
+    const maxX = containerWidth - elementWidth - marginX;
+    const maxY = containerHeight - elementHeight - marginY;
+
+    // Define safe zones with proper margins - utilizing full width and height
+    const safeZones = [
+      { x: marginX, y: marginY }, // Top-left
+      { x: marginX + (maxX - marginX) / 4, y: marginY }, // Top-left-center
+      { x: marginX + (maxX - marginX) / 2, y: marginY }, // Top-center
+      { x: marginX + ((maxX - marginX) * 3) / 4, y: marginY }, // Top-right-center
+      { x: maxX, y: marginY }, // Top-right
+
+      { x: marginX, y: marginY + (maxY - marginY) / 4 }, // Upper-left
+      { x: marginX + (maxX - marginX) / 4, y: marginY + (maxY - marginY) / 4 }, // Upper-left-center
+      { x: marginX + (maxX - marginX) / 2, y: marginY + (maxY - marginY) / 4 }, // Upper-center
+      { x: marginX + ((maxX - marginX) * 3) / 4, y: marginY + (maxY - marginY) / 4 }, // Upper-right-center
+      { x: maxX, y: marginY + (maxY - marginY) / 4 }, // Upper-right
+
+      { x: marginX, y: marginY + (maxY - marginY) / 2 }, // Middle-left
+      { x: marginX + (maxX - marginX) / 4, y: marginY + (maxY - marginY) / 2 }, // Middle-left-center
+      { x: marginX + (maxX - marginX) / 2, y: marginY + (maxY - marginY) / 2 }, // Center
+      { x: marginX + ((maxX - marginX) * 3) / 4, y: marginY + (maxY - marginY) / 2 }, // Middle-right-center
+      { x: maxX, y: marginY + (maxY - marginY) / 2 }, // Middle-right
+
+      { x: marginX, y: marginY + ((maxY - marginY) * 3) / 4 }, // Lower-left
+      { x: marginX + (maxX - marginX) / 4, y: marginY + ((maxY - marginY) * 3) / 4 }, // Lower-left-center
+      { x: marginX + (maxX - marginX) / 2, y: marginY + ((maxY - marginY) * 3) / 4 }, // Lower-center
+      { x: marginX + ((maxX - marginX) * 3) / 4, y: marginY + ((maxY - marginY) * 3) / 4 }, // Lower-right-center
+      { x: maxX, y: marginY + ((maxY - marginY) * 3) / 4 }, // Lower-right
+
+      { x: marginX, y: maxY }, // Bottom-left
+      { x: marginX + (maxX - marginX) / 4, y: maxY }, // Bottom-left-center
+      { x: marginX + (maxX - marginX) / 2, y: maxY }, // Bottom-center
+      { x: marginX + ((maxX - marginX) * 3) / 4, y: maxY }, // Bottom-right-center
+      { x: maxX, y: maxY }, // Bottom-right
+    ];
+
+    // Find a position that doesn't overlap with existing elements AND is far from last positions
+    let attempts = 0;
+    let position;
+    let availablePositions = [...safeZones]; // Copy safe zones
+
+    do {
+      // If we've tried many times, add some randomization to break patterns
+      if (attempts > 30) {
+        // Add random positions with better vertical distribution
+        const randomX = marginX + Math.random() * (maxX - marginX);
+        // Create more vertical variety by dividing the Y space into sections
+        const ySections = 6; // Divide vertical space into 6 sections
+        const sectionHeight = (maxY - marginY) / ySections;
+        const randomSection = Math.floor(Math.random() * ySections);
+        const randomY = marginY + randomSection * sectionHeight + Math.random() * sectionHeight;
+        availablePositions.push({ x: randomX, y: randomY });
+      }
+
+      position = availablePositions[Math.floor(Math.random() * availablePositions.length)];
+      attempts++;
+    } while ((isOverlapping(position) || isTooCloseToLastPositions(position)) && attempts < 150);
+
+    // If we still can't find a good position, use a random one with better vertical distribution
+    if (attempts >= 150) {
+      const ySections = 8; // Even more sections for fallback
+      const sectionHeight = (maxY - marginY) / ySections;
+      const randomSection = Math.floor(Math.random() * ySections);
+
+      position = {
+        x: marginX + Math.random() * (maxX - marginX),
+        y: marginY + randomSection * sectionHeight + Math.random() * sectionHeight,
+      };
+    }
+
+    // Ensure position is within bounds (fallback for mobile)
+    position.x = Math.max(marginX, Math.min(maxX, position.x));
+    position.y = Math.max(marginY, Math.min(maxY, position.y));
+
+    return position;
+  }
+
+  function isOverlapping(position: { x: number; y: number }): boolean {
+    const container = document.getElementById("tech-container");
+    const containerRect = container?.getBoundingClientRect();
+    const containerWidth = containerRect ? containerRect.width : window.innerWidth;
+    const minDistance = containerWidth < 768 ? 250 : 400; // Smaller distance on mobile
+
+    return currentElements.some((element) => {
+      const elementX = parseFloat(element.style.left) || 0;
+      const elementY = parseFloat(element.style.top) || 0;
+
+      const distance = Math.sqrt(Math.pow(position.x - elementX, 2) + Math.pow(position.y - elementY, 2));
+
+      return distance < minDistance;
+    });
+  }
+
+  function isTooCloseToLastPositions(position: { x: number; y: number }): boolean {
+    const minDistanceFromLast = 500; // Reduced to allow more positions
+    const minVerticalDistance = 200; // Reduced vertical separation
+
+    return lastPositions.some((lastPos) => {
+      const distance = Math.sqrt(Math.pow(position.x - lastPos.x, 2) + Math.pow(position.y - lastPos.y, 2));
+      const verticalDistance = Math.abs(position.y - lastPos.y);
+
+      // Check both overall distance and vertical distance
+      return distance < minDistanceFromLast || verticalDistance < minVerticalDistance;
+    });
+  }
+
+  function addNewElement(): HTMLElement {
+    const container = document.getElementById("tech-container");
+    if (!container) return document.createElement("div");
+
+    // Get next tech item (cycle through the array)
+    const techText = techItems[currentTechIndex % techItems.length];
+    currentTechIndex++;
+
+    const position = getNonOverlappingPosition();
+    const element = createTechElement(techText, position);
+    container.appendChild(element);
+    currentElements.push(element);
+
+    // Track this position
+    lastPositions.push(position);
+    if (lastPositions.length > 3) {
+      lastPositions.shift(); // Keep only last 3 positions
+    }
+
+    return element;
+  }
+
+  function removeOldestElement(): void {
+    if (currentElements.length === 0) return;
+
+    const oldestElement = currentElements.shift(); // Remove first element
+    if (oldestElement) {
+      // Get the position of the element being removed
+      const elementX = parseFloat(oldestElement.style.left) || 0;
+      const elementY = parseFloat(oldestElement.style.top) || 0;
+      const removedPosition = { x: elementX, y: elementY };
+
+      // Remove this position from lastPositions if it exists
+      lastPositions = lastPositions.filter((pos) => !(pos.x === removedPosition.x && pos.y === removedPosition.y));
+
+      // Also remove any positions that are too close to the removed position
+      lastPositions = lastPositions.filter((pos) => {
+        const distance = Math.sqrt(Math.pow(pos.x - removedPosition.x, 2) + Math.pow(pos.y - removedPosition.y, 2));
+        return distance >= 300; // Keep only positions that are far enough from the removed element
+      });
+
+      // Animate out
+      anime({
+        targets: oldestElement,
+        opacity: [1, 0],
+        scale: [1, 0.8],
+        duration: 1000,
+        easing: "easeOutQuart",
+        complete: () => {
+          oldestElement.remove();
+        },
+      });
+    }
+  }
+
+  function animateNewElement(element: HTMLElement): void {
+    // Check if mobile and adjust animation
+    const isMobile = window.innerWidth < 768;
+
+    // Animate in
+    anime({
+      targets: element,
+      opacity: [0, isMobile ? 1 : 0.9], // Full opacity on mobile
+      scale: [0.7, 1],
+      duration: isMobile ? 800 : 1200, // Faster on mobile
+      easing: "easeOutQuart",
+    });
+  }
+
+  function cycleElements(): void {
+    // If we have 3 elements, remove the oldest one
+    if (currentElements.length >= 3) {
+      removeOldestElement();
+    }
+
+    // Add a new element
+    const newElement = addNewElement();
+    animateNewElement(newElement);
+  }
+
+  function startAnimation(): void {
+    const container = document.getElementById("tech-container");
+    if (!container) return;
+
+    // Clear existing elements
+    container.innerHTML = "";
+    currentElements = [];
+    currentTechIndex = 0;
+    lastPositions = []; // Reset position tracking
+
+    // Get container dimensions for proper positioning
+    const containerRect = container.getBoundingClientRect();
+    const containerWidth = containerRect.width;
+    const containerHeight = containerRect.height;
+
+    // Calculate safe initial positions based on container size
+    const marginX = containerWidth * 0.1; // 10% of container width
+    const marginY = containerHeight * 0.1; // 10% of container height
+    const elementWidth = containerWidth < 768 ? 120 : 150; // Smaller on mobile
+    const elementHeight = containerWidth < 768 ? 40 : 50; // Smaller on mobile
+
+    const maxX = containerWidth - elementWidth - marginX;
+    const maxY = containerHeight - elementHeight - marginY;
+
+    // Define initial positions for the first 3 elements - utilizing full width and height
+    const initialPositions = [
+      { x: marginX, y: marginY }, // Top-left
+      { x: maxX, y: marginY + (maxY - marginY) / 2 }, // Middle-right
+      { x: marginX + (maxX - marginX) / 2, y: maxY }, // Bottom-center
+    ];
+
+    // Start with 3 elements at predefined positions
+    for (let i = 0; i < 3; i++) {
+      const techText = techItems[currentTechIndex % techItems.length];
+      currentTechIndex++;
+
+      const element = createTechElement(techText, initialPositions[i]);
+      container.appendChild(element);
+      currentElements.push(element);
+      animateNewElement(element);
+
+      // Track initial positions
+      lastPositions.push(initialPositions[i]);
+    }
+
+    // Start cycling every second
+    animationInterval = window.setInterval(cycleElements, 1000);
+  }
+
+  function stopAnimation(): void {
+    if (animationInterval) {
+      clearInterval(animationInterval);
+      animationInterval = null;
+    }
+  }
+
+  // Handle window resize
+  window.addEventListener("resize", () => {
+    stopAnimation();
+    startAnimation();
+  });
+
+  // Initialize when DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startAnimation);
+  } else {
+    startAnimation();
+  }
+
+  // Cleanup on page unload
+  window.addEventListener("beforeunload", stopAnimation);
+</script>
+
+<style>
+  .tech-element {
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform, opacity;
+  }
+
+  .tech-element:hover {
+    z-index: 10;
+  }
+
+  /* Subtle glow effect */
+  .tech-element::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.05), transparent);
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: -1;
+  }
+
+  .tech-element:hover::before {
+    opacity: 1;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Prevent text selection during animation */
+  .tech-element {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+</style>

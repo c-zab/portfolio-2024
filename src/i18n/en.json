@@ -1,0 +1,50 @@
+{
+  "common": {
+    "name": "Carlos Zabaleta",
+    "title": "Software Engineer",
+    "location": "Toronto, Canada"
+  },
+  "header": {
+    "description": "I build pixel-perfect, engaging, and accessible digital experiences using modern web technologies. Specializing in full-stack development in Toronto, Canada."
+  },
+  "comingSoon": {
+    "message": "🚧🚧🚧 Refreshing Website"
+  },
+  "seo": {
+    "title": "Carlos Zabaleta - Professional Software Engineer in Toronto",
+    "description": "Experienced software engineer and full-stack developer based in Toronto, Ontario, Canada. Specializing in JavaScript, React, Node.js, and modern web development technologies. Available for software development projects and consulting.",
+    "address": {
+      "city": "Toronto",
+      "province": "Ontario",
+      "country": "Canada"
+    }
+  },
+  "navigation": {
+    "about": "About",
+    "experience": "Experience",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "techStack": {
+    "title": "Technologies & Skills",
+    "subtitle": "Technologies I work with to build amazing digital experiences",
+    "frontend": {
+      "title": "Frontend"
+    },
+    "backend": {
+      "title": "Backend"
+    },
+    "tools": {
+      "title": "Tools & DevOps"
+    }
+  },
+  "birthday": {
+    "title": "Happy 33rd Birthday Carlos! 🎉",
+    "description": "Celebrating another year of amazing achievements, growth, and incredible software engineering skills!",
+    "message": "Happy Birthday Carlos!",
+    "wish1": "May this year bring you endless opportunities and success!",
+    "wish2": "Keep building amazing things and inspiring others!",
+    "wish3": "Here's to another year of innovation and excellence!",
+    "backToPortfolio": "Back to Portfolio"
+  }
+}

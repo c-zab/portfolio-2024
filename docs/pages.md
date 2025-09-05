@@ -1,6 +1,7 @@
 # Pages
 
 ## index.astro
+
 File: `src/pages/index.astro`
 
 - **Purpose**: Home page composition that assembles the layout, left-side header, and a main area.
@@ -10,6 +11,7 @@ File: `src/pages/index.astro`
   - `../components/cooming-soon.astro`
   - Inter fonts
 - **Usage**:
+
 ```astro
 ---
 import Layout from "../layouts/Layout.astro";
@@ -30,6 +32,7 @@ import ComingSoon from "../components/cooming-soon.astro";
 ```
 
 ## Creating a New Page
+
 1. Create a new file under `src/pages/your-page.astro`.
 2. Wrap page content with `Layout` and provide a `title`.
 3. Compose components as needed.

@@ -6,7 +6,6 @@ interface Props {
 const { title } = Astro.props;
 import "@fontsource/inter";
 import "@fontsource-variable/inter";
-import ThemeToggle from "../components/theme-toggle.astro";
 ---
 
 <!doctype html>
@@ -14,52 +13,64 @@ import ThemeToggle from "../components/theme-toggle.astro";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <!-- Primary Meta Tags -->
     <title>{title}</title>
     <meta name="title" content="Carlos Zabaleta - Software Engineer | Toronto, Canada" />
-    <meta name="description" content="Carlos Zabaleta is a skilled Software Engineer based in Toronto, Canada. Specializing in full-stack development, web applications, and modern JavaScript frameworks. Building pixel-perfect, engaging, and accessible digital experiences." />
-    <meta name="keywords" content="Carlos Zabaleta, Software Engineer, Developer, Toronto, Canada, Full Stack Developer, JavaScript, React, Web Development, Frontend, Backend, Portfolio" />
+    <meta
+      name="description"
+      content="Carlos Zabaleta is a skilled Software Engineer based in Toronto, Canada. Specializing in full-stack development, web applications, and modern JavaScript frameworks. Building pixel-perfect, engaging, and accessible digital experiences."
+    />
+    <meta
+      name="keywords"
+      content="Carlos Zabaleta, Software Engineer, Developer, Toronto, Canada, Full Stack Developer, JavaScript, React, Web Development, Frontend, Backend, Portfolio"
+    />
     <meta name="author" content="Carlos Zabaleta" />
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://carloszabaleta.dev/" />
     <meta property="og:title" content="Carlos Zabaleta - Software Engineer | Toronto, Canada" />
-    <meta property="og:description" content="Skilled Software Engineer in Toronto, Canada. Specializing in full-stack development and modern web technologies. Building exceptional digital experiences." />
+    <meta
+      property="og:description"
+      content="Skilled Software Engineer in Toronto, Canada. Specializing in full-stack development and modern web technologies. Building exceptional digital experiences."
+    />
     <meta property="og:image" content="https://carloszabaleta.dev/og-image.jpg" />
     <meta property="og:site_name" content="Carlos Zabaleta Portfolio" />
     <meta property="og:locale" content="en_CA" />
-    
+
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://carloszabaleta.dev/" />
     <meta property="twitter:title" content="Carlos Zabaleta - Software Engineer | Toronto, Canada" />
-    <meta property="twitter:description" content="Skilled Software Engineer in Toronto, Canada. Building pixel-perfect, engaging, and accessible digital experiences." />
+    <meta
+      property="twitter:description"
+      content="Skilled Software Engineer in Toronto, Canada. Building pixel-perfect, engaging, and accessible digital experiences."
+    />
     <meta property="twitter:image" content="https://carloszabaleta.dev/og-image.jpg" />
     <meta property="twitter:creator" content="@czabalet" />
-    
+
     <!-- Additional SEO Meta Tags -->
     <meta name="geo.region" content="CA-ON" />
     <meta name="geo.placename" content="Toronto" />
     <meta name="geo.position" content="43.6532;-79.3832" />
     <meta name="ICBM" content="43.6532, -79.3832" />
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href="https://carloszabaleta.dev/" />
-    
+
     <!-- Favicon and Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    
+
     <!-- Generator -->
     <meta name="generator" content={Astro.generator} />
-    
+
     <!-- Structured Data -->
     <script type="application/ld+json">
       {
@@ -110,12 +121,163 @@ import ThemeToggle from "../components/theme-toggle.astro";
     </script>
   </head>
   <body
-    class="bg-white leading-relaxed text-slate-700 antialiased selection:bg-teal-300 selection:text-teal-900 transition-colors duration-300 dark:bg-slate-900 dark:text-slate-400"
+    class="bg-white leading-relaxed text-slate-700 antialiased selection:bg-teal-300 selection:text-teal-900 transition-all duration-500 ease-in-out dark:bg-slate-900 dark:text-slate-400"
   >
     <div class="inset-0 z-30 transition duration-300">
       <slot />
     </div>
-    <ThemeToggle />
+
+    <!-- Smooth page transitions -->
+    <script>
+      // Prevent flash of unstyled content
+      document.documentElement.style.opacity = "0";
+
+      window.addEventListener("load", () => {
+        document.documentElement.style.transition = "opacity 0.3s ease-in-out";
+        document.documentElement.style.opacity = "1";
+      });
+
+      // Initialize language preference from localStorage
+      function initializeLanguagePreference() {
+        const storedLanguage = localStorage.getItem("preferred-language");
+        const currentPath = window.location.pathname;
+        const currentLocale = currentPath.startsWith("/es") ? "es" : "en";
+
+        // Store current locale if no preference is stored
+        if (!storedLanguage) {
+          localStorage.setItem("preferred-language", currentLocale);
+          console.log(`Initial language preference stored: ${currentLocale}`);
+        } else {
+          console.log(`Stored language preference: ${storedLanguage}, Current locale: ${currentLocale}`);
+        }
+
+        // If there's a stored preference and it differs from current locale, redirect
+        if (storedLanguage && storedLanguage !== currentLocale) {
+          const targetPath = storedLanguage === "en" ? "/en/" : "/es/";
+          // Only redirect if we're on the root pages to avoid breaking other routes
+          if (currentPath === "/en/" || currentPath === "/es/" || currentPath === "/") {
+            window.location.href = targetPath;
+            return;
+          }
+        }
+      }
+
+      // Enhanced transitions for language changes
+      document.addEventListener("DOMContentLoaded", () => {
+        // Initialize language preference first
+        initializeLanguagePreference();
+
+        // Set initial language toggle state
+        const currentPath = window.location.pathname;
+        const currentLocale = currentPath.startsWith("/es") ? "es" : "en";
+        updateLanguageToggleStates(currentLocale);
+
+        const links = document.querySelectorAll('a[href*="/en/"], a[href*="/es/"]');
+        console.log(`Found ${links.length} language links`);
+        links.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const href = link.getAttribute("href");
+            console.log(`Language link clicked: ${href}`);
+
+            // Extract locale from href
+            const locale = href.includes("/es/") ? "es" : "en";
+            console.log(`Extracted locale: ${locale}`);
+
+            // Store language preference in localStorage
+            localStorage.setItem("preferred-language", locale);
+            console.log(`Language preference stored: ${locale}`);
+
+            // Update all translatable elements
+            updateTextContent(locale);
+
+            // Update URL without page reload
+            window.history.pushState({}, "", href);
+          });
+        });
+      });
+
+      // Function to update text content based on locale
+      function updateTextContent(locale) {
+        const translations = {
+          en: {
+            title: "Software Engineer",
+            description:
+              "I build pixel-perfect, engaging, and accessible digital experiences using modern web technologies. Specializing in full-stack development in Toronto, Canada.",
+            techTitle: "Technologies & Skills",
+            techSubtitle: "Technologies I work with to build amazing digital experiences",
+          },
+          es: {
+            title: "Ingeniero de Software",
+            description:
+              "Construyo experiencias digitales perfectas, atractivas y accesibles utilizando tecnologías web modernas. Especializado en desarrollo full-stack en Toronto, Canadá.",
+            techTitle: "Tecnologías y Habilidades",
+            techSubtitle: "Tecnologías que uso para crear experiencias digitales increíbles",
+          },
+        };
+
+        const t = translations[locale];
+
+        // Update title
+        const titleElement = document.querySelector("h2");
+        if (titleElement) titleElement.textContent = t.title;
+
+        // Update description
+        const descElement = document.querySelector("p");
+        if (descElement) descElement.textContent = t.description;
+
+        // Update tech section titles
+        const techTitleElement = document.querySelector("h2");
+        if (techTitleElement && techTitleElement.textContent.includes("Technologies")) {
+          techTitleElement.textContent = t.techTitle;
+        }
+
+        const techSubtitleElement = document.querySelector("p");
+        if (techSubtitleElement && techSubtitleElement.textContent.includes("Technologies")) {
+          techSubtitleElement.textContent = t.techSubtitle;
+        }
+
+        // Update language toggle active states
+        updateLanguageToggleStates(locale);
+      }
+
+      // Function to update language toggle active states
+      function updateLanguageToggleStates(locale) {
+        const languageLinks = document.querySelectorAll('a[href*="/en/"], a[href*="/es/"]');
+
+        languageLinks.forEach((link) => {
+          const href = link.getAttribute("href");
+          const linkLocale = href.includes("/es/") ? "es" : "en";
+
+          // Remove existing active background
+          const existingBg = link.querySelector(".absolute.inset-0");
+          if (existingBg) {
+            existingBg.remove();
+          }
+
+          // Update text colors
+          if (linkLocale === locale) {
+            // Active state
+            link.className = link.className.replace(
+              /text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200/g,
+              "text-slate-900 dark:text-slate-100"
+            );
+
+            // Add active background
+            const activeBg = document.createElement("div");
+            activeBg.className =
+              "absolute inset-0 bg-white dark:bg-slate-700 rounded-md shadow-sm transition-all duration-300 ease-in-out";
+            link.appendChild(activeBg);
+          } else {
+            // Inactive state
+            link.className = link.className.replace(
+              /text-slate-900 dark:text-slate-100/g,
+              "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+            );
+          }
+        });
+      }
+    </script>
   </body>
 
   <style is:global>
@@ -130,12 +292,7 @@ import ThemeToggle from "../components/theme-toggle.astro";
       --accent: 136, 58, 234;
       --accent-light: 224, 204, 250;
       --accent-dark: 49, 10, 101;
-      --accent-gradient: linear-gradient(
-        45deg,
-        rgb(var(--accent)),
-        rgb(var(--accent-light)) 30%,
-        white 60%
-      );
+      --accent-gradient: linear-gradient(45deg, rgb(var(--accent)), rgb(var(--accent-light)) 30%, white 60%);
     }
     @supports (font-variation-settings: normal) {
       :root {
@@ -145,11 +302,11 @@ import ThemeToggle from "../components/theme-toggle.astro";
     html {
       transition: background-color 0.3s ease;
     }
-    
+
     html.dark {
       background: rgb(15 23 42);
     }
-    
+
     html:not(.dark) {
       background: rgb(255 255 255);
     }

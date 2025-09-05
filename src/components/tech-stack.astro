@@ -1,0 +1,216 @@
+---
+import { getTranslation, getLocaleFromPath } from "../utils/i18n";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = (key: string) => getTranslation(locale, key);
+---
+
+<div class="space-y-12">
+  <!-- Main heading -->
+  <div class="text-center">
+    <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+      {t("techStack.title")}
+    </h2>
+    <p class="text-slate-600 dark:text-slate-400 text-lg">
+      {t("techStack.subtitle")}
+    </p>
+  </div>
+
+  <!-- Transparent font tech display -->
+  <div class="relative flex items-center justify-center min-h-[300px]">
+    <div class="text-center">
+      <!-- Main tech display -->
+      <div id="tech-display" class="mb-8">
+        <div
+          class="text-8xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-teal-600 dark:from-blue-400 dark:via-purple-400 dark:to-teal-400 opacity-80 transition-all duration-1000 ease-in-out"
+        >
+          <span id="tech-text">React</span>
+        </div>
+      </div>
+
+      <!-- Category indicator -->
+      <div class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+        <span id="tech-category">Frontend</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress indicator -->
+  <div class="flex justify-center">
+    <div class="flex space-x-2">
+      <div id="progress-dots" class="flex space-x-2">
+        <!-- Progress dots will be generated dynamically -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tech stack data with categories
+  const techItems = [
+    { name: "React", category: "Frontend", gradient: "from-blue-600 via-blue-500 to-cyan-500" },
+    { name: "Next.js", category: "Frontend", gradient: "from-gray-800 via-gray-700 to-gray-600" },
+    { name: "TypeScript", category: "Frontend", gradient: "from-blue-600 via-blue-500 to-blue-400" },
+    { name: "Tailwind", category: "Frontend", gradient: "from-cyan-500 via-teal-500 to-emerald-500" },
+    { name: "Node.js", category: "Backend", gradient: "from-green-600 via-green-500 to-green-400" },
+    { name: "Express", category: "Backend", gradient: "from-gray-600 via-gray-500 to-gray-400" },
+    { name: "MongoDB", category: "Backend", gradient: "from-green-600 via-emerald-500 to-teal-500" },
+    { name: "PostgreSQL", category: "Backend", gradient: "from-blue-700 via-blue-600 to-indigo-500" },
+    { name: "Docker", category: "DevOps", gradient: "from-blue-600 via-blue-500 to-cyan-400" },
+    { name: "AWS", category: "DevOps", gradient: "from-orange-500 via-orange-400 to-yellow-500" },
+    { name: "Git", category: "DevOps", gradient: "from-orange-600 via-red-500 to-pink-500" },
+    { name: "Vercel", category: "DevOps", gradient: "from-gray-800 via-gray-700 to-gray-600" },
+  ];
+
+  let currentIndex = 0;
+  let isTyping = false;
+
+  function createProgressDots() {
+    const container = document.getElementById("progress-dots");
+    if (!container) return;
+
+    container.innerHTML = "";
+    techItems.forEach((_, index) => {
+      const dot = document.createElement("div");
+      dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${
+        index === currentIndex ? "bg-slate-600 dark:bg-slate-400 scale-125" : "bg-slate-300 dark:bg-slate-600"
+      }`;
+      container.appendChild(dot);
+    });
+  }
+
+  function updateProgressDots() {
+    const dots = document.querySelectorAll("#progress-dots > div");
+    dots.forEach((dot, index) => {
+      if (index === currentIndex) {
+        dot.className = "w-2 h-2 rounded-full transition-all duration-300 bg-slate-600 dark:bg-slate-400 scale-125";
+      } else {
+        dot.className = "w-2 h-2 rounded-full transition-all duration-300 bg-slate-300 dark:bg-slate-600";
+      }
+    });
+  }
+
+  function typeText(text: string, element: HTMLElement, callback?: () => void) {
+    if (isTyping) return;
+    isTyping = true;
+
+    element.textContent = "";
+    let i = 0;
+
+    const typeInterval = setInterval(() => {
+      if (i < text.length) {
+        element.textContent += text.charAt(i);
+        i++;
+      } else {
+        clearInterval(typeInterval);
+        isTyping = false;
+        if (callback) callback();
+      }
+    }, 100);
+  }
+
+  function eraseText(element: HTMLElement, callback?: () => void) {
+    if (isTyping) return;
+    isTyping = true;
+
+    const eraseInterval = setInterval(() => {
+      if (element.textContent && element.textContent.length > 0) {
+        element.textContent = element.textContent.slice(0, -1);
+      } else {
+        clearInterval(eraseInterval);
+        isTyping = false;
+        if (callback) callback();
+      }
+    }, 50);
+  }
+
+  function animateTechItem() {
+    const techText = document.getElementById("tech-text");
+    const techCategory = document.getElementById("tech-category");
+    const techDisplay = document.getElementById("tech-display");
+
+    if (!techText || !techCategory || !techDisplay) return;
+
+    const currentItem = techItems[currentIndex];
+
+    // Update gradient
+    techDisplay.className = `text-8xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r ${currentItem.gradient} opacity-80 transition-all duration-1000 ease-in-out`;
+
+    // Update category
+    techCategory.textContent = currentItem.category;
+
+    // Type the new text
+    typeText(currentItem.name, techText, () => {
+      // Wait a bit before erasing
+      setTimeout(() => {
+        eraseText(techText, () => {
+          // Move to next item
+          currentIndex = (currentIndex + 1) % techItems.length;
+          updateProgressDots();
+
+          // Start next animation
+          setTimeout(animateTechItem, 500);
+        });
+      }, 2000);
+    });
+  }
+
+  function initTechAnimation() {
+    createProgressDots();
+    animateTechItem();
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initTechAnimation);
+  } else {
+    initTechAnimation();
+  }
+</script>
+
+<style>
+  /* Transparent font effect */
+  #tech-display {
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6, #06b6d4);
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease-in-out infinite;
+  }
+
+  @keyframes gradientShift {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* Typing cursor effect */
+  #tech-text::after {
+    content: "|";
+    animation: blink 1s infinite;
+    color: currentColor;
+  }
+
+  @keyframes blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* Smooth transitions */
+  #tech-display {
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Progress dots animation */
+  #progress-dots > div {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+</style>

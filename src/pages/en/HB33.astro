@@ -1,0 +1,162 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getTranslation } from "../../utils/i18n";
+
+const locale = "en";
+const t = (key: string) => getTranslation(locale, key);
+---
+
+<Layout title={t("birthday.title")}>
+  <div
+    class="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 dark:from-purple-600 dark:via-pink-600 dark:to-red-600 flex items-center justify-center relative overflow-hidden"
+  >
+    <!-- Confetti Animation Container -->
+    <div id="confetti-container" class="absolute inset-0 pointer-events-none"></div>
+
+    <!-- Main Content -->
+    <div class="text-center z-10 relative">
+      <!-- Birthday Title -->
+      <h1 class="text-6xl md:text-8xl font-black text-slate-100 mb-8 animate-bounce">🎉 HB33! 🎉</h1>
+
+      <!-- Birthday Message -->
+      <div class="bg-white/20 backdrop-blur-sm rounded-3xl p-8 md:p-12 max-w-2xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold text-slate-100 mb-6">
+          {t("birthday.message")}
+        </h2>
+
+        <p class="text-xl md:text-2xl text-slate-200 mb-8 leading-relaxed">
+          {t("birthday.description")}
+        </p>
+
+        <!-- Age Display -->
+        <div class="text-6xl md:text-8xl font-black text-yellow-300 mb-6 animate-pulse">33</div>
+
+        <!-- Birthday Wishes -->
+        <div class="space-y-4 text-lg text-slate-300">
+          <p>✨ {t("birthday.wish1")}</p>
+          <p>🚀 {t("birthday.wish2")}</p>
+          <p>💫 {t("birthday.wish3")}</p>
+        </div>
+      </div>
+
+      <!-- Back to Portfolio Button -->
+      <div class="mt-12">
+        <button
+          id="back-to-portfolio"
+          class="inline-block bg-white/20 hover:bg-white/30 backdrop-blur-sm text-slate-100 font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+        >
+          {t("birthday.backToPortfolio")}
+        </button>
+      </div>
+    </div>
+
+    <!-- Floating Balloons -->
+    <div class="absolute top-10 left-10 text-4xl animate-bounce" style="animation-delay: 0s;">🎈</div>
+    <div class="absolute top-20 right-20 text-5xl animate-bounce" style="animation-delay: 0.5s;">🎈</div>
+    <div class="absolute bottom-20 left-20 text-3xl animate-bounce" style="animation-delay: 1s;">🎈</div>
+    <div class="absolute bottom-10 right-10 text-4xl animate-bounce" style="animation-delay: 1.5s;">🎈</div>
+
+    <!-- Cake Animation -->
+    <div
+      class="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-6xl animate-bounce"
+      style="animation-delay: 2s;"
+    >
+      🎂
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import anime from "animejs";
+
+  // Confetti Animation
+  function createConfetti() {
+    const container = document.getElementById("confetti-container");
+    if (!container) return;
+
+    const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4", "#feca57", "#ff9ff3", "#54a0ff"];
+
+    for (let i = 0; i < 50; i++) {
+      const confetti = document.createElement("div");
+      confetti.style.position = "absolute";
+      confetti.style.width = "10px";
+      confetti.style.height = "10px";
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.left = Math.random() * window.innerWidth + "px";
+      confetti.style.top = "-10px";
+      confetti.style.borderRadius = "50%";
+
+      container.appendChild(confetti);
+
+      // Animate confetti falling
+      anime({
+        targets: confetti,
+        translateY: window.innerHeight + 100,
+        translateX: (Math.random() - 0.5) * 200,
+        rotate: Math.random() * 360,
+        duration: Math.random() * 3000 + 2000,
+        easing: "easeInQuad",
+        complete: () => {
+          confetti.remove();
+        },
+      });
+    }
+  }
+
+  // Create confetti every 2 seconds
+  setInterval(createConfetti, 2000);
+
+  // Initial confetti burst
+  setTimeout(createConfetti, 500);
+
+  // Handle back to portfolio button
+  document.addEventListener("DOMContentLoaded", () => {
+    const backButton = document.getElementById("back-to-portfolio");
+    if (backButton) {
+      backButton.addEventListener("click", () => {
+        // Direct navigation without language switching interference
+        window.location.href = "/en/";
+      });
+    }
+  });
+</script>
+
+<style>
+  @keyframes bounce {
+    0%,
+    20%,
+    53%,
+    80%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    40%,
+    43% {
+      transform: translate3d(0, -30px, 0);
+    }
+    70% {
+      transform: translate3d(0, -15px, 0);
+    }
+    90% {
+      transform: translate3d(0, -4px, 0);
+    }
+  }
+
+  .animate-bounce {
+    animation: bounce 2s infinite;
+  }
+
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+</style>

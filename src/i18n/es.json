@@ -1,0 +1,50 @@
+{
+  "common": {
+    "name": "Carlos Zabaleta",
+    "title": "Ingeniero de Software",
+    "location": "Toronto, Canadá"
+  },
+  "header": {
+    "description": "Construyo experiencias digitales perfectas, atractivas y accesibles utilizando tecnologías web modernas. Especializado en desarrollo full-stack en Toronto, Canadá."
+  },
+  "comingSoon": {
+    "message": "🚧🚧🚧 Actualizando Sitio Web"
+  },
+  "seo": {
+    "title": "Carlos Zabaleta - Ingeniero de Software Profesional en Toronto",
+    "description": "Ingeniero de software experimentado y desarrollador full-stack radicado en Toronto, Ontario, Canadá. Especializado en JavaScript, React, Node.js y tecnologías modernas de desarrollo web. Disponible para proyectos de desarrollo de software y consultoría.",
+    "address": {
+      "city": "Toronto",
+      "province": "Ontario",
+      "country": "Canadá"
+    }
+  },
+  "navigation": {
+    "about": "Acerca de",
+    "experience": "Experiencia",
+    "projects": "Proyectos",
+    "contact": "Contacto"
+  },
+  "techStack": {
+    "title": "Tecnologías y Habilidades",
+    "subtitle": "Tecnologías que uso para crear experiencias digitales increíbles",
+    "frontend": {
+      "title": "Frontend"
+    },
+    "backend": {
+      "title": "Backend"
+    },
+    "tools": {
+      "title": "Herramientas y DevOps"
+    }
+  },
+  "birthday": {
+    "title": "¡Feliz Cumpleaños 33 Carlos! 🎉",
+    "description": "¡Celebrando otro año de logros increíbles, crecimiento y habilidades excepcionales en ingeniería de software!",
+    "message": "¡Feliz Cumpleaños Carlos!",
+    "wish1": "¡Que este año te traiga oportunidades infinitas y mucho éxito!",
+    "wish2": "¡Sigue construyendo cosas increíbles e inspirando a otros!",
+    "wish3": "¡Por otro año de innovación y excelencia!",
+    "backToPortfolio": "Volver al Portafolio"
+  }
+}

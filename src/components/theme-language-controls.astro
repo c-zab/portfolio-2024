@@ -1,0 +1,216 @@
+---
+import { getLocaleFromPath, getLocalizedPath } from "../utils/i18n";
+
+const locales = ["en", "es"] as const;
+const currentLocale = getLocaleFromPath(Astro.url.pathname);
+---
+
+<div class="flex items-center space-x-4">
+  <!-- Language Switcher -->
+  <div class="relative inline-flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
+    {
+      locales.map((locale) => (
+        <a
+          href={getLocalizedPath("/", locale)}
+          class={`relative px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ease-in-out ${
+            locale === currentLocale
+              ? "text-slate-900 dark:text-slate-100"
+              : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+          }`}
+          aria-label={`Switch to ${locale === "en" ? "English" : "Español"}`}
+          onmouseenter="this.style.transform='scale(1.05)'"
+          onmouseleave="this.style.transform='scale(1)'"
+        >
+          {locale === currentLocale && (
+            <div class="absolute inset-0 bg-white dark:bg-slate-700 rounded-md shadow-sm transition-all duration-300 ease-in-out" />
+          )}
+          <span class="relative z-10 transition-all duration-300 ease-in-out">{locale === "en" ? "EN" : "ES"}</span>
+        </a>
+      ))
+    }
+  </div>
+
+  <!-- Birthday Cake Button -->
+  <button
+    id="birthday-button"
+    class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-800 shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-md"
+    aria-label="Birthday Page"
+    title="Happy 33rd Birthday!"
+  >
+    <span class="text-lg">🎂</span>
+  </button>
+
+  <!-- Theme Toggle -->
+  <button
+    id="theme-toggle"
+    class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-md"
+    aria-label="Toggle theme"
+    title="Toggle theme"
+  >
+    <!-- Sun icon for dark mode (when light theme is active) -->
+    <svg
+      id="sun-icon"
+      class="h-5 w-5 text-yellow-500 transition-all duration-300 ease-in-out dark:rotate-90 dark:scale-0"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+      ></path>
+    </svg>
+
+    <!-- Moon icon for light mode (when dark theme is active) -->
+    <svg
+      id="moon-icon"
+      class="absolute h-5 w-5 text-slate-700 transition-all duration-300 ease-in-out rotate-90 scale-0 dark:rotate-0 dark:scale-100 dark:text-slate-300"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+    </svg>
+  </button>
+</div>
+
+<script>
+  function initThemeToggle() {
+    const themeToggle = document.getElementById("theme-toggle");
+    const html = document.documentElement;
+
+    // Check for saved theme preference or default to 'dark'
+    const savedTheme = localStorage.getItem("theme");
+    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const currentTheme = savedTheme || (systemPrefersDark ? "dark" : "light");
+
+    // Apply initial theme
+    if (currentTheme === "dark") {
+      html.classList.add("dark");
+    } else {
+      html.classList.remove("dark");
+    }
+
+    // Store theme preference
+    localStorage.setItem("theme", currentTheme);
+
+    // Toggle theme function
+    function toggleTheme() {
+      const isDark = html.classList.contains("dark");
+
+      if (isDark) {
+        html.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+      } else {
+        html.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+      }
+    }
+
+    // Add click event listener
+    themeToggle?.addEventListener("click", toggleTheme);
+
+    // Listen for system theme changes
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+      if (!localStorage.getItem("theme")) {
+        if (e.matches) {
+          html.classList.add("dark");
+        } else {
+          html.classList.remove("dark");
+        }
+      }
+    });
+  }
+
+  // Initialize on DOM content loaded
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initThemeToggle);
+  } else {
+    initThemeToggle();
+  }
+
+  // Handle birthday button click
+  function initBirthdayButton() {
+    const birthdayButton = document.getElementById("birthday-button");
+    if (birthdayButton) {
+      birthdayButton.addEventListener("click", () => {
+        // Get current locale from URL
+        const currentPath = window.location.pathname;
+        const locale = currentPath.startsWith("/es") ? "es" : "en";
+
+        // Store language preference in localStorage
+        localStorage.setItem("preferred-language", locale);
+
+        // Navigate to birthday page
+        const birthdayPath = locale === "en" ? "/en/HB33" : "/es/HB33";
+        window.location.href = birthdayPath;
+      });
+    }
+  }
+
+  // Function to update language toggle active states (shared with Layout.astro)
+  function updateLanguageToggleStates(locale) {
+    const languageLinks = document.querySelectorAll('a[href*="/en/"], a[href*="/es/"]');
+
+    languageLinks.forEach((link) => {
+      const href = link.getAttribute("href");
+      const linkLocale = href.includes("/es/") ? "es" : "en";
+
+      // Remove existing active background
+      const existingBg = link.querySelector(".absolute.inset-0");
+      if (existingBg) {
+        existingBg.remove();
+      }
+
+      // Update text colors
+      if (linkLocale === locale) {
+        // Active state
+        link.className = link.className.replace(
+          /text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200/g,
+          "text-slate-900 dark:text-slate-100"
+        );
+
+        // Add active background
+        const activeBg = document.createElement("div");
+        activeBg.className =
+          "absolute inset-0 bg-white dark:bg-slate-700 rounded-md shadow-sm transition-all duration-300 ease-in-out";
+        link.appendChild(activeBg);
+      } else {
+        // Inactive state
+        link.className = link.className.replace(
+          /text-slate-900 dark:text-slate-100/g,
+          "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+        );
+      }
+    });
+  }
+
+  // Initialize birthday button
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initBirthdayButton);
+  } else {
+    initBirthdayButton();
+  }
+</script>
+
+<style>
+  /* Smooth icon transitions */
+  #sun-icon,
+  #moon-icon {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #theme-toggle:hover {
+    transform: scale(1.05);
+  }
+
+  #theme-toggle:active {
+    transform: scale(0.95);
+  }
+</style>
