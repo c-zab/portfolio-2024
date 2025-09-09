@@ -12,6 +12,30 @@ const t = (key: string) => getTranslation(locale, key);
   <div
     class="min-h-screen w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden text-white"
   >
+    <!-- Floating back to home button -->
+    <div class="fixed bottom-4 right-4 z-50">
+      <button
+        id="back-to-portfolio"
+        class="h-12 w-12 flex items-center justify-center rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-100 shadow-lg ring-1 ring-slate-600 backdrop-blur-md transition-colors"
+        aria-label={t("birthday.backToPortfolio")}
+        title={t("birthday.backToPortfolio")}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          class="h-5 w-5"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5l9-7 9 7"></path>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4.5 9.75V20a1.5 1.5 0 001.5 1.5H18a1.5 1.5 0 001.5-1.5V9.75"></path>
+        </svg>
+      </button>
+    </div>
     <div class="absolute top-4 left-4 z-20">
       <LanguageSwitcher dark={true} />
     </div>

@@ -46,6 +46,9 @@ const t = (key: string) => getTranslation(locale, key);
   let currentTechIndex = 0;
   let animationInterval: number | null = null;
   let lastPositions: { x: number; y: number }[] = []; // Remember last 3 positions
+  let resizeObserver: ResizeObserver | null = null;
+  let hasWarnedNoDimensions = false;
+  const MIN_RENDER_WIDTH = 768; // md breakpoint
 
   function createTechElement(text: string, position?: { x: number; y: number }): HTMLElement {
     const element = document.createElement("div");
@@ -290,6 +293,12 @@ const t = (key: string) => getTranslation(locale, key);
   }
 
   function startAnimation(): void {
+    // Only render on md and up
+    if (window.innerWidth < MIN_RENDER_WIDTH) {
+      stopAnimation();
+      return;
+    }
+
     const container = document.getElementById("tech-container");
     if (!container) return;
 
@@ -299,28 +308,43 @@ const t = (key: string) => getTranslation(locale, key);
     currentTechIndex = 0;
     lastPositions = []; // Reset position tracking
 
-    // Wait a bit for the container to be properly sized
-    setTimeout(() => {
-      // Get container dimensions for proper positioning
-      const containerRect = container.getBoundingClientRect();
-      const containerWidth = containerRect.width;
-      const containerHeight = containerRect.height;
+    const init = () => {
+      const rect = container.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
 
-      // Ensure we have valid dimensions
-      if (containerWidth === 0 || containerHeight === 0) {
-        console.warn("Container has no dimensions, retrying...");
-        setTimeout(startAnimation, 100);
+      if (width === 0 || height === 0 || getComputedStyle(container).display === "none") {
+        if (!hasWarnedNoDimensions) {
+          console.warn("TechOverlap: container has no dimensions; waiting for layout...");
+          hasWarnedNoDimensions = true;
+        }
+
+        // Observe for size changes once, then start
+        if (typeof ResizeObserver !== "undefined") {
+          if (resizeObserver) resizeObserver.disconnect();
+          resizeObserver = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+              const cr = entry.contentRect;
+              if (cr.width > 0 && cr.height > 0) {
+                resizeObserver?.disconnect();
+                hasWarnedNoDimensions = false;
+                startAnimation();
+              }
+            }
+          });
+          resizeObserver.observe(container);
+        }
         return;
       }
 
       // Calculate safe initial positions based on container size
-      const marginX = containerWidth * 0.1; // 10% of container width
-      const marginY = containerHeight * 0.1; // 10% of container height
-      const elementWidth = containerWidth < 768 ? 100 : 150; // Smaller on mobile
-      const elementHeight = containerWidth < 768 ? 30 : 50; // Smaller on mobile
+      const marginX = width * 0.1; // 10% of container width
+      const marginY = height * 0.1; // 10% of container height
+      const elementWidth = width < 768 ? 100 : 150; // Smaller on mobile
+      const elementHeight = width < 768 ? 30 : 50; // Smaller on mobile
 
-      const maxX = containerWidth - elementWidth - marginX;
-      const maxY = containerHeight - elementHeight - marginY;
+      const maxX = width - elementWidth - marginX;
+      const maxY = height - elementHeight - marginY;
 
       // Define initial positions for the first 3 elements - utilizing full width and height
       const initialPositions = [
@@ -345,7 +369,10 @@ const t = (key: string) => getTranslation(locale, key);
 
       // Start cycling every second
       animationInterval = window.setInterval(cycleElements, 1000);
-    }, 50);
+    };
+
+    // Defer a tick so layout settles
+    setTimeout(init, 50);
   }
 
   function stopAnimation(): void {
@@ -369,7 +396,10 @@ const t = (key: string) => getTranslation(locale, key);
   }
 
   // Cleanup on page unload
-  window.addEventListener("beforeunload", stopAnimation);
+  window.addEventListener("beforeunload", () => {
+    stopAnimation();
+    if (resizeObserver) resizeObserver.disconnect();
+  });
 </script>
 
 <style>
