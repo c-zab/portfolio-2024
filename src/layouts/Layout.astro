@@ -1,9 +1,10 @@
 ---
 interface Props {
   title: string;
+  variant?: "default" | "hb";
 }
 
-const { title } = Astro.props;
+const { title, variant = "default" } = Astro.props;
 import "@fontsource/inter";
 import "@fontsource-variable/inter";
 ---
@@ -11,6 +12,12 @@ import "@fontsource-variable/inter";
 <!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   <head>
+    <!-- Critical inline styles to avoid flash on HB pages -->
+    <style>
+      body[data-page="hb"] {
+        background: rgb(15 23 42);
+      }
+    </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -121,6 +128,7 @@ import "@fontsource-variable/inter";
     </script>
   </head>
   <body
+    data-page={variant}
     class="bg-white leading-relaxed text-slate-700 antialiased selection:bg-teal-300 selection:text-teal-900 transition-all duration-500 ease-in-out dark:bg-slate-900 dark:text-slate-400"
   >
     <div class="inset-0 z-30 transition duration-300">
@@ -129,13 +137,18 @@ import "@fontsource-variable/inter";
 
     <!-- Smooth page transitions -->
     <script>
-      // Prevent flash of unstyled content
-      document.documentElement.style.opacity = "0";
-
-      window.addEventListener("load", () => {
-        document.documentElement.style.transition = "opacity 0.3s ease-in-out";
+      // Prevent flash of unstyled content (disabled on HB pages)
+      const isHBPage = document.body && document.body.dataset.page === "hb";
+      if (!isHBPage) {
+        document.documentElement.style.opacity = "0";
+        window.addEventListener("load", () => {
+          document.documentElement.style.transition = "opacity 0.3s ease-in-out";
+          document.documentElement.style.opacity = "1";
+        });
+      } else {
+        // Ensure no opacity fade is applied on HB pages
         document.documentElement.style.opacity = "1";
-      });
+      }
 
       // Initialize language preference from localStorage
       function initializeLanguagePreference() {
@@ -170,7 +183,10 @@ import "@fontsource-variable/inter";
         // Set initial language toggle state
         const currentPath = window.location.pathname;
         const currentLocale = currentPath.startsWith("/es") ? "es" : "en";
-        updateLanguageToggleStates(currentLocale);
+        // Avoid overriding switcher visuals on HB pages; the component handles styling
+        if (!currentPath.includes("/HB33")) {
+          updateLanguageToggleStates(currentLocale);
+        }
 
         const links = document.querySelectorAll('a[href*="/en/"], a[href*="/es/"]');
         console.log(`Found ${links.length} language links`);
@@ -183,6 +199,16 @@ import "@fontsource-variable/inter";
             // Extract locale from href
             const locale = href.includes("/es/") ? "es" : "en";
             console.log(`Extracted locale: ${locale}`);
+
+            // If navigating on/about the Birthday (HB33) page, do a full navigation
+            // so the page content is re-rendered with the correct locale.
+            if (href && href.includes("/HB33")) {
+              // Store language preference in localStorage
+              localStorage.setItem("preferred-language", locale);
+              // Immediate navigation, no fade-out to avoid double flash
+              window.location.href = href;
+              return;
+            }
 
             // Store language preference in localStorage
             localStorage.setItem("preferred-language", locale);
@@ -199,6 +225,11 @@ import "@fontsource-variable/inter";
 
       // Function to update text content based on locale
       function updateTextContent(locale) {
+        // Don't run on birthday pages
+        if (window.location.pathname.includes("/HB33")) {
+          return;
+        }
+
         const translations = {
           en: {
             title: "Software Engineer",
@@ -263,10 +294,10 @@ import "@fontsource-variable/inter";
               "text-slate-900 dark:text-slate-100"
             );
 
-            // Add active background
+            // Add active background with better light contrast
             const activeBg = document.createElement("div");
             activeBg.className =
-              "absolute inset-0 bg-white dark:bg-slate-700 rounded-md shadow-sm transition-all duration-300 ease-in-out";
+              "absolute inset-0 rounded-md shadow-sm transition-all duration-300 ease-in-out bg-slate-200 ring-1 ring-slate-300 dark:bg-slate-700 dark:ring-slate-700";
             link.appendChild(activeBg);
           } else {
             // Inactive state

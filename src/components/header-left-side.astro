@@ -7,9 +7,7 @@ const locale = getLocaleFromPath(Astro.url.pathname);
 const t = (key: string) => getTranslation(locale, key);
 ---
 
-<header
-  class="flex flex-col justify-between lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between lg:py-24"
->
+<header class="flex flex-col justify-between h-full lg:sticky lg:top-0 lg:max-h-screen lg:w-full lg:py-24">
   <div>
     <h1
       class="ml11 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl dark:text-slate-300"

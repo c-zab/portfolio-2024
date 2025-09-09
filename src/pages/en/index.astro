@@ -3,8 +3,6 @@ import Layout from "../../layouts/Layout.astro";
 import HeaderLeftSide from "../../components/header-left-side.astro";
 import TechOverlap from "../../components/tech-overlap.astro";
 import { getTranslation } from "../../utils/i18n";
-import "@fontsource/inter";
-import "@fontsource/inter/400.css";
 
 const t = (key: string) => getTranslation("en", key);
 ---
@@ -16,8 +14,10 @@ const t = (key: string) => getTranslation("en", key);
     itemtype="https://schema.org/Person"
   >
     <div class="flex flex-col lg:flex-row lg:justify-between lg:gap-4 lg:h-[70vh]">
-      <HeaderLeftSide />
-      <main class="pt-8 lg:pt-24 lg:w-2/3 lg:py-24 lg:h-full" role="main">
+      <div class="py-20 lg:py-0 lg:w-1/2">
+        <HeaderLeftSide />
+      </div>
+      <main class="pt-8 lg:w-1/2 lg:py-0 lg:h-full" role="main">
         <TechOverlap />
       </main>
     </div>

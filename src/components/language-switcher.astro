@@ -3,23 +3,132 @@ import { getLocaleFromPath, getLocalizedPath } from "../utils/i18n";
 
 const locales = ["en", "es"] as const;
 const currentLocale = getLocaleFromPath(Astro.url.pathname);
+const currentPath = Astro.url.pathname;
+
+export interface Props {
+  dark?: boolean;
+}
+
+const { dark = false } = Astro.props;
+
+// Extract path without language prefix
+function getPathWithoutLocale(path: string): string {
+  if (path.startsWith("/en/") || path.startsWith("/es/")) {
+    return path.substring(3); // Remove "/en" or "/es"
+  }
+  if (path === "/en" || path === "/es") {
+    return "/";
+  }
+  return path;
+}
+
+const pathWithoutLocale = getPathWithoutLocale(currentPath);
 ---
 
-<div class="relative inline-flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
+<div
+  class={`relative inline-flex items-center rounded-xl p-1 shadow-sm ${
+    dark ? "bg-slate-800 border-slate-600" : "bg-white border-slate-200"
+  }`}
+>
   {
-    locales.map((locale) => (
-      <a
-        href={getLocalizedPath("/", locale)}
-        class={`relative px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 ${
-          locale === currentLocale
-            ? "text-slate-900 dark:text-slate-100"
-            : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-        }`}
-        aria-label={`Switch to ${locale === "en" ? "English" : "Español"}`}
-      >
-        {locale === currentLocale && <div class="absolute inset-0 bg-white dark:bg-slate-700 rounded-md shadow-sm" />}
-        <span class="relative z-10">{locale === "en" ? "English" : "Español"}</span>
-      </a>
-    ))
+    locales.map((locale) => {
+      const isActive = locale === currentLocale;
+      return (
+        <a
+          href={getLocalizedPath(pathWithoutLocale, locale)}
+          aria-label={`Switch to ${locale === "en" ? "English" : "Español"}`}
+          class={[
+            "relative overflow-hidden px-3 py-1.5 text-sm font-medium rounded-lg",
+            "transition-all duration-200 ease-in-out select-none",
+            "focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30",
+            "active:scale-95 [-webkit-tap-highlight-color:transparent]",
+            isActive
+              ? dark
+                ? "text-slate-100"
+                : "text-slate-700"
+              : dark
+                ? "text-slate-400 hover:text-slate-200"
+                : "text-slate-500 hover:text-slate-700",
+          ].join(" ")}
+        >
+          {isActive && (
+            <div
+              class={`absolute inset-0 rounded-lg ring-1 shadow-[0_6px_14px_rgba(15,23,42,0.10)] transition-all duration-200 ease-in-out pointer-events-none ${
+                dark ? "bg-slate-700 ring-slate-700" : "bg-slate-100 ring-slate-200"
+              }`}
+            />
+          )}
+          <span class="relative z-10 transition-colors duration-200 ease-in-out">{locale.toUpperCase()}</span>
+        </a>
+      );
+    })
   }
 </div>
+
+<script>
+  // Update language switcher active state
+  function updateLanguageSwitcher() {
+    const currentPath = window.location.pathname;
+    const isSpanish = currentPath.startsWith("/es");
+    const currentLocale = isSpanish ? "es" : "en";
+
+    // On HB pages, do not inject an extra background; rely on base styles
+    const isHB = currentPath.includes("/HB33");
+
+    // Find all language links in this component
+    const languageSwitcher = document.querySelector(".relative.inline-flex.items-center.rounded-xl");
+    if (!languageSwitcher) return;
+
+    const languageLinks = languageSwitcher.querySelectorAll('a[href*="/en"], a[href*="/es"]');
+
+    languageLinks.forEach((link) => {
+      const href = link.getAttribute("href");
+      const linkLocale = href.includes("/es") ? "es" : "en";
+      const isActive = linkLocale === currentLocale;
+
+      // Remove existing active background (only manage when not on HB)
+      if (!isHB) {
+        const existingBg = link.querySelector(".absolute.inset-0");
+        if (existingBg) {
+          existingBg.remove();
+        }
+      }
+
+      // Update classes based on active state
+      if (isActive) {
+        // On HB pages, skip adding the dynamic background layer to avoid white box
+        if (!isHB) {
+          const activeBg = document.createElement("div");
+          activeBg.className =
+            "absolute inset-0 rounded-lg bg-slate-100 dark:bg-slate-700 ring-1 ring-slate-200 dark:ring-slate-700 shadow-[0_6px_14px_rgba(15,23,42,0.10)] transition-all duration-200 ease-in-out pointer-events-none";
+          link.appendChild(activeBg);
+        }
+
+        // Update text color using responsive classes
+        link.className = link.className.replace(
+          /text-slate-500 hover:text-slate-700|text-slate-400 hover:text-slate-200/g,
+          "text-slate-700 dark:text-slate-100"
+        );
+      } else {
+        // Inactive state using responsive classes
+        link.className = link.className.replace(
+          /text-slate-700 dark:text-slate-100/g,
+          "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+        );
+      }
+    });
+  }
+
+  // Update on page load
+  updateLanguageSwitcher();
+
+  // Update when language links are clicked
+  const languageSwitcher = document.querySelector(".relative.inline-flex.items-center.rounded-xl");
+  if (languageSwitcher) {
+    languageSwitcher.addEventListener("click", (e) => {
+      if (e.target instanceof Element && e.target.matches('a[href*="/en"], a[href*="/es"]')) {
+        setTimeout(updateLanguageSwitcher, 100);
+      }
+    });
+  }
+</script>

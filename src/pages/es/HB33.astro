@@ -1,68 +1,140 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import LanguageSwitcher from "../../components/language-switcher.astro";
 import { getTranslation } from "../../utils/i18n";
 
 const locale = "es";
 const t = (key: string) => getTranslation(locale, key);
 ---
 
-<Layout title={t("birthday.title")}>
+<Layout title={t("birthday.title")} variant="hb">
+  <div id="confetti-container" class="fixed inset-0 pointer-events-none z-50"></div>
   <div
-    class="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 dark:from-purple-600 dark:via-pink-600 dark:to-red-600 flex items-center justify-center relative overflow-hidden"
+    class="min-h-screen w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden text-white"
   >
-    <!-- Confetti Animation Container -->
-    <div id="confetti-container" class="absolute inset-0 pointer-events-none"></div>
-
-    <!-- Main Content -->
-    <div class="text-center z-10 relative">
-      <!-- Birthday Title -->
-      <h1 class="text-6xl md:text-8xl font-black text-slate-100 mb-8 animate-bounce">🎉 HB33! 🎉</h1>
-
-      <!-- Birthday Message -->
-      <div class="bg-white/20 backdrop-blur-sm rounded-3xl p-8 md:p-12 max-w-2xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-bold text-slate-100 mb-6">
-          {t("birthday.message")}
-        </h2>
-
-        <p class="text-xl md:text-2xl text-slate-200 mb-8 leading-relaxed">
-          {t("birthday.description")}
-        </p>
-
-        <!-- Age Display -->
-        <div class="text-6xl md:text-8xl font-black text-yellow-300 mb-6 animate-pulse">33</div>
-
-        <!-- Birthday Wishes -->
-        <div class="space-y-4 text-lg text-slate-300">
-          <p>✨ {t("birthday.wish1")}</p>
-          <p>🚀 {t("birthday.wish2")}</p>
-          <p>💫 {t("birthday.wish3")}</p>
-        </div>
-      </div>
-
-      <!-- Back to Portfolio Button -->
-      <div class="mt-12">
-        <button
-          id="back-to-portfolio"
-          class="inline-block bg-white/20 hover:bg-white/30 backdrop-blur-sm text-slate-100 font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
-        >
-          {t("birthday.backToPortfolio")}
-        </button>
-      </div>
+    <div class="absolute top-4 left-4 z-20">
+      <LanguageSwitcher dark={true} />
     </div>
-
-    <!-- Floating Balloons -->
-    <div class="absolute top-10 left-10 text-4xl animate-bounce" style="animation-delay: 0s;">🎈</div>
-    <div class="absolute top-20 right-20 text-5xl animate-bounce" style="animation-delay: 0.5s;">🎈</div>
-    <div class="absolute bottom-20 left-20 text-3xl animate-bounce" style="animation-delay: 1s;">🎈</div>
-    <div class="absolute bottom-10 right-10 text-4xl animate-bounce" style="animation-delay: 1.5s;">🎈</div>
-
-    <!-- Cake Animation -->
     <div
-      class="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-6xl animate-bounce"
-      style="animation-delay: 2s;"
+      class="absolute inset-0 pointer-events-none opacity-10 mix-blend-overlay"
+      style="background-image: radial-gradient(rgba(255,255,255,.15) 1px, transparent 1px); background-size: 3px 3px;"
     >
-      🎂
     </div>
+
+    <main class="relative mx-auto max-w-sm px-4 py-12">
+      {/* Card */}
+      <div class="relative rounded-2xl border border-slate-700 bg-slate-800/70 backdrop-blur-md shadow-xl">
+        {/* luxe border accent */}
+        <div class="absolute inset-0 rounded-2xl p-[1px]">
+          <div class="h-full w-full rounded-2xl bg-gradient-to-br from-indigo-400/40 via-purple-400/40 to-pink-400/40">
+          </div>
+        </div>
+
+        <section class="relative z-10 p-6 text-center">
+          {/* Watermark age */}
+          <div
+            class="pointer-events-none absolute -top-10 -right-2 text-6xl font-serif font-semibold text-slate-600/40 select-none"
+          >
+            {t("birthday.age")}
+          </div>
+
+          <header class="space-y-1">
+            <p class="tracking-[0.2em] uppercase text-xs text-slate-300 font-sans">{t("birthday.subtitle")}</p>
+            <h1 class="font-serif text-2xl leading-tight text-white">
+              {t("birthday.name")} cumple {t("birthday.age")}
+            </h1>
+            <div class="mx-auto mt-2 h-px w-16 bg-gradient-to-r from-transparent via-slate-400 to-transparent"></div>
+          </header>
+
+          <div class="mt-6 grid grid-cols-1 gap-4 font-sans text-slate-200">
+            <div class="flex flex-col items-center">
+              <span class="text-[20px] md:text-xs uppercase tracking-wide text-slate-300 font-medium"
+                >{t("birthday.labels.dateTime")}</span
+              >
+              <span class="text-base mt-1">{t("birthday.date")} <br /> {t("birthday.time")}</span>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <span class="text-[13px] md:text-xs uppercase tracking-wide text-slate-300 font-medium"
+                >{t("birthday.labels.place")}</span
+              >
+              <a
+                href="https://maps.app.goo.gl/FtUQc9KTXLoCJbus5"
+                target="_blank"
+                class="mt-0.5 text-[15px] leading-snug text-sky-300 hover:text-sky-200 underline decoration-1 underline-offset-4 decoration-sky-400/60 hover:decoration-sky-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-sky-300/50 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-800 rounded"
+              >
+                {t("birthday.place")}
+              </a>
+              <span class="mt-2 text-[10px] leading-relaxed text-slate-300/90 text-center max-w-xs">
+                {t("birthday.descriptions.place")}
+              </span>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <span class="text-[13px] md:text-xs uppercase tracking-wide text-slate-300 font-medium">
+                {t("birthday.labels.food")}
+              </span>
+              <a
+                href="https://www.instagram.com/reel/C-0B41wpiW_/"
+                target="_blank"
+                class="mt-1 text-base text-sky-300 hover:text-sky-200 underline decoration-2 underline-offset-4 decoration-sky-300/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded"
+              >
+                {t("birthday.food")}
+              </a>
+              <span class="mt-2 text-[10px] leading-relaxed text-slate-300/90 text-center max-w-xs">
+                {t("birthday.descriptions.food")}
+              </span>
+            </div>
+            <div class="flex flex-col items-center">
+              <span class="text-[13px] md:text-xs uppercase tracking-wide text-slate-300 font-medium"
+                >{t("birthday.labels.cake")}</span
+              >
+              <a
+                href="https://www.instagram.com/reel/DMqrFHlykct/?igsh=bDZ1dDc1dmY1cG4w"
+                target="_blank"
+                class="mt-1 text-base text-sky-300 hover:text-sky-200 underline decoration-2 underline-offset-4 decoration-sky-300/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded"
+              >
+                {t("birthday.cake")}
+              </a>
+              <span class="mt-2 text-[10px] leading-relaxed text-slate-300/90 text-center max-w-xs">
+                {t("birthday.descriptions.cake")}
+              </span>
+            </div>
+            <div class="flex flex-col items-center">
+              <span class="text-[13px] md:text-xs uppercase tracking-wide text-slate-300 font-medium"
+                >{t("birthday.labels.activities")}</span
+              >
+              <span class="mt-1 text-base">{t("birthday.activities")}</span>
+              <span class="mt-2 text-[10px] leading-relaxed text-slate-300/90 text-center max-w-xs">
+                {t("birthday.descriptions.activities")}
+              </span>
+            </div>
+
+            {
+              t("birthday.rsvp") && (
+                <div class="mt-4">
+                  <a
+                    href={t("birthday.rsvp")}
+                    class="inline-flex items-center justify-center gap-2 rounded-full border border-green-500 bg-green-600 px-5 py-2 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/30"
+                  >
+                    <img src="/128px-WhatsApp.png" alt="WhatsApp" class="h-4 w-4" />
+                    {t("birthday.labels.rsvp")}
+                  </a>
+                </div>
+              )
+            }
+
+            {t("birthday.note") && <p class="mt-3 text-sm text-slate-300">{t("birthday.note")}</p>}
+          </div>
+
+          <div class="mt-8 flex items-center justify-center gap-2 text-[11px] text-slate-400">
+            <span class="inline-block h-[1px] w-5 bg-slate-600"></span>
+            <span class="tracking-wider uppercase">{t("birthday.labels.withLove")}</span>
+            <span class="inline-block h-[1px] w-5 bg-slate-600"></span>
+          </div>
+        </section>
+      </div>
+    </main>
   </div>
 </Layout>
 

@@ -39,12 +39,33 @@
     }
   },
   "birthday": {
-    "title": "Happy 33rd Birthday Carlos! 🎉",
-    "description": "Celebrating another year of amazing achievements, growth, and incredible software engineering skills!",
-    "message": "Happy Birthday Carlos!",
-    "wish1": "May this year bring you endless opportunities and success!",
-    "wish2": "Keep building amazing things and inspiring others!",
-    "wish3": "Here's to another year of innovation and excellence!",
+    "title": "Carlos turns 33! 🎉",
+    "subtitle": "Birthday Celebration",
+    "name": "Carlitos",
+    "age": 33,
+    "date": "Saturday, September 20",
+    "time": "11:00 a.m. - 3:00 p.m.",
+    "place": "Woodbine Beach Park · Picnic Site 02",
+    "food": "Pan con chicharrón",
+    "cake": "Tres leches cake",
+    "activities": "Music, Food, Board Games, Soccer, Volleyball & Frisbee",
+    "rsvp": "https://wa.me/+16479179683?text=Hi%20Carlos!%20I%27m%20confirming%20my%20attendance%20for%20your%2033rd%20birthday%20party%20on%20September%2020th%20at%20Woodbine%20Beach%20Park!%20",
+    "note": "Come hungry and ready to enjoy the last day of summer 🌞",
+    "labels": {
+      "dateTime": "Date & Time",
+      "place": "Location",
+      "food": "Food",
+      "cake": "Cake",
+      "activities": "Activities",
+      "rsvp": "Confirm Attendance",
+      "withLove": "Made with ❤️ by CZ"
+    },
+    "descriptions": {
+      "place": "Picnic Site has a roof and a BBQ area",
+      "food": "We'll have food ready, but if you'd like, feel free to bring something to share or grill!",
+      "cake": "A tres leches cake with soft sponge and sweet cream, homemade with love and sugar.",
+      "activities": "Feel free to bring your own games!"
+    },
     "backToPortfolio": "Back to Portfolio"
   }
 }

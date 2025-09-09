@@ -29,7 +29,7 @@ export function getTranslation(locale: Locale, key: string): string {
     }
   }
 
-  return typeof value === "string" ? value : key;
+  return typeof value === "string" || typeof value === "number" ? String(value) : key;
 }
 
 export function getLocaleFromPath(pathname: string): Locale {

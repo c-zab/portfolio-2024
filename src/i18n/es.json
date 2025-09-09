@@ -8,7 +8,7 @@
     "description": "Construyo experiencias digitales perfectas, atractivas y accesibles utilizando tecnologías web modernas. Especializado en desarrollo full-stack en Toronto, Canadá."
   },
   "comingSoon": {
-    "message": "🚧🚧🚧 Actualizando Sitio Web"
+    "message": "🚧 Actualizando Sitio Web"
   },
   "seo": {
     "title": "Carlos Zabaleta - Ingeniero de Software Profesional en Toronto",
@@ -39,12 +39,33 @@
     }
   },
   "birthday": {
-    "title": "¡Feliz Cumpleaños 33 Carlos! 🎉",
-    "description": "¡Celebrando otro año de logros increíbles, crecimiento y habilidades excepcionales en ingeniería de software!",
-    "message": "¡Feliz Cumpleaños Carlos!",
-    "wish1": "¡Que este año te traiga oportunidades infinitas y mucho éxito!",
-    "wish2": "¡Sigue construyendo cosas increíbles e inspirando a otros!",
-    "wish3": "¡Por otro año de innovación y excelencia!",
+    "title": "Carlos cumple 33! 🎉",
+    "subtitle": "Celebración de cumpleaños",
+    "name": "Carlitos",
+    "age": 33,
+    "date": "Sábado, 20 de septiembre",
+    "time": "11:00 a.m. - 3:00 p.m.",
+    "place": "Woodbine Beach Park · Picnic Site 02",
+    "food": "Pan con chicharrón",
+    "cake": "Tres leches",
+    "activities": "Música, Comida, Juegos de Mesa, Fútbol, Voleibol y Frisbee",
+    "rsvp": "https://wa.me/+16479179683?text=¡Hola%20Carlos!%20Confirmo%20mi%20asistencia%20a%20tu%20fiesta%20de%20cumpleaños%20el%2020%20de%20septiembre%20en%20Woodbine%20Beach%20Park!%20",
+    "note": "Llegar con hambre y ganas de disfrutar el ultimo dia de verano 🌞",
+    "labels": {
+      "dateTime": "Fecha & Hora",
+      "place": "Lugar",
+      "food": "Comida",
+      "cake": "Pastel",
+      "activities": "Actividades",
+      "rsvp": "Confirmar asistencia",
+      "withLove": "Hecho con ❤️ por CZ"
+    },
+    "descriptions": {
+      "place": "El sitio de picnic tiene techo y área de BBQ",
+      "food": "Tendremos comida lista, pero si quieres, ¡siéntete libre de traer algo para compartir o cocinar!",
+      "cake": "Un tres leches con bizcocho suave y crema dulce, hecho en casa con amor y azúcar.",
+      "activities": "¡Siéntete libre de traer tus propios juegos!"
+    },
     "backToPortfolio": "Volver al Portafolio"
   }
 }

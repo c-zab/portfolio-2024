@@ -5,9 +5,9 @@ const locales = ["en", "es"] as const;
 const currentLocale = getLocaleFromPath(Astro.url.pathname);
 ---
 
-<div class="flex items-center space-x-4">
+<div class="flex items-center space-x-5">
   <!-- Language Switcher -->
-  <div class="relative inline-flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
+  <div class="relative inline-flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-1 m-1 gap-1">
     {
       locales.map((locale) => (
         <a
@@ -22,7 +22,7 @@ const currentLocale = getLocaleFromPath(Astro.url.pathname);
           onmouseleave="this.style.transform='scale(1)'"
         >
           {locale === currentLocale && (
-            <div class="absolute inset-0 bg-white dark:bg-slate-700 rounded-md shadow-sm transition-all duration-300 ease-in-out" />
+            <div class="absolute inset-0 rounded-md shadow-sm transition-all duration-300 ease-in-out bg-slate-200 ring-1 ring-slate-300 dark:bg-slate-700 dark:ring-slate-700" />
           )}
           <span class="relative z-10 transition-all duration-300 ease-in-out">{locale === "en" ? "EN" : "ES"}</span>
         </a>
@@ -33,7 +33,7 @@ const currentLocale = getLocaleFromPath(Astro.url.pathname);
   <!-- Birthday Cake Button -->
   <button
     id="birthday-button"
-    class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-800 shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-md"
+    class="control-button bg-slate-100 dark:bg-slate-800"
     aria-label="Birthday Page"
     title="Happy 33rd Birthday!"
   >
@@ -43,7 +43,7 @@ const currentLocale = getLocaleFromPath(Astro.url.pathname);
   <!-- Theme Toggle -->
   <button
     id="theme-toggle"
-    class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-md"
+    class="control-button bg-slate-100 dark:bg-slate-800"
     aria-label="Toggle theme"
     title="Toggle theme"
   >
@@ -77,6 +77,16 @@ const currentLocale = getLocaleFromPath(Astro.url.pathname);
         stroke-linejoin="round"
         d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
     </svg>
+  </button>
+  <button
+    id="blog-button"
+    class="control-button bg-slate-100 dark:bg-slate-800 !w-16 disabled:cursor-not-allowed disabled:pointer-events-none"
+    aria-label="Blog Page"
+    aria-disabled="true"
+    disabled
+    title="Coming soon"
+  >
+    <span class="text-sm">Blog</span>
   </button>
 </div>
 
@@ -200,17 +210,18 @@ const currentLocale = getLocaleFromPath(Astro.url.pathname);
 </script>
 
 <style>
+  /* Common button styles */
+  .control-button {
+    @apply flex h-10 w-10 items-center justify-center rounded-lg shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-md ring-1 ring-slate-200 dark:ring-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 disabled:bg-slate-200 dark:disabled:bg-slate-700 disabled:text-slate-500 dark:disabled:text-slate-400 disabled:ring-slate-300 dark:disabled:ring-slate-600 disabled:shadow-none;
+  }
+
+  .control-button:active {
+    transform: scale(0.95);
+  }
+
   /* Smooth icon transitions */
   #sun-icon,
   #moon-icon {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  #theme-toggle:hover {
-    transform: scale(1.05);
-  }
-
-  #theme-toggle:active {
-    transform: scale(0.95);
   }
 </style>
