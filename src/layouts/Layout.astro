@@ -1,10 +1,20 @@
 ---
 interface Props {
-  title: string;
+  title?: string;
+  description?: string;
+  image?: string;
+  url?: string;
   variant?: "default" | "hb";
 }
 
-const { title, variant = "default" } = Astro.props;
+const {
+  title = "Carlos Zabaleta - Software Engineer | Toronto, Canada",
+  description = "Carlos Zabaleta is a skilled Software Engineer based in Toronto, Canada...",
+  image = "https://carloszabaleta.dev/og-image.jpg",
+  url = "https://carloszabaleta.dev/",
+  variant = "default",
+} = Astro.props;
+
 import "@fontsource/inter";
 import "@fontsource-variable/inter";
 ---
@@ -21,13 +31,10 @@ import "@fontsource-variable/inter";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Primary Meta Tags -->
+    <!-- Primary Meta Tags (Dynamic) -->
     <title>{title}</title>
-    <meta name="title" content="Carlos Zabaleta - Software Engineer | Toronto, Canada" />
-    <meta
-      name="description"
-      content="Carlos Zabaleta is a skilled Software Engineer based in Toronto, Canada. Specializing in full-stack development, web applications, and modern JavaScript frameworks. Building pixel-perfect, engaging, and accessible digital experiences."
-    />
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
     <meta
       name="keywords"
       content="Carlos Zabaleta, Software Engineer, Developer, Toronto, Canada, Full Stack Developer, JavaScript, React, Web Development, Frontend, Backend, Portfolio"
@@ -36,27 +43,21 @@ import "@fontsource-variable/inter";
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Facebook (Dynamic) -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://carloszabaleta.dev/" />
-    <meta property="og:title" content="Carlos Zabaleta - Software Engineer | Toronto, Canada" />
-    <meta
-      property="og:description"
-      content="Skilled Software Engineer in Toronto, Canada. Specializing in full-stack development and modern web technologies. Building exceptional digital experiences."
-    />
-    <meta property="og:image" content="https://carloszabaleta.dev/og-image.jpg" />
+    <meta property="og:url" content={url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
     <meta property="og:site_name" content="Carlos Zabaleta Portfolio" />
     <meta property="og:locale" content="en_CA" />
 
-    <!-- Twitter -->
+    <!-- Twitter (Dynamic) -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://carloszabaleta.dev/" />
-    <meta property="twitter:title" content="Carlos Zabaleta - Software Engineer | Toronto, Canada" />
-    <meta
-      property="twitter:description"
-      content="Skilled Software Engineer in Toronto, Canada. Building pixel-perfect, engaging, and accessible digital experiences."
-    />
-    <meta property="twitter:image" content="https://carloszabaleta.dev/og-image.jpg" />
+    <meta property="twitter:url" content={url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={image} />
     <meta property="twitter:creator" content="@czabalet" />
 
     <!-- Additional SEO Meta Tags -->
@@ -65,14 +66,11 @@ import "@fontsource-variable/inter";
     <meta name="geo.position" content="43.6532;-79.3832" />
     <meta name="ICBM" content="43.6532, -79.3832" />
 
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://carloszabaleta.dev/" />
+    <!-- Canonical URL (Dynamic) -->
+    <link rel="canonical" href={url} />
 
     <!-- Favicon and Icons -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Generator -->
@@ -86,8 +84,8 @@ import "@fontsource-variable/inter";
         "name": "Carlos Zabaleta",
         "jobTitle": "Software Engineer",
         "description": "Skilled Software Engineer specializing in full-stack development and modern web technologies",
-        "url": "https://carloszabaleta.dev",
-        "image": "https://carloszabaleta.dev/og-image.jpg",
+        "url": "https://czabalet.com",
+        "image": "https://czabalet.com/favicon.ico",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Toronto",
