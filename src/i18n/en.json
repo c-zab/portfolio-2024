@@ -28,16 +28,15 @@
   },
   "services": {
     "kicker": "Code with CZ",
-    "title": "I help you put the vision together.",
-    "tagline": "A public site, a small tool, or a few hours a month. Pick one and stay with it.",
-    "intro": "These aren't steps. Pick the one that fits and we'll stay with it for a few months. I take a few groups at a time, around a full-time job, so I can actually help you shape what you're trying to make.",
+    "title": "Let's build what's on your mind.",
+    "tagline": "Websites and digital tools for people, businesses, and teams.",
+    "intro": "You choose how we work: we start with a conversation, we build something to launch, or we keep working together as you need it. I take a few projects at a time so I can give each one attention and build something that actually represents what you have in mind.",
     "cta": "Message me on LinkedIn",
     "back": "Back home",
     "homeLink": "Looking for a site or a small tool?",
-    "packagesTitle": "Pick one",
     "note": "I don't have a sales deck. If this sounds like what you need, send a short note about what you're stuck on.",
     "seoTitle": "Work with Carlos Zabaleta",
-    "seoDescription": "Websites and small tools for groups and small businesses. Pick a coffee hour, a scoped launch, or a few hours a month — and stay with it while we put the vision together.",
+    "seoDescription": "Websites and digital tools for people, businesses, and teams. A conversation, a launch, or ongoing work — you choose how we work.",
     "packages": {
       "coffee": {
         "name": "Coffee hour",

@@ -1,0 +1,4 @@
+# HB33 is frozen — do not develop this feature further
+src/pages/en/HB33.astro
+src/pages/es/HB33.astro
+src/components/language-switcher.astro

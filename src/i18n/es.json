@@ -28,16 +28,15 @@
   },
   "services": {
     "kicker": "Code with CZ",
-    "title": "Te ayudo a armar la visión.",
-    "tagline": "Un sitio público, una herramienta pequeña o unas horas al mes. Elige una y quédate ahí.",
-    "intro": "No son pasos. Elige la que encaje y nos quedamos con ella unos meses. Tomo pocos grupos a la vez, alrededor de un trabajo de tiempo completo, para poder ayudarte a dar forma a lo que quieres hacer.",
+    "title": "Construyamos lo que tienes en mente.",
+    "tagline": "Sitios web y herramientas digitales para personas, negocios y equipos.",
+    "intro": "Tú eliges cómo trabajamos: empezamos con una conversación, construimos algo para lanzar o seguimos trabajando juntos a medida que lo necesites. Trabajo con pocos proyectos a la vez para poder dedicarle atención a cada uno y construir algo que realmente represente lo que tienes en mente.",
     "cta": "Escríbeme en LinkedIn",
     "back": "Volver al inicio",
     "homeLink": "¿Buscas un sitio o una herramienta pequeña?",
-    "packagesTitle": "Elige una",
     "note": "No tengo un deck de ventas. Si esto suena a lo que necesitas, mándame una nota corta de en qué estás atascado.",
     "seoTitle": "Trabaja con Carlos Zabaleta",
-    "seoDescription": "Sitios web y herramientas pequeñas para grupos y negocios. Elige una hora de café, un lanzamiento con alcance o unas horas al mes — y quédate ahí mientras armamos la visión.",
+    "seoDescription": "Sitios web y herramientas digitales para personas, negocios y equipos. Una conversación, un lanzamiento o trabajo continuo — tú eliges cómo trabajamos.",
     "packages": {
       "coffee": {
         "name": "Hora de café",
