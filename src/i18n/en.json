@@ -23,11 +23,62 @@
     "about": "About",
     "experience": "Experience",
     "projects": "Projects",
-    "contact": "Contact"
+    "contact": "Contact",
+    "services": "Services"
+  },
+  "services": {
+    "kicker": "Code with CZ",
+    "title": "I help you put the vision together.",
+    "tagline": "A public site, a small tool, or a few hours a month. Pick one and stay with it.",
+    "intro": "These aren't steps. Pick the one that fits and we'll stay with it for a few months. I take a few groups at a time, around a full-time job, so I can actually help you shape what you're trying to make.",
+    "cta": "Message me on LinkedIn",
+    "back": "Back home",
+    "homeLink": "Looking for a site or a small tool?",
+    "packagesTitle": "Pick one",
+    "note": "I don't have a sales deck. If this sounds like what you need, send a short note about what you're stuck on.",
+    "seoTitle": "Work with Carlos Zabaleta",
+    "seoDescription": "Websites and small tools for groups and small businesses. Pick a coffee hour, a scoped launch, or a few hours a month — and stay with it while we put the vision together.",
+    "packages": {
+      "coffee": {
+        "name": "Coffee hour",
+        "meta": "An hour or two",
+        "timing": "Free",
+        "cta": "Let's get coffee",
+        "details": [
+          "An hour or two, in person or on a call",
+          "You leave with a one-page proposal",
+          "We talk through what you're trying to make"
+        ]
+      },
+      "launch": {
+        "name": "Launch",
+        "meta": "Written scope, 1–2 revisions",
+        "timing": "Fixed project",
+        "cta": "Ask about a launch",
+        "details": [
+          "A public site from a list of pages we agree on",
+          "One or two revision rounds, then we ship",
+          "It's yours — no monthly lock-in after we ship"
+        ]
+      },
+      "stay": {
+        "name": "Stay",
+        "meta": "Hours on the call · up to about four a week",
+        "timing": "Ongoing",
+        "cta": "Ask about Stay",
+        "details": [
+          "A public site or small tool, kept moving",
+          "Hosting help when something breaks",
+          "Hours on the call, up to about four a week"
+        ]
+      }
+    }
   },
   "techStack": {
     "title": "Technologies & Skills",
     "subtitle": "Technologies I work with to build amazing digital experiences",
+    "toolsLabel": "Tools I use",
+    "gamesLabel": "Also playing",
     "frontend": {
       "title": "Frontend"
     },

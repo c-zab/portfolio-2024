@@ -23,11 +23,62 @@
     "about": "Acerca de",
     "experience": "Experiencia",
     "projects": "Proyectos",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "services": "Servicios"
+  },
+  "services": {
+    "kicker": "Code with CZ",
+    "title": "Te ayudo a armar la visión.",
+    "tagline": "Un sitio público, una herramienta pequeña o unas horas al mes. Elige una y quédate ahí.",
+    "intro": "No son pasos. Elige la que encaje y nos quedamos con ella unos meses. Tomo pocos grupos a la vez, alrededor de un trabajo de tiempo completo, para poder ayudarte a dar forma a lo que quieres hacer.",
+    "cta": "Escríbeme en LinkedIn",
+    "back": "Volver al inicio",
+    "homeLink": "¿Buscas un sitio o una herramienta pequeña?",
+    "packagesTitle": "Elige una",
+    "note": "No tengo un deck de ventas. Si esto suena a lo que necesitas, mándame una nota corta de en qué estás atascado.",
+    "seoTitle": "Trabaja con Carlos Zabaleta",
+    "seoDescription": "Sitios web y herramientas pequeñas para grupos y negocios. Elige una hora de café, un lanzamiento con alcance o unas horas al mes — y quédate ahí mientras armamos la visión.",
+    "packages": {
+      "coffee": {
+        "name": "Hora de café",
+        "meta": "Una o dos horas",
+        "timing": "Gratis",
+        "cta": "Tomemos un café",
+        "details": [
+          "Una o dos horas, en persona o por llamada",
+          "Sales con una propuesta de una página",
+          "Hablamos de lo que estás tratando de hacer"
+        ]
+      },
+      "launch": {
+        "name": "Launch",
+        "meta": "Alcance por escrito, 1–2 revisiones",
+        "timing": "Proyecto fijo",
+        "cta": "Preguntar por un launch",
+        "details": [
+          "Un sitio público a partir de una lista de páginas",
+          "Una o dos rondas de revisión, y se publica",
+          "Es tuyo — sin cuota mensual después de entregarlo"
+        ]
+      },
+      "stay": {
+        "name": "Stay",
+        "meta": "Horas en la llamada · hasta unas cuatro a la semana",
+        "timing": "Continuo",
+        "cta": "Preguntar por Stay",
+        "details": [
+          "Un sitio público o una herramienta pequeña, en movimiento",
+          "Ayuda con hosting cuando algo se rompe",
+          "Horas en la llamada, hasta unas cuatro a la semana"
+        ]
+      }
+    }
   },
   "techStack": {
     "title": "Tecnologías y Habilidades",
     "subtitle": "Tecnologías que uso para crear experiencias digitales increíbles",
+    "toolsLabel": "Herramientas que uso",
+    "gamesLabel": "También juego",
     "frontend": {
       "title": "Frontend"
     },

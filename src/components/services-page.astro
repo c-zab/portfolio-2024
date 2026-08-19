@@ -1,0 +1,76 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ThemeLanguageControls from "./theme-language-controls.astro";
+import { getLocaleFromPath, getLocalizedPath, getTranslation, getTranslationList } from "../utils/i18n";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = (key: string) => getTranslation(locale, key);
+const linkedIn = "https://www.linkedin.com/in/czabalet/";
+const packageIds = ["coffee", "launch", "stay"] as const;
+
+const packages = packageIds.map((id) => ({
+  id,
+  name: t(`services.packages.${id}.name`),
+  meta: t(`services.packages.${id}.meta`),
+  timing: t(`services.packages.${id}.timing`),
+  cta: t(`services.packages.${id}.cta`),
+  details: getTranslationList(locale, `services.packages.${id}.details`),
+}));
+---
+
+<Layout title={t("services.seoTitle")} description={t("services.seoDescription")} url={Astro.url.href}>
+  <div class="mx-auto min-h-dvh max-w-6xl px-6 py-10 font-sans sm:px-8">
+    <div class="flex items-center justify-between gap-4">
+      <a
+        href={getLocalizedPath("/", locale)}
+        class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+      >
+        {t("services.back")}
+      </a>
+      <ThemeLanguageControls />
+    </div>
+
+    <main class="mt-12" role="main">
+      <p class="text-sm text-slate-500">{t("services.kicker")}</p>
+      <h1 class="mt-2 max-w-2xl text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl dark:text-slate-200">
+        {t("services.title")}
+      </h1>
+      <p class="mt-4 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-400">
+        {t("services.tagline")}
+      </p>
+      <p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-500">
+        {t("services.intro")}
+      </p>
+
+      <h2 class="mt-14 text-sm font-medium text-slate-500">{t("services.packagesTitle")}</h2>
+      <ul class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          packages.map((pkg) => (
+            <li class="flex flex-col rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200 dark:bg-slate-800/40 dark:ring-slate-700">
+              <div class="flex items-start justify-between gap-3">
+                <h3 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">{pkg.name}</h3>
+                <p class="shrink-0 text-sm font-medium text-slate-600 dark:text-slate-300">{pkg.timing}</p>
+              </div>
+              <p class="mt-1 text-sm text-teal-700 dark:text-teal-400">{pkg.meta}</p>
+              <a
+                href={linkedIn}
+                target="_blank"
+                rel="noreferrer noopener"
+                class="mt-5 inline-flex items-center justify-center rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-800 transition-colors hover:border-slate-400 hover:bg-white dark:border-slate-500 dark:text-slate-100 dark:hover:border-slate-400 dark:hover:bg-slate-800"
+              >
+                {pkg.cta}
+              </a>
+              <ul class="mt-6 divide-y divide-slate-200 dark:divide-slate-700">
+                {pkg.details.map((item) => (
+                  <li class="py-3 text-sm leading-relaxed text-slate-600 first:pt-0 last:pb-0 dark:text-slate-300">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))
+        }
+      </ul>
+    </main>
+  </div>
+</Layout>

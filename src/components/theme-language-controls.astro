@@ -1,30 +1,33 @@
 ---
-import { getLocaleFromPath, getLocalizedPath } from "../utils/i18n";
+import { getLocaleFromPath, getLocalizedPath, getPathWithoutLocale, getTranslation } from "../utils/i18n";
 
 const locales = ["en", "es"] as const;
 const currentLocale = getLocaleFromPath(Astro.url.pathname);
+const t = (key: string) => getTranslation(currentLocale, key);
+const isServices = Astro.url.pathname.includes("/services");
+const pathWithoutLocale = getPathWithoutLocale(Astro.url.pathname);
 ---
 
-<div class="flex items-center space-x-5">
-  <!-- Language Switcher -->
-  <div class="relative inline-flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-1 m-1 gap-1">
+<div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+  <div
+    data-language-switcher
+    class="relative inline-flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-1 m-1 gap-1"
+  >
     {
       locales.map((locale) => (
         <a
-          href={getLocalizedPath("/", locale)}
-          class={`relative px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ease-in-out ${
+          href={getLocalizedPath(pathWithoutLocale, locale)}
+          class={`relative px-3 py-1.5 text-sm font-medium rounded-md ${
             locale === currentLocale
               ? "text-slate-900 dark:text-slate-100"
               : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
           }`}
           aria-label={`Switch to ${locale === "en" ? "English" : "Español"}`}
-          onmouseenter="this.style.transform='scale(1.05)'"
-          onmouseleave="this.style.transform='scale(1)'"
         >
           {locale === currentLocale && (
-            <div class="absolute inset-0 rounded-md shadow-sm transition-all duration-300 ease-in-out bg-slate-200 ring-1 ring-slate-300 dark:bg-slate-700 dark:ring-slate-700" />
+            <div class="absolute inset-0 rounded-md shadow-sm bg-slate-200 ring-1 ring-slate-300 dark:bg-slate-700 dark:ring-slate-700" />
           )}
-          <span class="relative z-10 transition-all duration-300 ease-in-out">{locale === "en" ? "EN" : "ES"}</span>
+          <span class="relative z-10">{locale === "en" ? "EN" : "ES"}</span>
         </a>
       ))
     }
@@ -68,16 +71,32 @@ const currentLocale = getLocaleFromPath(Astro.url.pathname);
         d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
     </svg>
   </button>
-  <button
-    id="blog-button"
-    class="control-button bg-slate-100 dark:bg-slate-800 !w-16 disabled:cursor-not-allowed disabled:pointer-events-none"
-    aria-label="Blog Page"
-    aria-disabled="true"
-    disabled
-    title="Coming soon"
-  >
-    <span class="text-sm">Blog</span>
-  </button>
+  {
+    !isServices && (
+      <button
+        id="blog-button"
+        class="control-button bg-slate-100 dark:bg-slate-800 !w-16 disabled:cursor-not-allowed disabled:pointer-events-none"
+        aria-label="Blog"
+        aria-disabled="true"
+        disabled
+        title="Coming soon"
+      >
+        <span class="text-sm">Blog</span>
+      </button>
+    )
+  }
+  {
+    !isServices && (
+      <a
+        href={getLocalizedPath("/services", currentLocale)}
+        class="control-button relative bg-slate-100 dark:bg-slate-800 !w-auto px-3"
+        aria-label={t("navigation.services")}
+        title={t("navigation.services")}
+      >
+        <span class="text-sm">{t("navigation.services")}</span>
+      </a>
+    )
+  }
 </div>
 
 <script>
