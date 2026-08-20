@@ -100,7 +100,7 @@ html.dark {
 .icon-tile {
   background: var(--surface-quiet);
   color: var(--text-secondary);
-  border: 1px solid var(--border-subtle);
+  border: 0;
 }
 
 .badge-signal {
