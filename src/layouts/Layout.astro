@@ -5,6 +5,7 @@ interface Props {
   image?: string;
   url?: string;
   variant?: "default" | "hb";
+  i18nPage?: "home" | "services";
 }
 
 const {
@@ -13,14 +14,19 @@ const {
   image = "https://carloszabaleta.dev/og-image.jpg",
   url = "https://carloszabaleta.dev/",
   variant = "default",
+  i18nPage,
 } = Astro.props;
 
 import "@fontsource/inter";
 import "@fontsource-variable/inter";
+import "../styles/tokens.css";
+import { getLocaleFromPath } from "../utils/i18n";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
 ---
 
 <!doctype html>
-<html lang="en" prefix="og: http://ogp.me/ns#">
+<html lang={locale} prefix="og: http://ogp.me/ns#">
   <head>
     <!-- Critical inline styles to avoid flash on HB pages -->
     <style>
@@ -41,7 +47,7 @@ import "@fontsource-variable/inter";
     />
     <meta name="author" content="Carlos Zabaleta" />
     <meta name="robots" content="index, follow" />
-    <meta name="language" content="English" />
+    <meta name="language" content={locale === "es" ? "Spanish" : "English"} />
 
     <!-- Open Graph / Facebook (Dynamic) -->
     <meta property="og:type" content="website" />
@@ -50,7 +56,7 @@ import "@fontsource-variable/inter";
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
     <meta property="og:site_name" content="Carlos Zabaleta Portfolio" />
-    <meta property="og:locale" content="en_CA" />
+    <meta property="og:locale" content={locale === "es" ? "es_CA" : "en_CA"} />
 
     <!-- Twitter (Dynamic) -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -75,6 +81,14 @@ import "@fontsource-variable/inter";
 
     <!-- Generator -->
     <meta name="generator" content={Astro.generator} />
+
+    <script is:inline>
+      try {
+        const theme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", theme ? theme === "dark" : prefersDark);
+      } catch {}
+    </script>
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -127,7 +141,9 @@ import "@fontsource-variable/inter";
   </head>
   <body
     data-page={variant}
-    class="bg-white leading-relaxed text-slate-700 antialiased selection:bg-teal-300 selection:text-teal-900 dark:bg-slate-900 dark:text-slate-400"
+    data-i18n-page={i18nPage}
+    class="leading-relaxed antialiased selection:bg-[color:var(--primary-surface-strong)] selection:text-[color:var(--primary)]"
+    style="color: var(--text-secondary);"
   >
     <div class="inset-0 z-30">
       <slot />
@@ -138,43 +154,6 @@ import "@fontsource-variable/inter";
       if (isHBPage) {
         document.documentElement.style.opacity = "1";
       }
-
-      // Initialize language preference from localStorage
-      function initializeLanguagePreference() {
-        const storedLanguage = localStorage.getItem("preferred-language");
-        const currentPath = window.location.pathname;
-        const currentLocale = currentPath.startsWith("/es") ? "es" : "en";
-
-        // Store current locale if no preference is stored
-        if (!storedLanguage) {
-          localStorage.setItem("preferred-language", currentLocale);
-          console.log(`Initial language preference stored: ${currentLocale}`);
-        } else {
-          console.log(`Stored language preference: ${storedLanguage}, Current locale: ${currentLocale}`);
-        }
-
-        // If there's a stored preference and it differs from current locale, redirect
-        if (storedLanguage && storedLanguage !== currentLocale) {
-          const targetPath = storedLanguage === "en" ? "/en/" : "/es/";
-          // Only redirect if we're on the root pages to avoid breaking other routes
-          if (currentPath === "/en/" || currentPath === "/es/" || currentPath === "/") {
-            window.location.href = targetPath;
-            return;
-          }
-        }
-      }
-
-      document.addEventListener("DOMContentLoaded", () => {
-        initializeLanguagePreference();
-
-        document.querySelectorAll("[data-language-switcher] a").forEach((link) => {
-          link.addEventListener("click", () => {
-            const href = link.getAttribute("href");
-            if (!href) return;
-            localStorage.setItem("preferred-language", href.includes("/es") ? "es" : "en");
-          });
-        });
-      });
     </script>
   </body>
 
@@ -187,10 +166,6 @@ import "@fontsource-variable/inter";
         "cv02",
         "cv11",
         "calt" 1;
-      --accent: 136, 58, 234;
-      --accent-light: 224, 204, 250;
-      --accent-dark: 49, 10, 101;
-      --accent-gradient: linear-gradient(45deg, rgb(var(--accent)), rgb(var(--accent-light)) 30%, white 60%);
     }
     @supports (font-variation-settings: normal) {
       :root {
@@ -201,12 +176,17 @@ import "@fontsource-variable/inter";
       transition: background-color 0.3s ease;
     }
 
-    html.dark {
-      background: rgb(15 23 42);
+    html {
+      background: var(--canvas);
     }
 
-    html:not(.dark) {
-      background: rgb(255 255 255);
+    html.hero-ready .hero-enter {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+    body.nav-locked {
+      overflow: hidden;
     }
   </style>
 </html>

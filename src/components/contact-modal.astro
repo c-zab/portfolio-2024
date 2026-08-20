@@ -1,0 +1,943 @@
+---
+import { getLocaleFromPath, getTranslation } from "../utils/i18n";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = (key: string) => getTranslation(locale, key);
+const packageIds = ["discovery", "launch", "retain", "custom"] as const;
+---
+
+<div id="contact-modal" class="contact-modal fixed inset-0 z-50 hidden" aria-hidden="true">
+  <div data-contact-backdrop class="contact-modal__backdrop"></div>
+  <div class="contact-modal__frame">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="contact-title"
+      class="contact-modal__panel relative w-full max-w-[420px] rounded-2xl p-6 shadow-2xl"
+    >
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h2
+            id="contact-title"
+            class="text-xl font-semibold tracking-tight"
+            style="color: var(--text-primary);"
+            data-i18n="services.contact.title"
+          >
+            {t("services.contact.title")}
+          </h2>
+          <p class="mt-1 text-sm" style="color: var(--text-muted);" data-i18n="services.contact.subtitle">
+            {t("services.contact.subtitle")}
+          </p>
+        </div>
+        <button
+          type="button"
+          data-contact-close
+          class="contact-modal__close rounded-lg p-1.5 transition"
+          data-i18n-aria="services.contact.close"
+          aria-label={t("services.contact.close")}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" class="h-5 w-5" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18"></path>
+          </svg>
+        </button>
+      </div>
+
+      <form id="contact-form" class="relative mt-5 space-y-4" novalidate>
+        <div class="pointer-events-none absolute h-0 w-0 overflow-hidden opacity-0" aria-hidden="true">
+          <label>
+            Website
+            <input type="text" name="website" tabindex="-1" autocomplete="off" />
+          </label>
+        </div>
+
+        <div>
+          <label class="contact-label" for="contact-name">
+            <span data-i18n="services.contact.name">{t("services.contact.name")}</span>
+            <span class="contact-required" aria-hidden="true">*</span>
+          </label>
+          <input
+            id="contact-name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            maxlength="80"
+            class="contact-input mt-1.5"
+            data-i18n-placeholder="services.contact.namePlaceholder"
+            placeholder={t("services.contact.namePlaceholder")}
+          />
+        </div>
+
+        <div>
+          <p class="contact-label" data-i18n="services.contact.contactMethod">{t("services.contact.contactMethod")}</p>
+          <div class="contact-toggle mt-1.5" role="group" aria-label={t("services.contact.contactMethod")}>
+            <button type="button" class="contact-toggle__btn is-active" data-contact-mode="email" aria-pressed="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-4 w-4" aria-hidden="true">
+                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+              <span data-i18n="services.contact.email">{t("services.contact.email")}</span>
+            </button>
+            <button type="button" class="contact-toggle__btn" data-contact-mode="phone" aria-pressed="false">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-4 w-4" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              <span data-i18n="services.contact.phone">{t("services.contact.phone")}</span>
+            </button>
+          </div>
+        </div>
+
+        <div data-contact-field="email">
+          <label class="contact-label" for="contact-email">
+            <span data-i18n="services.contact.email">{t("services.contact.email")}</span>
+            <span class="contact-required" aria-hidden="true">*</span>
+          </label>
+          <div class="contact-input-wrap mt-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="contact-input-icon h-4 w-4" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+            <input
+              id="contact-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              class="contact-input contact-input--icon"
+              data-i18n-placeholder="services.contact.emailPlaceholder"
+              placeholder={t("services.contact.emailPlaceholder")}
+            />
+          </div>
+        </div>
+
+        <div data-contact-field="phone" class="hidden">
+          <label class="contact-label" for="contact-phone">
+            <span data-i18n="services.contact.phone">{t("services.contact.phone")}</span>
+            <span class="contact-required" aria-hidden="true">*</span>
+          </label>
+          <div class="contact-input-wrap mt-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="contact-input-icon h-4 w-4" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            <input
+              id="contact-phone"
+              name="phone"
+              type="tel"
+              autocomplete="tel"
+              class="contact-input contact-input--icon"
+              data-i18n-placeholder="services.contact.phonePlaceholder"
+              placeholder={t("services.contact.phonePlaceholder")}
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="contact-label" for="contact-package">
+            <span data-i18n="services.contact.package">{t("services.contact.package")}</span>
+            <span class="contact-required" aria-hidden="true">*</span>
+          </label>
+          <div class="contact-select-wrap mt-1.5">
+            <select id="contact-package" name="package" required class="contact-input contact-input--select">
+              <option value="" data-i18n="services.contact.packagePlaceholder">{t("services.contact.packagePlaceholder")}</option>
+              {
+                packageIds.map((id) => (
+                  <option value={id} data-i18n={`services.packages.${id}.name`}>
+                    {t(`services.packages.${id}.name`)}
+                  </option>
+                ))
+              }
+            </select>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="contact-select-chevron h-4 w-4" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div>
+          <label class="contact-label" for="contact-message" data-i18n="services.contact.message">
+            {t("services.contact.message")}
+          </label>
+          <textarea
+            id="contact-message"
+            name="message"
+            required
+            rows="3"
+            maxlength="2000"
+            class="contact-input contact-input--textarea mt-1.5 resize-y"
+            data-i18n-placeholder="services.contact.messagePlaceholder"
+            placeholder={t("services.contact.messagePlaceholder")}
+          ></textarea>
+        </div>
+
+        <fieldset class="contact-check">
+          <legend class="contact-check__legend">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-4 w-4 text-sky-600" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+              <path d="m9 12 2 2 4-4"></path>
+            </svg>
+            <span data-i18n="services.contact.quickCheck">{t("services.contact.quickCheck")}</span>
+          </legend>
+          <p class="contact-check__prompt" data-human-prompt></p>
+          <div data-human-options class="contact-check__grid"></div>
+          <input type="hidden" name="humanQuestion" />
+        </fieldset>
+
+        <p data-contact-error class="hidden text-sm text-red-600 dark:text-red-400"></p>
+
+        <button type="submit" data-contact-submit class="btn-cta contact-submit w-full">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
+            <path d="m22 2-7 20-4-9-9-4Z"></path>
+            <path d="M22 2 11 13"></path>
+          </svg>
+          <span data-i18n="services.contact.submit">{t("services.contact.submit")}</span>
+        </button>
+      </form>
+
+      <p class="contact-privacy mt-4 flex items-center justify-center gap-1.5 text-center text-xs" style="color: var(--text-muted);">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-3.5 w-3.5 shrink-0" aria-hidden="true">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <span data-i18n="services.contact.privacy">{t("services.contact.privacy")}</span>
+      </p>
+
+      <p data-contact-success class="mt-5 hidden text-sm leading-relaxed" style="color: var(--text-secondary);" data-i18n="services.contact.success">
+        {t("services.contact.success")}
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { createHumanChallenge, HUMAN_SHAPE_COLORS, isHumanAnswer, type HumanChallengeType } from "../utils/human-check";
+  import { getLocaleFromPath, getTranslation } from "../utils/i18n";
+
+  const PACKAGES = ["discovery", "launch", "retain", "custom"] as const;
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const modal = document.getElementById("contact-modal");
+  const form = document.getElementById("contact-form") as HTMLFormElement | null;
+  const errorEl = document.querySelector<HTMLElement>("[data-contact-error]");
+  const successEl = document.querySelector<HTMLElement>("[data-contact-success]");
+  const privacyEl = document.querySelector<HTMLElement>(".contact-privacy");
+  const submitBtn = document.querySelector<HTMLButtonElement>("[data-contact-submit]");
+  const submitLabel = submitBtn?.querySelector("span");
+  const promptEl = document.querySelector<HTMLElement>("[data-human-prompt]");
+  const optionsEl = document.querySelector<HTMLElement>("[data-human-options]");
+  const packageSelect = document.getElementById("contact-package") as HTMLSelectElement | null;
+  const messageEl = document.getElementById("contact-message") as HTMLTextAreaElement | null;
+  const emailField = document.querySelector<HTMLElement>('[data-contact-field="email"]');
+  const phoneField = document.querySelector<HTMLElement>('[data-contact-field="phone"]');
+  const emailInput = document.getElementById("contact-email") as HTMLInputElement | null;
+  const phoneInput = document.getElementById("contact-phone") as HTMLInputElement | null;
+  const modeButtons = document.querySelectorAll<HTMLButtonElement>("[data-contact-mode]");
+
+  if (
+    modal &&
+    form &&
+    packageSelect &&
+    messageEl &&
+    promptEl &&
+    optionsEl &&
+    emailField &&
+    phoneField &&
+    emailInput &&
+    phoneInput
+  ) {
+    let lastOpener: HTMLElement | null = null;
+    let lastTemplate = "";
+    let contactMode: "email" | "phone" = "email";
+
+    const t = (key: string) => getTranslation(getLocaleFromPath(window.location.pathname), key);
+
+    const templates = () =>
+      Object.fromEntries(PACKAGES.map((id) => [id, t(`services.contact.templates.${id}`)])) as Record<
+        (typeof PACKAGES)[number],
+        string
+      >;
+
+    function setError(message = "") {
+      if (!errorEl) return;
+      errorEl.textContent = message;
+      errorEl.classList.toggle("hidden", !message);
+    }
+
+    function setContactMode(mode: "email" | "phone") {
+      contactMode = mode;
+      modeButtons.forEach((btn) => {
+        const active = btn.dataset.contactMode === mode;
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+      emailField!.classList.toggle("hidden", mode !== "email");
+      phoneField!.classList.toggle("hidden", mode !== "phone");
+      if (mode === "email") {
+        phoneInput!.value = "";
+        emailInput!.focus();
+      } else {
+        emailInput!.value = "";
+        phoneInput!.focus();
+      }
+    }
+
+    function renderHumanPrompt(type: HumanChallengeType, targetKey: string) {
+      const base = `services.contact.human.pick${type === "color" ? "Color" : "Shape"}`;
+      const targetGroup = type === "color" ? "colors" : "shapes";
+      promptEl!.dataset.humanType = type;
+      promptEl!.dataset.humanTarget = targetKey;
+      promptEl!.replaceChildren();
+
+      const prefix = document.createElement("span");
+      prefix.textContent = `${t(`${base}.prefix`)} `;
+
+      const category = document.createElement("span");
+      category.className = "contact-check__category";
+      category.textContent = t(`${base}.category`);
+
+      const spacer = document.createElement("span");
+      spacer.textContent = " ";
+
+      const target = document.createElement("strong");
+      target.className = "contact-check__emph";
+      target.textContent = t(`services.contact.human.${targetGroup}.${targetKey}`);
+
+      promptEl!.append(prefix, category, spacer, target);
+    }
+
+    function createShapeSvg(shape: string) {
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", "0 0 24 24");
+      svg.setAttribute("class", "contact-check__shape");
+      svg.setAttribute("aria-hidden", "true");
+
+      const fill = HUMAN_SHAPE_COLORS[shape as keyof typeof HUMAN_SHAPE_COLORS] ?? "#334155";
+
+      if (shape === "circle") {
+        const el = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        el.setAttribute("cx", "12");
+        el.setAttribute("cy", "12");
+        el.setAttribute("r", "8");
+        el.setAttribute("fill", fill);
+        svg.append(el);
+      } else if (shape === "square") {
+        const el = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        el.setAttribute("x", "5");
+        el.setAttribute("y", "5");
+        el.setAttribute("width", "14");
+        el.setAttribute("height", "14");
+        el.setAttribute("rx", "1.5");
+        el.setAttribute("fill", fill);
+        svg.append(el);
+      } else if (shape === "triangle") {
+        const el = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        el.setAttribute("points", "12 4 20 20 4 20");
+        el.setAttribute("fill", fill);
+        svg.append(el);
+      } else if (shape === "star") {
+        const el = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        el.setAttribute(
+          "points",
+          "12 2 14.5 9 22 9 16 13.5 18 21 12 16.5 6 21 8 13.5 2 9 9.5 9"
+        );
+        el.setAttribute("fill", fill);
+        svg.append(el);
+      } else if (shape === "heart") {
+        const el = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        el.setAttribute(
+          "d",
+          "M12 21s-6.5-4.35-9-8.25C1.5 10.5 3.5 6.5 7.5 6.5c2 0 3.2 1.2 4.5 2.7C13.3 7.7 14.5 6.5 16.5 6.5 20.5 6.5 22.5 10.5 21 12.75 18.5 16.65 12 21 12 21z"
+        );
+        el.setAttribute("fill", fill);
+        svg.append(el);
+      } else if (shape === "diamond") {
+        const el = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        el.setAttribute("points", "12 3 21 12 12 21 3 12");
+        el.setAttribute("fill", fill);
+        svg.append(el);
+      }
+
+      return svg;
+    }
+
+    function clearHumanSelection() {
+      optionsEl!.querySelectorAll<HTMLLabelElement>(".contact-check__tile").forEach((tile) => {
+        tile.classList.remove("is-selected");
+        tile.setAttribute("aria-pressed", "false");
+        const check = tile.querySelector<HTMLElement>(".contact-check__check");
+        if (check) check.hidden = true;
+        const input = tile.querySelector<HTMLInputElement>("input[type='radio']");
+        if (input) input.checked = false;
+      });
+    }
+
+    function selectHumanTile(selected: HTMLLabelElement) {
+      optionsEl!.querySelectorAll<HTMLLabelElement>(".contact-check__tile").forEach((tile) => {
+        const on = tile === selected;
+        tile.classList.toggle("is-selected", on);
+        tile.setAttribute("aria-pressed", on ? "true" : "false");
+        const check = tile.querySelector<HTMLElement>(".contact-check__check");
+        if (check) check.hidden = !on;
+      });
+    }
+
+    function refreshHuman() {
+      const challenge = createHumanChallenge();
+      const questionInput = form?.elements.namedItem("humanQuestion") as HTMLInputElement | null;
+      if (questionInput) questionInput.value = challenge.questionId;
+
+      renderHumanPrompt(challenge.type, challenge.targetKey);
+
+      optionsEl!.replaceChildren();
+      for (const option of challenge.options) {
+        const label = document.createElement("label");
+        label.className = "contact-check__tile";
+        label.setAttribute("aria-pressed", "false");
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "human";
+        input.value = option.id;
+        input.checked = false;
+        input.required = true;
+        input.className = "sr-only";
+
+        const visual = document.createElement("span");
+        visual.className = "contact-check__swatch";
+        visual.setAttribute("aria-hidden", "true");
+
+        const check = document.createElement("span");
+        check.className = "contact-check__check";
+        check.hidden = true;
+        check.setAttribute("aria-hidden", "true");
+        check.innerHTML =
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>';
+
+        if (option.swatch) {
+          visual.style.backgroundColor = option.swatch;
+        } else if (option.shape) {
+          visual.classList.add("contact-check__swatch--shape");
+          visual.append(createShapeSvg(option.shape));
+        }
+
+        const labelKey = `services.contact.human.labels.${option.id}`;
+        input.setAttribute("aria-label", t(labelKey));
+        label.title = t(labelKey);
+
+        label.addEventListener("click", () => {
+          input.checked = true;
+          selectHumanTile(label);
+        });
+
+        input.addEventListener("change", () => {
+          if (input.checked) selectHumanTile(label);
+        });
+
+        label.append(input, visual, check);
+        optionsEl!.append(label);
+      }
+
+      clearHumanSelection();
+    }
+
+    function fillTemplate(packageId: string) {
+      if (!PACKAGES.includes(packageId as (typeof PACKAGES)[number])) return;
+      const next = templates()[packageId as (typeof PACKAGES)[number]];
+      const current = messageEl!.value.trim();
+      if (!current || current === lastTemplate || Object.values(templates()).includes(current)) {
+        messageEl!.value = next;
+        lastTemplate = next;
+      }
+    }
+
+    function openModal(packageId?: string) {
+      lastOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      form!.reset();
+      lastTemplate = "";
+      setContactMode("email");
+      successEl?.classList.add("hidden");
+      privacyEl?.classList.remove("hidden");
+      form!.classList.remove("hidden");
+      setError();
+      refreshHuman();
+      if (packageId && PACKAGES.includes(packageId as (typeof PACKAGES)[number])) {
+        packageSelect!.value = packageId;
+        fillTemplate(packageId);
+      } else {
+        packageSelect!.value = "";
+      }
+      modal!.classList.remove("hidden");
+      modal!.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      document.getElementById("contact-name")?.focus();
+    }
+
+    function closeModal() {
+      modal!.classList.add("hidden");
+      modal!.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      lastOpener?.focus();
+    }
+
+    modeButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const mode = btn.dataset.contactMode as "email" | "phone" | undefined;
+        if (mode) setContactMode(mode);
+      });
+    });
+
+    modal.querySelector("[data-contact-backdrop]")?.addEventListener("click", () => {
+      closeModal();
+    });
+
+    document.addEventListener("click", (event) => {
+      const target = event.target as HTMLElement | null;
+      const opener = target?.closest<HTMLElement>("[data-contact-open]");
+      if (opener) {
+        event.preventDefault();
+        openModal(opener.dataset.contactOpen);
+        return;
+      }
+      if (modal!.classList.contains("hidden")) return;
+      if (target?.closest("[data-contact-close]")) closeModal();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !modal!.classList.contains("hidden")) closeModal();
+    });
+
+    document.querySelectorAll("[data-language-switcher] a[data-locale]").forEach((link) => {
+      link.addEventListener("click", () => {
+        window.setTimeout(() => {
+          const type = promptEl?.dataset.humanType as HumanChallengeType | undefined;
+          const targetKey = promptEl?.dataset.humanTarget;
+          if (type && targetKey && !modal!.classList.contains("hidden")) {
+            renderHumanPrompt(type, targetKey);
+          }
+        }, 0);
+      });
+    });
+
+    packageSelect.addEventListener("change", () => {
+      fillTemplate(packageSelect.value);
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      setError();
+
+      const data = new FormData(form);
+      if (String(data.get("website") ?? "").trim()) {
+        form.classList.add("hidden");
+        privacyEl?.classList.add("hidden");
+        successEl?.classList.remove("hidden");
+        return;
+      }
+
+      const name = String(data.get("name") ?? "").trim();
+      const email = contactMode === "email" ? String(data.get("email") ?? "").trim() : "";
+      const phone = contactMode === "phone" ? String(data.get("phone") ?? "").trim() : "";
+      const pkg = String(data.get("package") ?? "").trim();
+      const message = String(data.get("message") ?? "").trim();
+      const questionId = String(data.get("humanQuestion") ?? "");
+      const human = String(data.get("human") ?? "");
+
+      if (name.length < 2) {
+        setError(t("services.contact.error"));
+        return;
+      }
+      if (!PACKAGES.includes(pkg as (typeof PACKAGES)[number]) || message.length < 8) {
+        setError(t("services.contact.error"));
+        return;
+      }
+      if (contactMode === "email" && (!email || !EMAIL_RE.test(email))) {
+        setError(t("services.contact.contactRequired"));
+        return;
+      }
+      if (contactMode === "phone" && !phone) {
+        setError(t("services.contact.contactRequired"));
+        return;
+      }
+      if (!human) {
+        setError(t("services.contact.humanRequired"));
+        return;
+      }
+      if (!isHumanAnswer(questionId, human)) {
+        setError(t("services.contact.humanError"));
+        refreshHuman();
+        return;
+      }
+
+      const originalLabel = t("services.contact.submit");
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        if (submitLabel) submitLabel.textContent = t("services.contact.sending");
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 450));
+
+      form.classList.add("hidden");
+      privacyEl?.classList.add("hidden");
+      successEl?.classList.remove("hidden");
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        if (submitLabel) submitLabel.textContent = originalLabel;
+      }
+    });
+  }
+</script>
+
+<style>
+  .contact-modal {
+    overflow: hidden;
+  }
+
+  .contact-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(6px);
+  }
+
+  .contact-modal__frame {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    height: 100%;
+    max-height: 100dvh;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1rem;
+    pointer-events: none;
+  }
+
+  @media (min-width: 640px) {
+    .contact-modal__frame {
+      align-items: center;
+    }
+  }
+
+  .contact-modal__panel {
+    pointer-events: auto;
+    width: 100%;
+    max-width: 420px;
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+  }
+
+  :global(html.dark) .contact-modal__panel {
+    background: rgb(30 41 59);
+    border-color: rgba(51, 65, 85, 0.8);
+  }
+
+  .contact-modal__close {
+    color: var(--text-muted);
+  }
+
+  .contact-modal__close:hover {
+    background: var(--surface-quiet);
+    color: var(--text-primary);
+  }
+
+  .contact-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .contact-required {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .contact-input {
+    display: block;
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid #e2e8f0;
+    background-color: #fff;
+    padding: 0.625rem 0.875rem;
+    font-size: 16px;
+    color: var(--text-primary);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    transition:
+      border-color 150ms ease,
+      box-shadow 150ms ease,
+      background-color 150ms ease;
+  }
+
+  :global(html.dark) .contact-input {
+    background-color: rgb(15 23 42);
+    border-color: rgb(51 65 85);
+  }
+
+  .contact-input:-webkit-autofill,
+  .contact-input:-webkit-autofill:hover,
+  .contact-input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px #fff inset;
+    -webkit-text-fill-color: var(--text-primary);
+  }
+
+  :global(html.dark) .contact-input:-webkit-autofill,
+  :global(html.dark) .contact-input:-webkit-autofill:hover,
+  :global(html.dark) .contact-input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px rgb(15 23 42) inset;
+    -webkit-text-fill-color: var(--text-primary);
+  }
+
+  .contact-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+  }
+
+  .contact-input-wrap {
+    position: relative;
+  }
+
+  .contact-input-icon {
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .contact-input--icon {
+    padding-left: 2.5rem;
+  }
+
+  .contact-input--textarea {
+    min-height: 6.5rem;
+  }
+
+  .contact-select-wrap {
+    position: relative;
+  }
+
+  .contact-input--select {
+    appearance: none;
+    padding-right: 2.25rem;
+    cursor: pointer;
+  }
+
+  .contact-select-chevron {
+    position: absolute;
+    right: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .contact-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    padding: 0.25rem;
+    border-radius: 0.75rem;
+    background: #f1f5f9;
+  }
+
+  :global(html.dark) .contact-toggle {
+    background: rgb(15 23 42);
+  }
+
+  .contact-toggle__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    border-radius: 0.625rem;
+    border: 1px solid transparent;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition:
+      background 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .contact-toggle__btn.is-active {
+    background: #fff;
+    border-color: color-mix(in srgb, var(--primary) 35%, #e2e8f0);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 12%, transparent);
+  }
+
+  :global(html.dark) .contact-toggle__btn.is-active {
+    background: rgb(30 41 59);
+    border-color: rgb(51 65 85);
+  }
+
+  .contact-check {
+    margin: 0;
+    padding: 0.75rem;
+    overflow: visible;
+    border-radius: 0.875rem;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+  }
+
+  :global(html.dark) .contact-check {
+    background: rgb(15 23 42);
+    border-color: rgb(51 65 85);
+  }
+
+  .contact-check__legend {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .contact-check__prompt {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .contact-check__grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.5rem;
+    overflow: visible;
+  }
+
+  :global(.contact-check__category) {
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  :global(.contact-check__emph) {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  :global(html.dark .contact-check__emph) {
+    color: var(--primary);
+  }
+
+  :global(.contact-check__tile) {
+    position: relative;
+    display: flex;
+    cursor: pointer;
+    overflow: visible;
+    border-radius: 0.625rem;
+    border: 2px solid #e2e8f0;
+    padding: 0.5rem;
+    background: #fff;
+    transition:
+      border-color 150ms ease,
+      box-shadow 150ms ease,
+      background 150ms ease,
+      transform 150ms ease;
+  }
+
+  :global(.contact-check__tile:hover) {
+    border-color: color-mix(in srgb, var(--primary) 45%, #e2e8f0);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 10%, transparent);
+  }
+
+  :global(html.dark .contact-check__tile) {
+    background: rgb(30 41 59);
+    border-color: rgb(51 65 85);
+  }
+
+  :global(html.dark .contact-check__tile:hover) {
+    border-color: color-mix(in srgb, var(--primary) 55%, rgb(51 65 85));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 14%, transparent);
+  }
+
+  :global(.contact-check__tile.is-selected) {
+    border-color: var(--primary);
+    background: var(--primary-surface);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
+    transform: scale(1.04);
+  }
+
+  :global(html.dark .contact-check__tile.is-selected) {
+    border-color: var(--primary);
+    background: var(--primary-surface);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 24%, transparent);
+  }
+
+  :global(.contact-check__check) {
+    position: absolute;
+    top: -0.4rem;
+    right: -0.4rem;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 9999px;
+    background: var(--primary);
+    color: var(--primary-on);
+    pointer-events: none;
+    box-shadow: 0 0 0 2px #fff;
+  }
+
+  :global(.contact-check__check[hidden]) {
+    display: none;
+  }
+
+  :global(.contact-check__check svg) {
+    width: 0.65rem;
+    height: 0.65rem;
+  }
+
+  :global(html.dark .contact-check__check) {
+    background: var(--primary);
+    color: var(--primary-on);
+    box-shadow: 0 0 0 2px rgb(30 41 59);
+  }
+
+  :global(.contact-check__swatch) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 9999px;
+    min-height: 2.5rem;
+  }
+
+  :global(.contact-check__swatch--shape) {
+    border-radius: 0.5rem;
+    background: #fff;
+  }
+
+  :global(html.dark .contact-check__swatch--shape) {
+    background: rgb(15 23 42);
+  }
+
+  :global(.contact-check__shape) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .contact-submit {
+    width: 100%;
+    border-radius: 0.75rem;
+  }
+
+  .contact-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+</style>

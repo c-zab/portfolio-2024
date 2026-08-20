@@ -1,75 +1,532 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import ThemeLanguageControls from "./theme-language-controls.astro";
-import { getLocaleFromPath, getLocalizedPath, getTranslation, getTranslationList } from "../utils/i18n";
+import AmbientBackground from "./ambient-background.astro";
+import SiteNav from "./site-nav.astro";
+import Icon from "./icon.astro";
+import ContactModal from "./contact-modal.astro";
+import { type IconName } from "../utils/icons";
+import { getLocaleFromPath, getTranslation, getTranslationList } from "../utils/i18n";
+import { accentize } from "../utils/accent-text";
 
 const locale = getLocaleFromPath(Astro.url.pathname);
 const t = (key: string) => getTranslation(locale, key);
-const linkedIn = "https://www.linkedin.com/in/czabalet/";
-const packageIds = ["coffee", "launch", "stay"] as const;
 
-const packages = packageIds.map((id) => ({
+const packageConfig = {
+  discovery: {
+    chips: [
+      { icon: "clock" as const, key: "hours" },
+      { icon: "video" as const, key: "format" },
+    ],
+    detailIcons: ["clipboard", "globe", "server"] as const,
+  },
+  launch: {
+    chips: [
+      { icon: "clipboard" as const, key: "scope" },
+      { icon: "refresh" as const, key: "revisions" },
+    ],
+    detailIcons: ["video", "globe", "layout", "cart", "plug"] as const,
+  },
+  retain: {
+    chips: [{ icon: "clock" as const, key: "hours" }],
+    detailIcons: ["check", "wrench", "server", "users", "rocket"] as const,
+  },
+} satisfies Record<
+  string,
+  { chips: { icon: IconName; key: string }[]; detailIcons: readonly IconName[] }
+>;
+
+const packageIds = ["discovery", "launch", "retain"] as const;
+const helpIds = [
+  "websites",
+  "internal",
+  "ideas",
+  "integrations",
+  "automations",
+  "maintenance",
+  "code",
+] as const;
+const helpIcons: Record<(typeof helpIds)[number], IconName> = {
+  websites: "globe",
+  internal: "layout",
+  ideas: "lightbulb",
+  integrations: "plug",
+  automations: "zap",
+  maintenance: "wrench",
+  code: "code",
+};
+const processIds = ["discovery", "planning", "sprints", "delivery"] as const;
+const processIcons: Record<(typeof processIds)[number], IconName> = {
+  discovery: "search",
+  planning: "clipboard",
+  sprints: "refresh",
+  delivery: "rocket",
+};
+const whyIcons: IconName[] = ["message", "users", "target", "code", "zap"];
+
+const packages = packageIds.map((id) => {
+  const config = packageConfig[id];
+  const details = getTranslationList(locale, `services.packages.${id}.details`);
+
+  return {
+    id,
+    name: t(`services.packages.${id}.name`),
+    timing: t(`services.packages.${id}.timing`),
+    lead: t(`services.packages.${id}.lead`),
+    cta: t(`services.packages.${id}.cta`),
+    chips: config.chips.map((chip: { icon: IconName; key: string }) => ({
+      ...chip,
+      label: t(`services.packages.${id}.chips.${chip.key}`),
+    })),
+    tech: getTranslationList(locale, `services.packages.${id}.tech`),
+    details: details.map((label, index) => ({
+      label,
+      icon: (config.detailIcons[index] ?? "check") as IconName,
+    })),
+  };
+});
+
+const helpItems = helpIds.map((id) => ({
   id,
-  name: t(`services.packages.${id}.name`),
-  meta: t(`services.packages.${id}.meta`),
-  timing: t(`services.packages.${id}.timing`),
-  cta: t(`services.packages.${id}.cta`),
-  details: getTranslationList(locale, `services.packages.${id}.details`),
+  icon: helpIcons[id],
+  title: t(`services.help.items.${id}.title`),
+  body: t(`services.help.items.${id}.body`),
 }));
+
+const processSteps = processIds.map((id) => ({
+  id,
+  icon: processIcons[id],
+  title: t(`services.process.steps.${id}.title`),
+  body: t(`services.process.steps.${id}.body`),
+}));
+
+const whyPoints = getTranslationList(locale, "services.why.points").map((label, index) => ({
+  label,
+  icon: whyIcons[index] ?? "check",
+}));
+
+const helpTools = getTranslationList(locale, "services.help.tools");
+const profilePhoto = "/images/carlos.jpg";
 ---
 
-<Layout title={t("services.seoTitle")} description={t("services.seoDescription")} url={Astro.url.href}>
-  <div class="mx-auto min-h-dvh max-w-6xl px-6 py-10 font-sans sm:px-8">
-    <div class="flex items-center justify-between gap-4">
-      <a
-        href={getLocalizedPath("/", locale)}
-        class="text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
-      >
-        {t("services.back")}
-      </a>
-      <ThemeLanguageControls />
-    </div>
+<Layout
+  title={t("services.seoTitle")}
+  description={t("services.seoDescription")}
+  url={Astro.url.href}
+  i18nPage="services"
+>
+  <AmbientBackground />
+  <SiteNav />
+  <div class="relative z-10 mx-auto min-h-dvh max-w-screen-xl px-5 pb-12 pt-24 font-sans sm:px-6 sm:pt-28 md:px-12 lg:px-16 xl:px-20">
+    <main role="main">
+      <header class="services-hero max-w-3xl">
+        <p
+          class="services-hero__kicker text-sm font-semibold tracking-wide"
+          data-i18n-accent="services.kicker"
+          set:html={accentize(t("services.kicker"))}
+        />
+        <h1
+          class="services-hero__title mt-2 text-3xl font-bold tracking-tight sm:text-4xl lg:text-[2.65rem]"
+          style="color: var(--text-primary);"
+          data-i18n="services.title"
+        >
+          {t("services.title")}
+        </h1>
+        <p
+          class="services-hero__tagline mt-3 max-w-2xl text-base leading-snug sm:text-lg lg:text-xl lg:leading-snug"
+          style="color: var(--text-secondary);"
+          data-i18n-accent="services.tagline"
+          set:html={accentize(t("services.tagline"))}
+        />
+        <div class="services-hero__body mt-6 max-w-2xl space-y-4">
+          <p
+            class="text-sm leading-relaxed lg:text-base"
+            style="color: var(--text-secondary);"
+            data-i18n-accent="services.intro"
+            set:html={accentize(t("services.intro"))}
+          />
+          <p
+            class="text-sm leading-relaxed lg:text-base"
+            style="color: var(--text-secondary);"
+            data-i18n-accent="services.introChoice"
+            set:html={accentize(t("services.introChoice"))}
+          />
+        </div>
+      </header>
 
-    <main class="mt-12" role="main">
-      <p class="text-sm text-slate-500">{t("services.kicker")}</p>
-      <h1 class="mt-2 max-w-2xl text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl dark:text-slate-200">
-        {t("services.title")}
-      </h1>
-      <p class="mt-4 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-400">
-        {t("services.tagline")}
-      </p>
-      <p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-500">
-        {t("services.intro")}
-      </p>
+      <section class="mt-12 lg:mt-16" aria-labelledby="services-help">
+        <h2
+          id="services-help"
+          class="text-xl font-semibold tracking-tight"
+          style="color: var(--text-primary);"
+          data-i18n="services.help.title"
+        >
+          {t("services.help.title")}
+        </h2>
+        <p class="mt-3 max-w-3xl text-sm leading-relaxed" style="color: var(--text-secondary);" data-i18n="services.help.lead">
+          {t("services.help.lead")}
+        </p>
+        <ul class="mt-4 max-w-3xl flex flex-wrap gap-2" data-i18n-list="services.help.tools">
+          {
+            helpTools.map((tool) => (
+              <li class="badge-tool">{tool}</li>
+            ))
+          }
+        </ul>
+        <ul class="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+          {
+            helpItems.map((item) => (
+              <li class="flex gap-3">
+                <span class="icon-tile mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
+                  <Icon name={item.icon} class="h-6 w-6" />
+                </span>
+                <div>
+                  <p
+                    class="text-sm font-medium"
+                    style="color: var(--text-primary);"
+                    data-i18n={`services.help.items.${item.id}.title`}
+                  >
+                    {item.title}
+                  </p>
+                  <p
+                    class="mt-1 text-sm leading-relaxed"
+                    style="color: var(--text-secondary);"
+                    data-i18n={`services.help.items.${item.id}.body`}
+                  >
+                    {item.body}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-8 text-sm leading-relaxed" style="color: var(--text-secondary);" data-i18n="services.help.outro">
+          {t("services.help.outro")}
+        </p>
+      </section>
 
-      <ul class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          packages.map((pkg) => (
-            <li class="flex flex-col rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200 dark:bg-slate-800/40 dark:ring-slate-700">
-              <div class="flex items-start justify-between gap-3">
-                <h3 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">{pkg.name}</h3>
-                <p class="shrink-0 text-sm font-medium text-slate-600 dark:text-slate-300">{pkg.timing}</p>
+      <section class="mt-16" aria-labelledby="services-packages">
+        <h2
+          id="services-packages"
+          class="text-xl font-semibold tracking-tight"
+          style="color: var(--text-primary);"
+          data-i18n="services.packagesTitle"
+        >
+          {t("services.packagesTitle")}
+        </h2>
+        <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            packages.map((pkg) => (
+              <li class="surface-interactive flex flex-col rounded-2xl p-5">
+                <div class="flex items-start justify-between gap-3">
+                  <h3
+                    class="text-xl font-semibold tracking-tight"
+                    style="color: var(--text-primary);"
+                    data-i18n={`services.packages.${pkg.id}.name`}
+                  >
+                    {pkg.name}
+                  </h3>
+                  <p
+                    class="badge-signal shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium"
+                    data-i18n={`services.packages.${pkg.id}.timing`}
+                  >
+                    {pkg.timing}
+                  </p>
+                </div>
+                <ul class="mt-3 flex flex-wrap gap-2">
+                  {pkg.chips.map((chip) => (
+                    <li class="surface-quiet inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs" style="color: var(--text-secondary);">
+                      <span style="color: var(--text-muted);">
+                        <Icon name={chip.icon} class="h-4 w-4" />
+                      </span>
+                      <span data-i18n={`services.packages.${pkg.id}.chips.${chip.key}`}>{chip.label}</span>
+                    </li>
+                  ))}
+                </ul>
+                {
+                  pkg.tech.length > 0 && (
+                    <ul class="mt-2 flex flex-wrap gap-1.5">
+                      {pkg.tech.map((item, index) => (
+                        <li
+                          class="surface-quiet rounded-full px-2 py-0.5 text-[11px] tracking-wide"
+                          style="color: var(--text-muted);"
+                          data-i18n={`services.packages.${pkg.id}.tech.${index}`}
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  )
+                }
+                <p
+                  class="mt-4 text-sm leading-relaxed"
+                  style="color: var(--text-secondary);"
+                  data-i18n={`services.packages.${pkg.id}.lead`}
+                >
+                  {pkg.lead}
+                </p>
+                <p
+                  class="mt-5 text-xs font-medium uppercase tracking-wide"
+                  style="color: var(--text-muted);"
+                  data-i18n={`services.packages.${pkg.id}.includesTitle`}
+                >
+                  {t(`services.packages.${pkg.id}.includesTitle`)}
+                </p>
+                <ul class="mt-3 space-y-2.5">
+                  {pkg.details.map((item, index) => (
+                    <li class="flex items-center gap-3 text-sm" style="color: var(--text-secondary);">
+                      <span class="icon-tile flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
+                        <Icon name={item.icon} class="h-5 w-5" />
+                      </span>
+                      <span data-i18n={`services.packages.${pkg.id}.details.${index}`}>{item.label}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div class="mt-auto pt-6">
+                  <button
+                    type="button"
+                    data-contact-open={pkg.id}
+                    class="btn-cta w-full"
+                    data-i18n={`services.packages.${pkg.id}.cta`}
+                  >
+                    {pkg.cta}
+                  </button>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="mt-16" aria-labelledby="services-process">
+        <h2
+          id="services-process"
+          class="text-xl font-semibold tracking-tight"
+          style="color: var(--text-primary);"
+          data-i18n="services.process.title"
+        >
+          {t("services.process.title")}
+        </h2>
+        <p class="mt-3 max-w-3xl text-sm leading-relaxed lg:text-base" style="color: var(--text-muted);" data-i18n="services.process.lead">
+          {t("services.process.lead")}
+        </p>
+        <ol class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {
+            processSteps.map((step) => (
+              <li>
+                <span class="icon-tile flex h-11 w-11 items-center justify-center rounded-xl">
+                  <Icon name={step.icon} class="h-6 w-6" />
+                </span>
+                <h3
+                  class="mt-3 text-sm font-semibold"
+                  style="color: var(--text-primary);"
+                  data-i18n={`services.process.steps.${step.id}.title`}
+                >
+                  {step.title}
+                </h3>
+                <p
+                  class="mt-1 text-sm leading-relaxed"
+                  style="color: var(--text-secondary);"
+                  data-i18n={`services.process.steps.${step.id}.body`}
+                >
+                  {step.body}
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="mt-8 max-w-3xl text-sm leading-relaxed lg:text-base" style="color: var(--text-muted);" data-i18n="services.process.outro">
+          {t("services.process.outro")}
+        </p>
+      </section>
+
+      <section class="why-section mx-auto mt-16 max-w-4xl pb-8 text-center" aria-labelledby="services-why">
+        <h2
+          id="services-why"
+          class="text-xl font-semibold tracking-tight"
+          style="color: var(--text-primary);"
+          data-i18n="services.why.title"
+        >
+          {t("services.why.title")}
+        </h2>
+        <p class="mx-auto mt-3 max-w-2xl text-sm leading-relaxed" style="color: var(--text-secondary);" data-i18n="services.why.lead">
+          {t("services.why.lead")}
+        </p>
+
+        <div class="why-panel surface-interactive mx-auto mt-8 overflow-hidden rounded-2xl text-left">
+          <div class="grid md:grid-cols-[minmax(180px,220px)_1fr]">
+            <div class="why-photo" data-profile-photo-wrap>
+              <img
+                src={profilePhoto}
+                alt={t("services.why.photoAlt")}
+                class="why-photo__img hidden"
+                data-profile-photo
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="why-photo__placeholder" data-profile-fallback>
+                <span class="why-photo__initials" aria-hidden="true">CZ</span>
+                <!-- <p class="why-photo__hint" data-i18n="services.why.photoPlaceholder">{t("services.why.photoPlaceholder")}</p> -->
               </div>
-              <p class="mt-1 text-sm text-teal-700 dark:text-teal-400">{pkg.meta}</p>
-              <a
-                href={linkedIn}
-                target="_blank"
-                rel="noreferrer noopener"
-                class="mt-5 inline-flex items-center justify-center rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-800 transition-colors hover:border-slate-400 hover:bg-white dark:border-slate-500 dark:text-slate-100 dark:hover:border-slate-400 dark:hover:bg-slate-800"
-              >
-                {pkg.cta}
-              </a>
-              <ul class="mt-6 divide-y divide-slate-200 dark:divide-slate-700">
-                {pkg.details.map((item) => (
-                  <li class="py-3 text-sm leading-relaxed text-slate-600 first:pt-0 last:pb-0 dark:text-slate-300">
-                    {item}
+            </div>
+
+            <ul class="why-table divide-y" style="border-color: var(--border-subtle);">
+              {
+                whyPoints.map((point, index) => (
+                  <li class="why-table__row flex items-start gap-3 px-5 py-4 text-sm leading-relaxed" style="color: var(--text-secondary);">
+                    <span class="icon-tile mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
+                      <Icon name={point.icon} class="h-5 w-5" />
+                    </span>
+                    <span data-i18n={`services.why.points.${index}`}>{point.label}</span>
                   </li>
-                ))}
-              </ul>
-            </li>
-          ))
-        }
-      </ul>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+
+        <p
+          class="mt-10 text-base font-medium"
+          style="color: var(--text-primary);"
+          data-i18n="services.why.cta"
+        >
+          {t("services.why.cta")}
+        </p>
+        <p class="mt-1 text-sm leading-relaxed" style="color: var(--text-muted);" data-i18n="services.why.ctaSub">
+          {t("services.why.ctaSub")}
+        </p>
+        <button type="button" data-contact-open class="btn-cta mt-6" data-i18n="services.cta">
+          {t("services.cta")}
+        </button>
+      </section>
     </main>
   </div>
+  <ContactModal />
 </Layout>
+
+<script>
+  const photo = document.querySelector<HTMLImageElement>("[data-profile-photo]");
+  const fallback = document.querySelector<HTMLElement>("[data-profile-fallback]");
+
+  if (photo && fallback) {
+    photo.addEventListener("load", () => {
+      photo.classList.remove("hidden");
+      fallback.classList.add("hidden");
+    });
+    photo.addEventListener("error", () => {
+      photo.classList.add("hidden");
+      fallback.classList.remove("hidden");
+    });
+
+    if (photo.complete && photo.naturalWidth > 0) {
+      photo.classList.remove("hidden");
+      fallback.classList.add("hidden");
+    }
+  }
+</script>
+
+<style>
+  .services-hero__kicker {
+    letter-spacing: 0.04em;
+  }
+
+  .services-hero__title {
+    letter-spacing: -0.02em;
+  }
+
+  .services-hero__tagline :global(.text-accent) {
+    font-weight: 650;
+  }
+
+  .services-hero__body :global(.text-accent) {
+    font-weight: 600;
+  }
+
+  .badge-tool {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--primary);
+    background: var(--primary-surface);
+  }
+
+  .why-panel {
+    border-color: var(--border-subtle);
+  }
+
+  .why-photo {
+    position: relative;
+    min-height: 220px;
+    background: linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--sky-atmo-bright) 18%, var(--canvas)) 0%,
+      color-mix(in srgb, var(--teal-signal) 12%, var(--canvas)) 100%
+    );
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  :global(html.dark) .why-photo {
+    background: linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--sky-atmo-bright) 10%, var(--canvas)) 0%,
+      color-mix(in srgb, var(--teal-signal) 8%, var(--canvas)) 100%
+    );
+  }
+
+  @media (min-width: 768px) {
+    .why-photo {
+      min-height: 100%;
+      border-bottom: 0;
+      border-right: 1px solid var(--border-subtle);
+    }
+  }
+
+  .why-photo__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .why-photo__placeholder {
+    display: flex;
+    height: 100%;
+    min-height: 220px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .why-photo__initials {
+    display: grid;
+    place-items: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 999px;
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--primary);
+    background: var(--primary-surface);
+    border: 1px solid var(--primary-surface-strong);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  }
+
+  .why-photo__hint {
+    max-width: 11rem;
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    color: var(--text-muted);
+  }
+
+  .why-table__row:last-child {
+    border-bottom: 0;
+  }
+</style>

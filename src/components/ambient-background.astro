@@ -1,0 +1,397 @@
+---
+interface Props {
+  /** Softer glow and rings — used on content-heavy pages like services */
+  subtle?: boolean;
+}
+
+const { subtle = false } = Astro.props;
+---
+
+<div class="ambient-bg" id="ambient-bg" data-subtle={subtle ? "true" : undefined} aria-hidden="true">
+  <div class="ambient-bg__base"></div>
+  <div class="ambient-bg__glow"></div>
+  <div class="ambient-bg__ambient ambient-bg__ambient--left"></div>
+  <div class="ambient-bg__ambient ambient-bg__ambient--right"></div>
+  <div class="ambient-bg__warm"></div>
+  <div class="ambient-bg__ring ambient-bg__ring--left"></div>
+  <div class="ambient-bg__ring ambient-bg__ring--right"></div>
+  <div class="ambient-bg__dots ambient-bg__dots--left"></div>
+  <div class="ambient-bg__dots ambient-bg__dots--right"></div>
+  <div class="ambient-bg__vignette"></div>
+</div>
+
+<script>
+  const background = document.querySelector<HTMLElement>("#ambient-bg");
+  const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  const corners = [
+    { x: 0.12, y: 0.14 },
+    { x: 0.88, y: 0.14 },
+    { x: 0.12, y: 0.86 },
+    { x: 0.88, y: 0.86 },
+  ];
+
+  const waypoints = [
+    ...corners,
+    { x: 0.5, y: 0.3 },
+    { x: 0.32, y: 0.55 },
+    { x: 0.7, y: 0.62 },
+    { x: 0.5, y: 0.78 },
+  ];
+
+  let autoFrame = 0;
+  let posX = 0.5;
+  let posY = 0.45;
+  let targetX = 0.5;
+  let targetY = 0.45;
+
+  function setGlow(x: number, y: number) {
+    if (!background) return;
+    background.style.setProperty("--mouse-x", `${x * 100}%`);
+    background.style.setProperty("--mouse-y", `${y * 100}%`);
+  }
+
+  function pickTarget(avoidCurrent = true) {
+    const next = waypoints[Math.floor(Math.random() * waypoints.length)];
+    const jitterX = (Math.random() - 0.5) * 0.18;
+    const jitterY = (Math.random() - 0.5) * 0.16;
+    const x = Math.min(0.9, Math.max(0.1, next.x + jitterX));
+    const y = Math.min(0.9, Math.max(0.1, next.y + jitterY));
+
+    if (avoidCurrent && Math.hypot(x - targetX, y - targetY) < 0.25) {
+      pickTarget(false);
+      return;
+    }
+
+    targetX = x;
+    targetY = y;
+  }
+
+  function stopAutoFloat() {
+    cancelAnimationFrame(autoFrame);
+    autoFrame = 0;
+  }
+
+  function startAutoFloat() {
+    if (!background || autoFrame) return;
+
+    const start = corners[Math.floor(Math.random() * corners.length)];
+    posX = start.x;
+    posY = start.y;
+    pickTarget(true);
+    setGlow(posX, posY);
+
+    const tick = (now: number) => {
+      posX += (targetX - posX) * 0.009;
+      posY += (targetY - posY) * 0.008;
+
+      const x = posX + Math.sin(now * 0.00038) * 0.032;
+      const y = posY + Math.cos(now * 0.00032) * 0.028;
+      setGlow(x, y);
+
+      if (Math.hypot(targetX - posX, targetY - posY) < 0.04) {
+        pickTarget(true);
+      }
+
+      autoFrame = requestAnimationFrame(tick);
+    };
+
+    autoFrame = requestAnimationFrame(tick);
+  }
+
+  function syncMotion() {
+    stopAutoFloat();
+    if (motionQuery.matches || !background) return;
+    startAutoFloat();
+  }
+
+  if (background) {
+    setGlow(0.5, 0.45);
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        stopAutoFloat();
+        return;
+      }
+      syncMotion();
+    });
+
+    motionQuery.addEventListener("change", syncMotion);
+    syncMotion();
+  }
+</script>
+
+<style is:global>
+  :root {
+    --mouse-x: 50%;
+    --mouse-y: 45%;
+  }
+</style>
+
+<style>
+  .ambient-bg {
+    --mouse-glow: var(--sky-atmo-bright);
+    --ambient-a: var(--sky-atmo);
+    --ambient-b: var(--sky-atmo-bright);
+    --ring: 100, 116, 139;
+    --dot: 15, 118, 110;
+    --vignette: rgba(15, 23, 42, 0.03);
+    --mouse-opacity: 0.14;
+    --ambient-left-opacity: 0.2;
+    --ambient-right-opacity: 0.16;
+    --warm-opacity: 0.045;
+
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    isolation: isolate;
+    pointer-events: none;
+  }
+
+  .ambient-bg__base {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--canvas);
+  }
+
+  :global(html.dark) .ambient-bg {
+    --mouse-glow: var(--sky-atmo-bright);
+    --ambient-a: var(--sky-atmo);
+    --ambient-b: var(--sky-atmo-bright);
+    --ring: 148, 163, 184;
+    --dot: 94, 234, 212;
+    --vignette: rgba(0, 0, 0, 0.16);
+    --mouse-opacity: 0.08;
+    --ambient-left-opacity: 0.11;
+    --ambient-right-opacity: 0.09;
+    --warm-opacity: 0.035;
+  }
+
+  .ambient-bg[data-subtle] {
+    --mouse-opacity: 0.1;
+    --ambient-left-opacity: 0.14;
+    --ambient-right-opacity: 0.11;
+    --warm-opacity: 0.032;
+  }
+
+  :global(html.dark) .ambient-bg[data-subtle] {
+    --mouse-opacity: 0.06;
+    --ambient-left-opacity: 0.08;
+    --ambient-right-opacity: 0.06;
+    --warm-opacity: 0.02;
+  }
+
+  .ambient-bg__glow {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: radial-gradient(
+      circle 520px at var(--mouse-x) var(--mouse-y),
+      rgba(var(--mouse-glow), calc(var(--mouse-opacity) * 1.2)) 0%,
+      rgba(var(--mouse-glow), var(--mouse-opacity)) 28%,
+      transparent 72%
+    );
+    transition: background 1.6s ease;
+  }
+
+  .ambient-bg__ambient {
+    position: absolute;
+    z-index: 0;
+    width: 92vw;
+    height: 92vw;
+    min-width: 950px;
+    min-height: 950px;
+    border-radius: 50%;
+    filter: blur(120px);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+
+  .ambient-bg__ambient--left {
+    left: -58vw;
+    bottom: -58vw;
+    background: radial-gradient(
+      circle,
+      rgba(var(--ambient-a), var(--ambient-left-opacity)) 0%,
+      rgba(var(--ambient-a), 0.14) 42%,
+      transparent 72%
+    );
+    animation: ambient-drift-left 22s ease-in-out infinite alternate;
+  }
+
+  .ambient-bg__ambient--right {
+    right: -58vw;
+    top: -10vw;
+    background: radial-gradient(
+      circle,
+      rgba(var(--ambient-b), var(--ambient-right-opacity)) 0%,
+      rgba(var(--ambient-b), 0.05) 42%,
+      transparent 72%
+    );
+    animation: ambient-drift-right 26s ease-in-out infinite alternate;
+  }
+
+  .ambient-bg__warm {
+    position: absolute;
+    z-index: 0;
+    right: -12vw;
+    bottom: -8vw;
+    width: 55vw;
+    height: 55vw;
+    min-width: 520px;
+    min-height: 520px;
+    border-radius: 50%;
+    filter: blur(100px);
+    background: radial-gradient(
+      circle,
+      rgba(var(--warm-light), var(--warm-opacity)) 0%,
+      rgba(var(--warm-light), calc(var(--warm-opacity) * 0.4)) 45%,
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+
+  .ambient-bg__ring {
+    position: absolute;
+    z-index: 2;
+    width: 68vw;
+    min-width: 740px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(var(--ring), 0.22);
+    animation: ring-drift-left 24s ease-in-out infinite alternate;
+  }
+
+  :global(html.dark) .ambient-bg__ring {
+    border-color: rgba(var(--ring), 0.1);
+  }
+
+  .ambient-bg__ring--left {
+    left: -52vw;
+    bottom: -25vw;
+    transform: rotate(-9deg);
+  }
+
+  .ambient-bg__ring--right {
+    right: -52vw;
+    bottom: -21vw;
+    transform: rotate(10deg);
+    animation-name: ring-drift-right;
+  }
+
+  .ambient-bg__dots {
+    position: absolute;
+    z-index: 2;
+    width: 160px;
+    height: 120px;
+    opacity: 0.38;
+    background-image: radial-gradient(circle, rgba(var(--dot), 0.62) 1px, transparent 1.4px);
+    background-size: 17px 17px;
+    animation: dots-drift 18s ease-in-out infinite alternate;
+    mask-image: radial-gradient(ellipse, #000 8%, transparent 72%);
+    -webkit-mask-image: radial-gradient(ellipse, #000 8%, transparent 72%);
+  }
+
+  :global(html.dark) .ambient-bg__dots {
+    opacity: 0.24;
+  }
+
+  .ambient-bg[data-subtle] .ambient-bg__dots {
+    opacity: 0.28;
+  }
+
+  :global(html.dark) .ambient-bg[data-subtle] .ambient-bg__dots {
+    opacity: 0.16;
+  }
+
+  .ambient-bg__dots--right {
+    right: 7%;
+    bottom: 15%;
+    animation-delay: -6s;
+  }
+
+  .ambient-bg__vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: radial-gradient(circle at center, transparent 50%, var(--vignette) 100%);
+  }
+
+  .ambient-bg__dots--left {
+    left: 5%;
+    top: 31%;
+  }
+
+  @keyframes ambient-drift-left {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(7vw, -4vw, 0) scale(1.06);
+    }
+  }
+
+  @keyframes ambient-drift-right {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(-6vw, 5vw, 0) scale(1.05);
+    }
+  }
+
+  @keyframes ring-drift-left {
+    from {
+      transform: rotate(-9deg) translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: rotate(-6deg) translate3d(24px, -18px, 0) scale(1.03);
+    }
+  }
+
+  @keyframes ring-drift-right {
+    from {
+      transform: rotate(10deg) translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: rotate(13deg) translate3d(-20px, 22px, 0) scale(1.03);
+    }
+  }
+
+  @keyframes dots-drift {
+    from {
+      transform: translate3d(0, 0, 0);
+      opacity: 0.32;
+    }
+    to {
+      transform: translate3d(14px, -10px, 0);
+      opacity: 0.44;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .ambient-bg__glow {
+      background: radial-gradient(
+        circle 320px at var(--mouse-x) var(--mouse-y),
+        rgba(var(--mouse-glow), calc(var(--mouse-opacity) * 1.15)) 0%,
+        rgba(var(--mouse-glow), var(--mouse-opacity)) 34%,
+        transparent 76%
+      );
+    }
+
+    .ambient-bg__dots {
+      width: 120px;
+      height: 96px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ambient-bg__ambient,
+    .ambient-bg__ring,
+    .ambient-bg__dots {
+      animation: none;
+    }
+  }
+</style>

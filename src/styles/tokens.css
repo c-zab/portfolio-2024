@@ -1,0 +1,177 @@
+:root {
+  /* Canvas */
+  --canvas: #eef2f6;
+  --canvas-depth: #e4eaf1;
+
+  /* Ink / navy scale */
+  --ink: #0f172a;
+  --navy: #101a2c;
+  --navy-deep: #09111f;
+
+  /* Text */
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #475569;
+
+  /* Teal — one hue, two roles (modern pattern: signal + readable) */
+  --teal-signal: #2dd4bf;
+  --teal-functional: #0f766e;
+
+  /* Semantic primary aliases */
+  --primary: var(--teal-functional);
+  --primary-bright: var(--teal-signal);
+  --primary-on: #ffffff;
+  --primary-surface: color-mix(in srgb, var(--teal-signal) 12%, transparent);
+  --primary-surface-strong: color-mix(in srgb, var(--teal-signal) 18%, transparent);
+
+  /* Atmospheric blues (steel, not cyan) */
+  --sky-atmo: 61, 134, 173;
+  --sky-atmo-bright: 79, 163, 199;
+
+  /* Warm counter-light (atmosphere only) */
+  --warm-light: 214, 167, 122;
+
+  /* Borders */
+  --border-subtle: rgba(203, 213, 223, 0.55);
+  --border-strong: rgba(170, 184, 199, 0.72);
+
+  /* Glass & surfaces */
+  --glass-bg: rgba(228, 234, 241, 0.55);
+  --glass-border: rgba(15, 23, 42, 0.08);
+  --surface-quiet: rgba(15, 23, 42, 0.035);
+  --surface-interactive: rgba(228, 234, 241, 0.72);
+  --surface-interactive-hover: rgba(228, 234, 241, 0.88);
+}
+
+html.dark {
+  --canvas: #0b1220;
+  --canvas-depth: #09111f;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #a3b1c2;
+  --text-muted: #8191a5;
+
+  --teal-signal: #5eead4;
+  --teal-functional: #2dd4bf;
+
+  --primary: var(--teal-signal);
+  --primary-bright: #99f6e4;
+  --primary-on: #0b1220;
+  --primary-surface: color-mix(in srgb, var(--teal-signal) 14%, transparent);
+  --primary-surface-strong: color-mix(in srgb, var(--teal-signal) 22%, transparent);
+
+  --border-subtle: rgba(51, 68, 91, 0.45);
+  --border-strong: rgba(71, 93, 117, 0.62);
+
+  --glass-bg: rgba(30, 48, 70, 0.35);
+  --glass-border: rgba(226, 232, 240, 0.08);
+  --surface-quiet: rgba(255, 255, 255, 0.04);
+  --surface-interactive: rgba(30, 48, 70, 0.42);
+  --surface-interactive-hover: rgba(30, 48, 70, 0.58);
+}
+
+.surface-quiet {
+  background: var(--surface-quiet);
+  border: 1px solid var(--border-subtle);
+}
+
+.surface-interactive {
+  background: var(--surface-interactive);
+  border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.surface-interactive:hover {
+  background: var(--surface-interactive-hover);
+  border-color: var(--border-strong);
+}
+
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.icon-tile {
+  background: var(--surface-quiet);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.badge-signal {
+  background: var(--primary-surface);
+  color: var(--primary);
+}
+
+.text-accent {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border-radius: 999px;
+  border: 0;
+  padding: 0.625rem 1.25rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--primary-on);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    color-mix(in srgb, var(--primary-bright) 72%, var(--primary)) 100%
+  );
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--primary) 24%, transparent),
+    0 8px 20px color-mix(in srgb, var(--primary) 18%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    filter 160ms ease;
+}
+
+.btn-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+  box-shadow:
+    0 2px 4px color-mix(in srgb, var(--primary) 28%, transparent),
+    0 12px 28px color-mix(in srgb, var(--primary) 24%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-cta:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+
+html.dark .btn-cta {
+  color: var(--primary-on);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    color-mix(in srgb, var(--primary-bright) 55%, var(--primary)) 100%
+  );
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.22),
+    0 10px 24px color-mix(in srgb, var(--primary) 28%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+html.dark .btn-cta:hover {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.26),
+    0 14px 32px color-mix(in srgb, var(--primary) 34%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}

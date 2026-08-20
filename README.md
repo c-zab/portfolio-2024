@@ -1,63 +1,105 @@
-# Astro Starter Kit: Basics
+# Carlos Zabaleta — Portfolio
 
-```sh
-npm create astro@latest -- --template basics
+Personal portfolio and services site for [czabalet.com](https://czabalet.com). Built with Astro, TypeScript, and Tailwind CSS, deployed on Vercel.
+
+## Features
+
+- **Bilingual (EN / ES)** — locale routes at `/en/` and `/es/`, with client-side language switching and persisted preference
+- **Home** — animated hero, social links, and scrolling tech marquee
+- **Services** — packages (Discovery, Launch, Retain), process, and contact CTAs
+- **Contact modal** — email or phone, package selection (including a custom / “not sure yet” option), and a dynamic human-verification quick check
+- **Design system** — CSS tokens for light/dark mode, teal primary accent, glass surfaces, and ambient background
+- **Responsive nav** — compact mobile menu with language and theme controls in the top bar
+
+## Tech stack
+
+- [Astro 5](https://astro.build) (SSR via `@astrojs/vercel`)
+- TypeScript
+- Tailwind CSS
+- [anime.js](https://animejs.com) for hero and nav motion
+- [simple-icons](https://simpleicons.org) for the tech marquee
+
+## Requirements
+
+- **Node.js 22+** (matches Vercel runtime)
+- **Yarn 1.22** (recommended — enable with `corepack enable`)
+
+## Getting started
+
+```bash
+# Install dependencies
+yarn install
+
+# Start dev server → http://localhost:4321
+yarn dev
+
+# Typecheck + production build
+yarn build
+
+# Preview production build locally
+yarn preview
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Project structure
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+├── components/       # Astro UI (nav, home, services, contact modal, …)
+├── i18n/             # en.json, es.json translation strings
+├── layouts/          # Layout.astro (SEO, theme, global styles)
+├── pages/
+│   ├── en/           # English routes
+│   ├── es/           # Spanish routes
+│   └── api/          # Server endpoints (e.g. contact)
+├── styles/           # tokens.css — colors, surfaces, buttons
+└── utils/            # i18n, theme, icons, human-check, accent text
+public/
+└── images/           # Static assets (e.g. profile photo)
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Routes
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+| Path | Description |
+|------|-------------|
+| `/` | Redirects to `/en/` |
+| `/en/`, `/es/` | Home |
+| `/en/services`, `/es/services` | Services page |
+| `/api/contact` | Contact form POST (server) |
 
-Any static assets, like images, can be placed in the `public/` directory.
+## i18n
 
-## 🧞 Commands
+Copy lives in `src/i18n/en.json` and `src/i18n/es.json`. Highlight marketing phrases with pipe markers:
 
-All commands are run from the root of the project, from a terminal:
+```json
+"tagline": "Digital solutions that solve |real problems|"
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Rendered as teal accent spans via `accentize()` in `src/utils/accent-text.ts`.
+
+## Deployment
+
+Production deploys to **Vercel** (`output: "server"`, Node 22). The build command is:
+
+```bash
+yarn vercel-build
+```
+
+Push to `main` to deploy, or run `vercel --prod` from the project root.
+
+## Scripts
+
+| Command | Action |
+|---------|--------|
+| `yarn dev` | Dev server at `localhost:4321` |
+| `yarn build` | `astro check` + production build |
+| `yarn preview` | Preview `./dist/` locally |
+| `yarn format` | Prettier write |
+| `yarn format:check` | Prettier check |
 
 ## Documentation
 
-Comprehensive documentation for all public components and pages is available in the `docs/` directory:
+Additional docs live in [`docs/`](docs/README.md) (layout, components, pages).
 
-- [Overview](docs/README.md)
-- [Layout](docs/layout.md)
-- [Components](docs/components.md)
-- [Pages](docs/pages.md)
+## License
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Private — © Carlos Zabaleta

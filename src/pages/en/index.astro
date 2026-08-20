@@ -1,21 +1,5 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import HeaderLeftSide from "../../components/header-left-side.astro";
-import TechMarquee from "../../components/tech-marquee.astro";
-import { getTranslation } from "../../utils/i18n";
-
-const t = (key: string) => getTranslation("en", key);
+import HomePage from "../../components/home-page.astro";
 ---
 
-<Layout title={`${t("common.name")} - ${t("common.title")} | ${t("common.location")}`}>
-  <div
-    class="mx-auto flex min-h-dvh max-w-screen-xl flex-col overflow-x-hidden px-6 py-10 font-sans md:px-12 lg:px-24"
-    itemscope
-    itemtype="https://schema.org/Person"
-  >
-    <main class="flex flex-1 flex-col items-center justify-center text-center" role="main">
-      <HeaderLeftSide />
-    </main>
-    <TechMarquee />
-  </div>
-</Layout>
+<HomePage />

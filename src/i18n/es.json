@@ -5,7 +5,7 @@
     "location": "Toronto, Canadá"
   },
   "header": {
-    "description": "Construyo experiencias digitales perfectas, atractivas y accesibles utilizando tecnologías web modernas. Especializado en desarrollo full-stack en Toronto, Canadá."
+    "description": "Construyo experiencias digitales |perfectas|, atractivas y accesibles utilizando tecnologías web modernas. Especializado en |desarrollo full-stack| en Toronto, Canadá."
   },
   "comingSoon": {
     "message": "🚧 Actualizando Sitio Web"
@@ -20,56 +20,249 @@
     }
   },
   "navigation": {
+    "home": "Inicio",
+    "blog": "Blog",
     "about": "Acerca de",
     "experience": "Experiencia",
     "projects": "Proyectos",
     "contact": "Contacto",
-    "services": "Servicios"
+    "services": "Servicios",
+    "comingSoon": "Próximamente",
+    "menu": "Menú",
+    "closeMenu": "Cerrar menú"
   },
   "services": {
-    "kicker": "Code with CZ",
-    "title": "Construyamos lo que tienes en mente.",
-    "tagline": "Sitios web y herramientas digitales para personas, negocios y equipos.",
-    "intro": "Tú eliges cómo trabajamos: empezamos con una conversación, construimos algo para lanzar o seguimos trabajando juntos a medida que lo necesites. Trabajo con pocos proyectos a la vez para poder dedicarle atención a cada uno y construir algo que realmente represente lo que tienes en mente.",
-    "cta": "Escríbeme en LinkedIn",
+    "kicker": "|Code with CZ|",
+    "title": "Trabaja con Carlos Zabaleta",
+    "tagline": "Soluciones digitales que resuelven |problemas reales|",
+    "intro": "Sitios web, herramientas internas y productos digitales que la gente usa a diario. Tomo pocos proyectos a la vez — cada uno recibe |atención real|, no tiempo en cola.",
+    "introFocus": "No trabajo con decenas de proyectos a la vez. Prefiero dedicar |atención real| a cada uno para que el resultado sea sólido, útil y alineado con lo que necesitas.",
+    "introChoice": "Empieza con una conversación, lanza algo concreto o sigue trabajando conmigo. |Tú eliges el ritmo.|",
+    "cta": "Escríbeme",
     "back": "Volver al inicio",
     "homeLink": "¿Buscas un sitio o una herramienta pequeña?",
     "note": "No tengo un deck de ventas. Si esto suena a lo que necesitas, mándame una nota corta de en qué estás atascado.",
     "seoTitle": "Trabaja con Carlos Zabaleta",
-    "seoDescription": "Sitios web y herramientas digitales para personas, negocios y equipos. Una conversación, un lanzamiento o trabajo continuo — tú eliges cómo trabajamos.",
+    "seoDescription": "Sitios web, herramientas internas y productos digitales. Una conversación, un lanzamiento o trabajo continuo — tú eliges cómo trabajamos.",
+    "help": {
+      "title": "Archivos, herramientas y APIs",
+      "lead": "Excel, PDFs, QuickBooks, sistemas de envío, Google — y el código que los conecta. Trabajo con lo que tu negocio ya usa.",
+      "tools": [
+        "Excel y Google Sheets",
+        "Archivos PDF",
+        "QuickBooks API",
+        "Freightcom API",
+        "Google APIs",
+        "React",
+        "Vue",
+        "TypeScript",
+        "Node.js",
+        "MySQL",
+        "Docker"
+      ],
+      "outro": "Te digo claro qué construiría, qué dejaría fuera y cuánto debería costar. Sin jerga, a menos que quieras los detalles.",
+      "items": {
+        "websites": {
+          "title": "Sitios web y landing pages",
+          "body": "Cargan rápido, se ven bien en móvil y convierten visitantes en clientes."
+        },
+        "internal": {
+          "title": "Herramientas internas",
+          "body": "Dashboards, paneles de administración y formularios avanzados para automatizar procesos y reducir trabajo manual."
+        },
+        "ideas": {
+          "title": "Ideas que quieres llevar a la realidad",
+          "body": "Desde un prototipo funcional hasta un producto mínimo viable (MVP)."
+        },
+        "integrations": {
+          "title": "Integraciones y APIs",
+          "body": "Conectar servicios entre sí: formularios a un CRM, bases de datos a paneles, pagos, notificaciones y más."
+        },
+        "automations": {
+          "title": "Automatizaciones",
+          "body": "Flujos repetitivos que te quitan tiempo cada semana."
+        },
+        "maintenance": {
+          "title": "Mantenimiento y mejoras",
+          "body": "Cuando algo se rompe, necesita actualizarse o quieres añadir una función nueva sin empezar de cero."
+        },
+        "code": {
+          "title": "Código limpio y entregable",
+          "body": "Lo que construyo es tuyo. Sin dependencias escondidas ni cuotas eternas."
+        }
+      }
+    },
+    "packagesTitle": "Tres formas de trabajar juntos",
     "packages": {
-      "coffee": {
-        "name": "Hora de café",
-        "meta": "Una o dos horas",
+      "discovery": {
+        "name": "Discovery Call",
         "timing": "Gratis",
-        "cta": "Tomemos un café",
-        "details": [
-          "Una o dos horas, en persona o por llamada",
-          "Sales con una propuesta de una página",
-          "Hablamos de lo que estás tratando de hacer"
-        ]
+        "lead": "Una conversación sin compromiso. Ideal si aún no sabes por dónde empezar o quieres validar una idea.",
+        "cta": "Agendar Discovery Call",
+        "includesTitle": "Qué te llevas",
+        "chips": {
+          "hours": "1–2 horas",
+          "format": "Presencial o videollamada"
+        },
+        "tech": ["HTML", "CSS", "JavaScript"],
+        "details": ["Un plan de trabajo", "Algo online para empezar", "Hosting si es un landing básico"]
       },
       "launch": {
         "name": "Launch",
-        "meta": "Alcance por escrito, 1–2 revisiones",
         "timing": "Proyecto fijo",
-        "cta": "Preguntar por un launch",
+        "lead": "Para cuando ya quieres construir. Incluye la Discovery Call, definimos alcance y entrego algo listo para usar — tuyo, sin cuota mensual después.",
+        "cta": "Preguntar por un Launch",
+        "includesTitle": "Incluye Discovery Call +",
+        "chips": {
+          "scope": "Alcance por escrito",
+          "revisions": "1–2 revisiones"
+        },
+        "tech": ["Full-stack", "React & APIs", "Automatizaciones", "IA"],
         "details": [
-          "Un sitio público a partir de una lista de páginas",
-          "Una o dos rondas de revisión, y se publica",
-          "Es tuyo — sin cuota mensual después de entregarlo"
+          "Discovery Call incluida",
+          "Sitios y landings",
+          "Herramientas internas y chatbots",
+          "Tienda online (v1)",
+          "Conectar lo que ya usas"
         ]
       },
-      "stay": {
-        "name": "Stay",
-        "meta": "Horas en la llamada · hasta unas cuatro a la semana",
+      "retain": {
+        "name": "Retain",
         "timing": "Continuo",
-        "cta": "Preguntar por Stay",
+        "lead": "Lo más completo: todo lo de Launch, más apoyo mes a mes. Para seguir evolucionando sin contratar a alguien full-time.",
+        "cta": "Preguntar por Retain",
+        "includesTitle": "Todo lo de Launch, y además",
+        "chips": {
+          "hours": "Hasta ~4 h / semana"
+        },
+        "tech": ["Consultoría IT", "Soporte continuo", "DevOps"],
         "details": [
-          "Un sitio público o una herramienta pequeña, en movimiento",
-          "Ayuda con hosting cuando algo se rompe",
-          "Horas en la llamada, hasta unas cuatro a la semana"
+          "Todo lo incluido en Launch",
+          "Mejoras y nuevas funciones mes a mes",
+          "Hosting y cuando algo se rompe",
+          "Prioridad — alguien que ya conoce tu proyecto",
+          "Evolución: más fases, integraciones e IA"
         ]
+      },
+      "custom": {
+        "name": "No lo tengo claro — hablemos"
+      }
+    },
+    "process": {
+      "title": "Cómo trabajamos",
+      "lead": "Sin manual de procesos. Hablamos, dejamos el alcance por escrito, construimos en partes pequeñas y ves algo funcionando cada par de semanas.",
+      "outro": "Cada parte es algo que puedes probar y comentar. Ajustamos y seguimos — sin desaparecer un mes entero.",
+      "steps": {
+        "discovery": {
+          "title": "Discovery",
+          "body": "Entendemos el problema y definimos el alcance."
+        },
+        "planning": {
+          "title": "Planificación",
+          "body": "Dividimos el trabajo en entregables claros."
+        },
+        "sprints": {
+          "title": "Sprints de 2 semanas",
+          "body": "En cada sprint entrego algo funcional que puedes probar y comentar."
+        },
+        "delivery": {
+          "title": "Entrega final",
+          "body": "Un proyecto básico suele estar listo en 3–5 semanas. Los más grandes se dividen en fases."
+        }
+      }
+    },
+    "why": {
+      "title": "Por qué trabajar conmigo",
+      "lead": "Soy un desarrollador, no una agencia. Me tienes a mí — quien escribe el código y responde tus mensajes.",
+      "photoAlt": "Carlos Zabaleta",
+      "photoPlaceholder": "Foto próximamente",
+      "points": [
+        "Hablas conmigo directamente — sin account manager de por medio",
+        "Pocos proyectos a la vez, el tuyo no se queda en cola",
+        "Empiezo por lo que te ahorra tiempo o genera ingresos, no por modas",
+        "Código limpio que es tuyo — se lo puedes pasar a otro dev después",
+        "APIs, automatizaciones, herramientas internas — lo he entregado a clientes reales"
+      ],
+      "cta": "¿Listo para dar el siguiente paso?",
+      "ctaSub": "Elige la opción que mejor se adapte a tu momento y hablamos."
+    },
+    "contact": {
+      "title": "Hablemos",
+      "subtitle": "Unos datos y te respondo pronto.",
+      "close": "Cerrar",
+      "name": "Nombre",
+      "namePlaceholder": "Tu nombre completo",
+      "contactMethod": "¿Cómo te contacto?",
+      "email": "Email",
+      "phone": "Teléfono",
+      "emailPlaceholder": "tu@email.com",
+      "phonePlaceholder": "+52 55 0000 0000",
+      "package": "¿Cómo quieres trabajar?",
+      "packagePlaceholder": "Elige una opción",
+      "message": "Mensaje",
+      "messagePlaceholder": "Cuéntame un poco sobre tu idea o proyecto…",
+      "quickCheck": "Verificación rápida",
+      "submit": "Enviar mensaje",
+      "sending": "Enviando…",
+      "privacy": "Tu información está segura y no se comparte.",
+      "success": "Listo. Por ahora esto es una prueba: no se envió nada.",
+      "error": "No se pudo enviar. Prueba otra vez.",
+      "contactRequired": "Pon un email o un teléfono.",
+      "humanError": "Esa no era. Prueba otra vez.",
+      "humanRequired": "Completa la verificación rápida primero.",
+      "human": {
+        "pickColor": {
+          "prefix": "Elige el",
+          "category": "color"
+        },
+        "pickShape": {
+          "prefix": "Elige la",
+          "category": "forma"
+        },
+        "colors": {
+          "blue": "azul",
+          "red": "rojo",
+          "green": "verde",
+          "orange": "naranja",
+          "purple": "morado",
+          "yellow": "amarillo",
+          "pink": "rosa",
+          "teal": "verde azulado",
+          "lavender": "lavanda",
+          "coral": "coral"
+        },
+        "shapes": {
+          "circle": "círculo",
+          "square": "cuadrado",
+          "triangle": "triángulo",
+          "star": "estrella",
+          "heart": "corazón",
+          "diamond": "rombo"
+        },
+        "labels": {
+          "blue": "Azul",
+          "red": "Rojo",
+          "green": "Verde",
+          "orange": "Naranja",
+          "purple": "Morado",
+          "yellow": "Amarillo",
+          "pink": "Rosa",
+          "teal": "Verde azulado",
+          "lavender": "Lavanda",
+          "coral": "Coral",
+          "circle": "Círculo",
+          "square": "Cuadrado",
+          "triangle": "Triángulo",
+          "star": "Estrella",
+          "heart": "Corazón",
+          "diamond": "Rombo"
+        }
+      },
+      "templates": {
+        "discovery": "Hola Carlos, quiero agendar una Discovery Call para hablar de una idea.",
+        "launch": "Hola Carlos, quiero lanzar algo concreto (un sitio, una herramienta o una tienda).",
+        "retain": "Hola Carlos, ya tengo un proyecto en marcha y me vendría bien apoyo continuo.",
+        "custom": "Hola Carlos, no estoy seguro cuál opción encaja mejor — esto es lo que quiero hacer:"
       }
     }
   },

@@ -11,21 +11,27 @@ const pathWithoutLocale = getPathWithoutLocale(Astro.url.pathname);
 <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
   <div
     data-language-switcher
+    data-legacy-switcher
     class="relative inline-flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-1 m-1 gap-1"
   >
     {
       locales.map((locale) => (
         <a
           href={getLocalizedPath(pathWithoutLocale, locale)}
+          data-locale={locale}
           class={`relative px-3 py-1.5 text-sm font-medium rounded-md ${
             locale === currentLocale
-              ? "text-slate-900 dark:text-slate-100"
+              ? "text-[color:var(--primary)]"
               : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
           }`}
           aria-label={`Switch to ${locale === "en" ? "English" : "Español"}`}
+          aria-current={locale === currentLocale ? "true" : "false"}
         >
           {locale === currentLocale && (
-            <div class="absolute inset-0 rounded-md shadow-sm bg-slate-200 ring-1 ring-slate-300 dark:bg-slate-700 dark:ring-slate-700" />
+            <div
+              data-locale-active-bg
+              class="absolute inset-0 rounded-md shadow-sm bg-[color:var(--primary-surface)] ring-1 ring-[color:var(--primary-surface-strong)]"
+            />
           )}
           <span class="relative z-10">{locale === "en" ? "EN" : "ES"}</span>
         </a>
@@ -36,6 +42,7 @@ const pathWithoutLocale = getPathWithoutLocale(Astro.url.pathname);
   <!-- Theme Toggle -->
   <button
     id="theme-toggle"
+    data-theme-toggle
     class="control-button bg-slate-100 dark:bg-slate-800"
     aria-label="Toggle theme"
     title="Toggle theme"
@@ -43,7 +50,7 @@ const pathWithoutLocale = getPathWithoutLocale(Astro.url.pathname);
     <!-- Sun icon for dark mode (when light theme is active) -->
     <svg
       id="sun-icon"
-      class="h-5 w-5 text-yellow-500 transition-all duration-300 ease-in-out dark:rotate-90 dark:scale-0"
+      class="h-5 w-5 text-[color:var(--primary)] transition-all duration-300 ease-in-out dark:rotate-90 dark:scale-0"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -59,7 +66,7 @@ const pathWithoutLocale = getPathWithoutLocale(Astro.url.pathname);
     <!-- Moon icon for light mode (when dark theme is active) -->
     <svg
       id="moon-icon"
-      class="absolute h-5 w-5 text-slate-700 transition-all duration-300 ease-in-out rotate-90 scale-0 dark:rotate-0 dark:scale-100 dark:text-slate-300"
+      class="absolute h-5 w-5 text-[color:var(--primary)] transition-all duration-300 ease-in-out rotate-90 scale-0 dark:rotate-0 dark:scale-100"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -89,70 +96,25 @@ const pathWithoutLocale = getPathWithoutLocale(Astro.url.pathname);
     !isServices && (
       <a
         href={getLocalizedPath("/services", currentLocale)}
+        data-localized-href="/services"
+        data-i18n-aria="navigation.services"
+        data-i18n-title="navigation.services"
         class="control-button relative bg-slate-100 dark:bg-slate-800 !w-auto px-3"
         aria-label={t("navigation.services")}
         title={t("navigation.services")}
       >
-        <span class="text-sm">{t("navigation.services")}</span>
+        <span class="text-sm" data-i18n="navigation.services">{t("navigation.services")}</span>
       </a>
     )
   }
 </div>
 
 <script>
-  function initThemeToggle() {
-    const themeToggle = document.getElementById("theme-toggle");
-    const html = document.documentElement;
+  import { initLocaleSwitcher } from "../utils/apply-locale";
+  import { initThemeToggle } from "../utils/theme";
 
-    // Check for saved theme preference or default to 'dark'
-    const savedTheme = localStorage.getItem("theme");
-    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const currentTheme = savedTheme || (systemPrefersDark ? "dark" : "light");
-
-    // Apply initial theme
-    if (currentTheme === "dark") {
-      html.classList.add("dark");
-    } else {
-      html.classList.remove("dark");
-    }
-
-    // Store theme preference
-    localStorage.setItem("theme", currentTheme);
-
-    // Toggle theme function
-    function toggleTheme() {
-      const isDark = html.classList.contains("dark");
-
-      if (isDark) {
-        html.classList.remove("dark");
-        localStorage.setItem("theme", "light");
-      } else {
-        html.classList.add("dark");
-        localStorage.setItem("theme", "dark");
-      }
-    }
-
-    // Add click event listener
-    themeToggle?.addEventListener("click", toggleTheme);
-
-    // Listen for system theme changes
-    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
-      if (!localStorage.getItem("theme")) {
-        if (e.matches) {
-          html.classList.add("dark");
-        } else {
-          html.classList.remove("dark");
-        }
-      }
-    });
-  }
-
-  // Initialize on DOM content loaded
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initThemeToggle);
-  } else {
-    initThemeToggle();
-  }
+  initLocaleSwitcher();
+  initThemeToggle();
 
   // Handle birthday button click
   function initBirthdayButton() {
@@ -171,43 +133,6 @@ const pathWithoutLocale = getPathWithoutLocale(Astro.url.pathname);
         window.location.href = birthdayPath;
       });
     }
-  }
-
-  // Function to update language toggle active states (shared with Layout.astro)
-  function updateLanguageToggleStates(locale) {
-    const languageLinks = document.querySelectorAll('a[href*="/en/"], a[href*="/es/"]');
-
-    languageLinks.forEach((link) => {
-      const href = link.getAttribute("href");
-      const linkLocale = href.includes("/es/") ? "es" : "en";
-
-      // Remove existing active background
-      const existingBg = link.querySelector(".absolute.inset-0");
-      if (existingBg) {
-        existingBg.remove();
-      }
-
-      // Update text colors
-      if (linkLocale === locale) {
-        // Active state
-        link.className = link.className.replace(
-          /text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200/g,
-          "text-slate-900 dark:text-slate-100"
-        );
-
-        // Add active background
-        const activeBg = document.createElement("div");
-        activeBg.className =
-          "absolute inset-0 bg-white dark:bg-slate-700 rounded-md shadow-sm transition-all duration-300 ease-in-out";
-        link.appendChild(activeBg);
-      } else {
-        // Inactive state
-        link.className = link.className.replace(
-          /text-slate-900 dark:text-slate-100/g,
-          "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-        );
-      }
-    });
   }
 
   // Initialize birthday button
