@@ -44,15 +44,17 @@ yarn preview
 
 ```text
 src/
-├── components/       # Astro UI (nav, home, services, contact modal, …)
-├── i18n/             # en.json, es.json translation strings
-├── layouts/          # Layout.astro (SEO, theme, global styles)
+├── components/       # Page UI (home, services, nav, contact modal, …)
+├── content/          # Blog collection (`blog/` + config.ts schema)
+├── content.config.ts # Astro 5 content collections entry
+├── i18n/             # en.json, es.json — UI chrome only
+├── layouts/          # Layout.astro (nav, theme, contact, ambient)
 ├── pages/
 │   ├── en/           # English routes
 │   ├── es/           # Spanish routes
 │   └── api/          # Server endpoints (e.g. contact)
 ├── styles/           # tokens.css — colors, surfaces, buttons
-└── utils/            # i18n, theme, icons, human-check, accent text
+└── utils/            # i18n, theme, blog topics, icons, …
 public/
 └── images/           # Static assets (e.g. profile photo)
 ```

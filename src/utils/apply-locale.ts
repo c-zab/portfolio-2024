@@ -4,14 +4,10 @@ import {
   getPathWithoutLocale,
   getTranslation,
   getTranslationList,
+  isContentPath,
   type Locale,
 } from "./i18n";
 import { accentize, stripAccentMarkers } from "./accent-text";
-
-const ACTIVE_LINK =
-  "relative px-3 py-1.5 text-sm font-medium rounded-md text-[color:var(--primary)]";
-const INACTIVE_LINK =
-  "relative px-3 py-1.5 text-sm font-medium rounded-md text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200";
 
 function setMeta(name: string, content: string) {
   document.querySelector(`meta[name="${name}"]`)?.setAttribute("content", content);
@@ -34,8 +30,6 @@ function documentTitle(locale: Locale): string | null {
 
 function syncLanguageSwitcher(locale: Locale) {
   document.querySelectorAll("[data-language-switcher]").forEach((root) => {
-    const isLegacy = root.hasAttribute("data-legacy-switcher");
-
     root.querySelectorAll<HTMLAnchorElement>("[data-locale]").forEach((link) => {
       const active = link.dataset.locale === locale;
       link.classList.toggle("is-active", active);
@@ -44,27 +38,21 @@ function syncLanguageSwitcher(locale: Locale) {
       } else {
         link.removeAttribute("aria-current");
       }
-
-      if (!isLegacy) return;
-
-      link.className = active ? ACTIVE_LINK : INACTIVE_LINK;
-      if (active) link.classList.add("is-active");
-
-      const existingBg = link.querySelector("[data-locale-active-bg]");
-      if (active && !existingBg) {
-        const bg = document.createElement("div");
-        bg.setAttribute("data-locale-active-bg", "");
-        bg.className =
-          "absolute inset-0 rounded-md shadow-sm bg-[color:var(--primary-surface)] ring-1 ring-[color:var(--primary-surface-strong)]";
-        link.prepend(bg);
-      } else if (!active && existingBg) {
-        existingBg.remove();
-      }
     });
   });
 }
 
 export function applyLocale(locale: Locale, { updateHistory = true } = {}) {
+  const nextPath = getLocalizedPath(getPathWithoutLocale(window.location.pathname), locale);
+
+  if (isContentPath(window.location.pathname)) {
+    localStorage.setItem("preferred-language", locale);
+    if (nextPath !== window.location.pathname) {
+      window.location.assign(nextPath);
+    }
+    return;
+  }
+
   const t = (key: string) => getTranslation(locale, key);
 
   document.documentElement.lang = locale;
@@ -130,7 +118,6 @@ export function applyLocale(locale: Locale, { updateHistory = true } = {}) {
   syncLanguageSwitcher(locale);
 
   if (updateHistory) {
-    const nextPath = getLocalizedPath(getPathWithoutLocale(window.location.pathname), locale);
     if (nextPath !== window.location.pathname) {
       history.pushState({ locale }, "", nextPath);
     }
@@ -159,6 +146,7 @@ export function initLocaleSwitcher() {
   });
 
   window.addEventListener("popstate", () => {
+    if (isContentPath(window.location.pathname)) return;
     applyLocale(getLocaleFromPath(window.location.pathname), { updateHistory: false });
   });
 }

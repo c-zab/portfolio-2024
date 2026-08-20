@@ -83,3 +83,9 @@ export function getLocalizedPath(path: string, locale: Locale): string {
   }
   return path === "/" ? "/es/" : `/es${path}`;
 }
+
+/** Blog index, topic filters, and posts — full navigation, not DOM i18n swap. */
+export function isContentPath(path: string): boolean {
+  const normalized = getPathWithoutLocale(path);
+  return normalized === "/blog" || normalized.startsWith("/blog/");
+}
