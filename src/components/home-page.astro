@@ -1,10 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import AmbientBackground from "./ambient-background.astro";
-import SiteNav from "./site-nav.astro";
 import HeaderLeftSide from "./header-left-side.astro";
 import TechMarquee from "./tech-marquee.astro";
-import ContactModal from "./contact-modal.astro";
 import { getLocaleFromPath, getTranslation } from "../utils/i18n";
 
 const locale = getLocaleFromPath(Astro.url.pathname);
@@ -12,8 +9,6 @@ const t = (key: string) => getTranslation(locale, key);
 ---
 
 <Layout title={`${t("common.name")} - ${t("common.title")} | ${t("common.location")}`} i18nPage="home">
-  <AmbientBackground />
-  <SiteNav />
   <div
     class="relative z-10 mx-auto flex min-h-dvh max-w-screen-xl flex-col overflow-x-hidden px-5 pb-10 pt-24 font-sans sm:px-6 sm:pt-28 md:px-12 lg:px-24"
     itemscope
@@ -24,5 +19,4 @@ const t = (key: string) => getTranslation(locale, key);
     </main>
     <TechMarquee />
   </div>
-  <ContactModal />
 </Layout>

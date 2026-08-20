@@ -5,7 +5,8 @@ interface Props {
   image?: string;
   url?: string;
   variant?: "default" | "hb";
-  i18nPage?: "home" | "services";
+  i18nPage?: "home" | "services" | "blog";
+  ambientSubtle?: boolean;
 }
 
 const {
@@ -15,14 +16,20 @@ const {
   url = "https://carloszabaleta.dev/",
   variant = "default",
   i18nPage,
+  ambientSubtle,
 } = Astro.props;
 
 import "@fontsource/inter";
 import "@fontsource-variable/inter";
 import "../styles/tokens.css";
+import AmbientBackground from "../components/ambient-background.astro";
+import SiteNav from "../components/site-nav.astro";
+import ContactModal from "../components/contact-modal.astro";
 import { getLocaleFromPath } from "../utils/i18n";
 
 const locale = getLocaleFromPath(Astro.url.pathname);
+const showChrome = variant === "default";
+const useSubtleAmbient = ambientSubtle ?? (i18nPage === "services" || i18nPage === "blog");
 ---
 
 <!doctype html>
@@ -145,9 +152,12 @@ const locale = getLocaleFromPath(Astro.url.pathname);
     class="leading-relaxed antialiased selection:bg-[color:var(--primary-surface-strong)] selection:text-[color:var(--primary)]"
     style="color: var(--text-secondary);"
   >
+    {showChrome && <AmbientBackground subtle={useSubtleAmbient} />}
+    {showChrome && <SiteNav />}
     <div class="inset-0 z-30">
       <slot />
     </div>
+    {showChrome && <ContactModal />}
 
     <script>
       const isHBPage = document.body && document.body.dataset.page === "hb";
