@@ -71,6 +71,9 @@ const t = (key: string) => getTranslation(locale, key);
         })
         .join("");
 
+      // Reveal the name container only after letters exist (CSS keeps raw text hidden pre-JS).
+      textWrapper.classList.add("is-split");
+
       anime
         .timeline({
           easing: "easeOutExpo",
@@ -183,9 +186,19 @@ const t = (key: string) => getTranslation(locale, key);
     left: 0;
   }
 
+  /* Hide the full name until JS splits it — prevents a flash of static text on slow loads. */
+  .ml11 .letters {
+    opacity: 0;
+  }
+
+  .ml11 .letters.is-split {
+    opacity: 1;
+  }
+
   .ml11 :global(.letter) {
     display: inline-block;
     line-height: 1em;
+    opacity: 0;
   }
 
   .hero-enter {
@@ -193,12 +206,15 @@ const t = (key: string) => getTranslation(locale, key);
   }
 
   :global(html.hero-ready) .hero-enter,
+  :global(html.hero-ready) .ml11 .letters,
   :global(html.hero-ready) .ml11 :global(.letter) {
     opacity: 1;
     transform: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .ml11 .letters,
+    .ml11 :global(.letter),
     .hero-enter {
       opacity: 1;
       transform: none;

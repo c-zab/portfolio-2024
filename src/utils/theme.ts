@@ -8,7 +8,7 @@ export function applyTheme(theme: "light" | "dark") {
 export function getPreferredTheme(): "light" | "dark" {
   const saved = localStorage.getItem("theme");
   if (saved === "light" || saved === "dark") return saved;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return "dark";
 }
 
 export function initThemeToggle() {
@@ -21,10 +21,5 @@ export function initThemeToggle() {
     const button = (event.target as HTMLElement | null)?.closest("[data-theme-toggle]");
     if (!button) return;
     applyTheme(document.documentElement.classList.contains("dark") ? "light" : "dark");
-  });
-
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
-    if (localStorage.getItem("theme")) return;
-    applyTheme(event.matches ? "dark" : "light");
   });
 }

@@ -2,11 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 import Icon from "./icon.astro";
 import { type IconName } from "../utils/icons";
-import { getLocaleFromPath, getTranslation, getTranslationList } from "../utils/i18n";
+import { getLocaleFromPath, getLocalizedPath, getTranslation, getTranslationList } from "../utils/i18n";
 import { accentize } from "../utils/accent-text";
 
 const locale = getLocaleFromPath(Astro.url.pathname);
 const t = (key: string) => getTranslation(locale, key);
+const melodiaFootersHref = getLocalizedPath("/melodia/footers", locale);
 
 const packageConfig = {
   discovery: {
@@ -145,6 +146,17 @@ const profilePhoto = "/images/carlos.jpg";
             data-i18n-accent="services.introChoice"
             set:html={accentize(t("services.introChoice"))}
           />
+          <p class="text-sm leading-relaxed lg:text-base" style="color: var(--text-muted);">
+            Current work:{" "}
+            <a
+              href={melodiaFootersHref}
+              data-localized-href="/melodia/footers"
+              class="font-medium underline-offset-2 hover:underline"
+              style="color: var(--primary);"
+            >
+              Melodia footers
+            </a>
+          </p>
         </div>
       </header>
 
