@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { supabase } from "../../db/supabase.js";
 import { isHumanAnswer } from "../../utils/human-check";
 
 export const prerender = false;
@@ -18,8 +19,9 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: false, error: "invalid" }, 400);
   }
 
+  // Honeypot: pretend success so bots think it worked
   if (asString(body.website)) {
-    return json({ ok: true, mocked: true });
+    return json({ ok: true });
   }
 
   const name = asString(body.name);
@@ -49,7 +51,20 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: false, error: "human" }, 400);
   }
 
-  return json({ ok: true, mocked: true });
+  const { error } = await supabase.from("contact_messages").insert({
+    name,
+    email: email || null,
+    phone: phone || null,
+    package: pkg,
+    message,
+  });
+
+  if (error) {
+    console.error("[contact] supabase insert failed:", error.message);
+    return json({ ok: false, error: "server" }, 500);
+  }
+
+  return json({ ok: true });
 };
 
 function json(data: unknown, status = 200) {

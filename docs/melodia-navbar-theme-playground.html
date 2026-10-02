@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Navbar Direction Preview — Melodía de Bolivia</title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+
+      --page: #0b0a0c;
+      --surface: #1c1614;
+      --surface-soft: #15110f;
+      --surface-hover: #261c1a;
+      --text: #fafaf9;
+      --text-soft: #d6d3d1;
+      --muted: #7c736e;
+      --line: #2c2422;
+
+      --primary: #d52b1e;
+      --primary-hover: #ee3c2e;
+      --secondary: #d4956a;
+      --gold: #f4c51e;
+      --green: #007a33;
+
+      --accent-text: #fecaca;
+      --accent-muted: rgba(213, 43, 30, .16);
+      --focus: rgba(213, 43, 30, .5);
+
+      --flag-red:#d52b1e;
+      --flag-yellow:#f4c51e;
+      --flag-green:#007a33;
+    }
+
+    body[data-theme="copper"] {
+      --page: #0e0907;
+      --surface: #211612;
+      --surface-soft: #18110d;
+      --surface-hover: #2c1e18;
+      --text: #fff8f1;
+      --text-soft: #ead8ca;
+      --muted: #9f8778;
+      --line: #3a2b24;
+
+      --primary: #d4956a;
+      --primary-hover: #e8b08a;
+      --secondary: #d52b1e;
+      --gold: #e8b923;
+      --green: #1f8a3b;
+
+      --accent-text: #f3c5a8;
+      --accent-muted: rgba(212, 149, 106, .16);
+      --focus: rgba(212, 149, 106, .48);
+
+      --flag-red:#d52b1e;
+      --flag-yellow:#f4c51e;
+      --flag-green:#007a33;
+    }
+
+    body[data-theme="festival"] {
+      --page: #090b08;
+      --surface: #141812;
+      --surface-soft: #10140f;
+      --surface-hover: #1c231a;
+      --text: #fafaf7;
+      --text-soft: #d8d8d2;
+      --muted: #7e827b;
+      --line: #2a3128;
+
+      --primary: #d52b1e;
+      --primary-hover: #ee3c2e;
+      --secondary: #f4c51e;
+      --gold: #f4c51e;
+      --green: #1f8a3b;
+
+      --accent-text: #f0d984;
+      --accent-muted: rgba(244, 197, 30, .16);
+      --focus: rgba(244, 197, 30, .42);
+
+      --flag-red:#d52b1e;
+      --flag-yellow:#f4c51e;
+      --flag-green:#007a33;
+    }
+
+    body[data-theme="anniversary"] {
+      --page: #0d0216;
+      --surface: #1a0f28;
+      --surface-soft: #140a1f;
+      --surface-hover: #261538;
+      --text: #fff8ff;
+      --text-soft: #e8d6f0;
+      --muted: #9b8490;
+      --line: #3a2648;
+
+      --primary: #f0a020;
+      --primary-hover: #ffb84a;
+      --secondary: #d946ef;
+      --gold: #f9a825;
+      --green: #45c400;
+
+      --accent-text: #fcd34d;
+      --accent-muted: rgba(217, 70, 239, .16);
+      --focus: rgba(240, 160, 32, .45);
+
+      --flag-red: #d52b1e;
+      --flag-yellow: #f9e814;
+      --flag-green: #007934;
+    }
+
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      background:var(--page);
+      color:var(--text);
+      font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      transition:background .25s ease,color .25s ease;
+    }
+    a { color:inherit; text-decoration:none; }
+    button { font:inherit; }
+
+    .topbar {
+      position:sticky; top:0; z-index:50;
+      background:color-mix(in srgb,var(--page) 93%, transparent);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:blur(18px);
+    }
+    .topbar-inner {
+      max-width:1400px; margin:0 auto; padding:13px 18px;
+      display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    }
+    .topbar-title { font-weight:700; white-space:nowrap; margin-right:5px; }
+    .control-group { display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+    .spacer { flex:1; }
+    .control-label {
+      color:var(--muted); font-size:10px; letter-spacing:.11em; text-transform:uppercase; margin-right:2px;
+    }
+    .control-btn {
+      border:1px solid var(--line); background:var(--surface-soft); color:var(--muted);
+      border-radius:999px; padding:8px 12px; cursor:pointer; transition:.18s ease;
+    }
+    .control-btn:hover, .control-btn.active {
+      color:var(--text); background:var(--surface-hover);
+      border-color:color-mix(in srgb,var(--line) 55%,var(--text) 45%);
+    }
+    .theme-dot {
+      width:7px; height:7px; border-radius:50%; display:inline-block; margin-right:6px; vertical-align:1px;
+    }
+    .theme-dot.heritage { background:#d52b1e; }
+    .theme-dot.copper { background:#d4956a; }
+    .theme-dot.festival { background:linear-gradient(90deg,#d52b1e 0 33%,#f4c51e 33% 66%,#007a33 66%); }
+    .theme-dot.anniversary { background:linear-gradient(135deg,#f0a020 0 40%,#d946ef 40% 70%,#0d0216 70%); }
+
+    .page { max-width:1400px; margin:0 auto; padding:24px 20px 44px; }
+    .intro {
+      display:flex; align-items:flex-end; justify-content:space-between; gap:30px; padding:8px 2px 22px;
+    }
+    .intro h1 {
+      margin:0; font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(34px,4.4vw,58px); font-weight:400; letter-spacing:-.045em;
+    }
+    .intro-copy { max-width:520px; color:var(--muted); font-size:13px; line-height:1.6; }
+
+    .preview-shell { width:100%; transition:.3s ease; }
+    .preview-shell.mobile {
+      width:min(430px,100%); margin:0 auto;
+      border:1px solid var(--line); border-radius:28px; overflow:hidden;
+      box-shadow:0 36px 90px rgba(0,0,0,.4);
+    }
+
+    .model { display:none; overflow:hidden; border:1px solid var(--line); border-radius:26px; background:var(--page); }
+    .model.active { display:block; }
+
+    /* Shared nav pieces — match localhost:3000 */
+    .site-header {
+      background:color-mix(in srgb,var(--page) 95%, transparent);
+      border-bottom:1px solid color-mix(in srgb,var(--line) 80%, transparent);
+      padding:12px 24px;
+    }
+    .site-header__inner {
+      max-width:896px; margin:0 auto;
+      display:flex; flex-wrap:wrap; align-items:center; gap:12px;
+    }
+    .brand {
+      display:flex; min-width:0; align-items:center; gap:8px;
+    }
+    .brand img { width:32px; height:32px; object-fit:contain; flex:0 0 auto; }
+    .brand span {
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+      font-size:14px; font-weight:600; line-height:20px; color:var(--text);
+    }
+    .links {
+      display:flex; min-width:0; flex:1; flex-wrap:wrap;
+      align-items:center; gap:12px 12px;
+      font-size:12px; color:var(--muted);
+    }
+    .links a { color:var(--muted); }
+    .links a:hover { color:var(--text-soft); }
+    .links a.is-active { color:var(--accent-text); font-weight:500; }
+
+    .tools { margin-left:auto; display:flex; align-items:center; gap:8px; }
+
+    .locale {
+      display:inline-flex; flex-shrink:0;
+      padding:2px; border-radius:8px;
+      background:color-mix(in srgb,var(--surface) 90%, black);
+      box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--line) 85%, transparent);
+    }
+    .locale button {
+      border:0; background:transparent; color:var(--muted);
+      border-radius:6px; padding:4px 8px;
+      font-size:10px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
+      cursor:pointer;
+    }
+    .locale button.is-active {
+      background:var(--accent-muted);
+      color:var(--accent-text);
+      box-shadow:inset 0 0 0 1px var(--focus);
+    }
+
+    .ghost {
+      border-radius:6px; padding:4px 8px;
+      font-size:11px; color:var(--muted);
+      box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--line) 90%, transparent);
+    }
+    .ghost:hover { color:var(--text-soft); }
+
+    .cta {
+      border:0; cursor:pointer;
+      border-radius:8px; padding:6px 12px;
+      background:var(--primary); color:#fff;
+      font-size:12px; font-weight:600;
+    }
+    body[data-theme="copper"] .cta,
+    body[data-theme="anniversary"] .cta { color:#170d09; }
+    .cta:hover { background:var(--primary-hover); }
+
+    .menu-btn {
+      display:none; width:32px; height:32px;
+      border:1px solid var(--line); border-radius:6px;
+      background:transparent; color:var(--text); cursor:pointer;
+      align-items:center; justify-content:center;
+    }
+    .menu-btn span,
+    .menu-btn span::before,
+    .menu-btn span::after {
+      display:block; width:14px; height:1.5px; background:currentColor; position:relative;
+    }
+    .menu-btn span::before, .menu-btn span::after { content:""; position:absolute; left:0; }
+    .menu-btn span::before { top:-5px; }
+    .menu-btn span::after { top:5px; }
+
+    .flag-bar {
+      height:3px;
+      background:linear-gradient(90deg,var(--flag-red) 0 33.33%,var(--flag-yellow) 33.33% 66.66%,var(--flag-green) 66.66%);
+    }
+
+    /* 02 Split — same parts, links stay on one row in the middle */
+    .split .site-header__inner { flex-wrap:nowrap; }
+    .split .links { flex:1; justify-content:center; flex-wrap:nowrap; }
+    .split .brand span { max-width:160px; }
+
+    /* 03 Stripe — same bar + flag + Join */
+    .stripe .site-header { padding:14px 24px; }
+
+    .page-mock { padding:28px 24px 40px; }
+    .page-mock__inner { max-width:896px; margin:0 auto; }
+    .hero {
+      overflow:hidden; border-radius:16px;
+      box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--line) 80%, transparent);
+      min-height:220px;
+      display:flex; flex-direction:column; justify-content:flex-end;
+      padding:28px;
+      background:
+        linear-gradient(180deg,transparent 20%,rgba(0,0,0,.72)),
+        radial-gradient(circle at 30% 40%,color-mix(in srgb,var(--gold) 28%,transparent),transparent 42%),
+        radial-gradient(circle at 80% 20%,color-mix(in srgb,var(--primary) 22%,transparent),transparent 40%),
+        #140e0c;
+    }
+    .hero .kicker {
+      font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:#d6d3d1;
+    }
+    .hero h2 { margin:4px 0 0; font-size:30px; font-weight:600; }
+    .hero p { margin:8px 0 0; font-size:14px; color:#e7e5e4; }
+    .actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:20px; }
+    .page-copy { max-width:640px; margin:24px 0 0; color:var(--muted); font-size:14px; line-height:1.6; }
+
+    .mobile-panel { display:none; padding:8px 20px 16px; border-top:1px solid var(--line); background:var(--surface-soft); }
+    .mobile-panel a {
+      display:block; padding:11px 4px; color:var(--muted); font-size:13px;
+      border-bottom:1px solid var(--line);
+    }
+    .mobile-panel a.is-active { color:var(--accent-text); }
+    .is-menu-open .mobile-panel { display:block; }
+
+    .theme-info {
+      margin-top:18px; border:1px solid var(--line); border-radius:18px;
+      background:var(--surface-soft); padding:16px 18px;
+      display:flex; align-items:center; justify-content:space-between; gap:22px; flex-wrap:wrap;
+    }
+    .theme-copy strong { display:block; font-size:13px; margin-bottom:3px; }
+    .theme-copy span { color:var(--muted); font-size:11px; }
+    .swatches { display:flex; gap:8px; }
+    .swatch {
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.32);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.25);
+    }
+    .swatch.primary { background:var(--primary); }
+    .swatch.secondary { background:var(--secondary); }
+    .swatch.gold { background:var(--gold); }
+    .swatch.green { background:var(--green); }
+    .page-note { margin-top:14px; text-align:center; color:var(--muted); font-size:11px; }
+
+    .preview-shell.mobile .links,
+    .preview-shell.mobile .ghost,
+    .preview-shell.mobile .cta { display:none; }
+    .preview-shell.mobile .menu-btn { display:inline-flex; }
+    .preview-shell.mobile .site-header__inner { flex-wrap:nowrap; }
+    .preview-shell.mobile .split .links { display:none; }
+
+    @media (max-width: 760px) {
+      .preview-shell:not(.mobile) .split .links,
+      .preview-shell:not(.mobile) .stripe .links { display:none; }
+      .preview-shell:not(.mobile) .split .menu-btn,
+      .preview-shell:not(.mobile) .stripe .menu-btn { display:inline-flex; }
+    }
+  </style>
+</head>
+<body data-theme="heritage" data-copy="es">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-title">Navbar Direction Preview</div>
+    <div class="control-group">
+      <span class="control-label">Layout</span>
+      <button class="control-btn layout-btn active" data-target="model1">01 Current</button>
+      <button class="control-btn layout-btn" data-target="model2">02 Split</button>
+      <button class="control-btn layout-btn" data-target="model3">03 Stripe</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="control-group">
+      <span class="control-label">Theme</span>
+      <button class="control-btn theme-btn active" data-theme="heritage"><span class="theme-dot heritage"></span>Altiplano</button>
+      <button class="control-btn theme-btn" data-theme="copper"><span class="theme-dot copper"></span>Cobre Andino</button>
+      <button class="control-btn theme-btn" data-theme="festival"><span class="theme-dot festival"></span>Entrada</button>
+      <button class="control-btn theme-btn" data-theme="anniversary"><span class="theme-dot anniversary"></span>35 Años</button>
+    </div>
+    <div class="control-group">
+      <span class="control-label">Preview</span>
+      <button class="control-btn view-btn active" data-view="web">Web</button>
+      <button class="control-btn view-btn" data-view="mobile">Mobile</button>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+  <section class="intro">
+    <h1>Navbar Direction Preview</h1>
+    <div class="intro-copy">
+      Built from the live Melodía header on localhost:3000 — small logo, text links, EN/ES pills, Sign in.
+      The other two layouts keep those same pieces and only change how they sit.
+    </div>
+  </section>
+
+  <div class="preview-shell" id="previewShell">
+
+    <section class="model current active" id="model1">
+      <header class="site-header">
+        <div class="site-header__inner">
+          <a class="brand" href="#">
+            <img src="/melodia/logo.png" alt="" />
+            <span>Melodía de Bolivia</span>
+          </a>
+          <nav class="links" data-nav-links>
+            <a href="#" class="is-active" data-i18n="home">Inicio</a>
+            <a href="#" data-i18n="about">Nosotros</a>
+            <a href="#" data-i18n="dances">Danzas</a>
+            <a href="#" data-i18n="events">Eventos</a>
+            <a href="#" data-i18n="gallery">Galería</a>
+            <a href="#" data-i18n="contact">Contacto</a>
+          </nav>
+          <div class="tools">
+            <div class="locale" data-locale>
+              <button type="button" class="is-active" data-lang="es">ES</button>
+              <button type="button" data-lang="en">EN</button>
+            </div>
+            <a class="ghost" href="#" data-i18n="signin">Entrar</a>
+            <button type="button" class="menu-btn" data-menu-toggle aria-label="Open menu"><span></span></button>
+          </div>
+        </div>
+      </header>
+      <div class="mobile-panel" data-mobile-panel></div>
+      <div class="page-mock" data-page-mock></div>
+    </section>
+
+    <section class="model split" id="model2">
+      <header class="site-header">
+        <div class="site-header__inner">
+          <a class="brand" href="#">
+            <img src="/melodia/logo.png" alt="" />
+            <span>Melodía de Bolivia</span>
+          </a>
+          <nav class="links" data-nav-links>
+            <a href="#" class="is-active" data-i18n="home">Inicio</a>
+            <a href="#" data-i18n="about">Nosotros</a>
+            <a href="#" data-i18n="dances">Danzas</a>
+            <a href="#" data-i18n="events">Eventos</a>
+            <a href="#" data-i18n="gallery">Galería</a>
+            <a href="#" data-i18n="contact">Contacto</a>
+          </nav>
+          <div class="tools">
+            <div class="locale" data-locale>
+              <button type="button" class="is-active" data-lang="es">ES</button>
+              <button type="button" data-lang="en">EN</button>
+            </div>
+            <a class="ghost" href="#" data-i18n="signin">Entrar</a>
+            <button type="button" class="menu-btn" data-menu-toggle aria-label="Open menu"><span></span></button>
+          </div>
+        </div>
+      </header>
+      <div class="mobile-panel" data-mobile-panel></div>
+      <div class="page-mock" data-page-mock></div>
+    </section>
+
+    <section class="model stripe" id="model3">
+      <div class="flag-bar"></div>
+      <header class="site-header">
+        <div class="site-header__inner">
+          <a class="brand" href="#">
+            <img src="/melodia/logo.png" alt="" />
+            <span>Melodía de Bolivia</span>
+          </a>
+          <nav class="links" data-nav-links>
+            <a href="#" class="is-active" data-i18n="home">Inicio</a>
+            <a href="#" data-i18n="about">Nosotros</a>
+            <a href="#" data-i18n="dances">Danzas</a>
+            <a href="#" data-i18n="events">Eventos</a>
+            <a href="#" data-i18n="gallery">Galería</a>
+            <a href="#" data-i18n="contact">Contacto</a>
+          </nav>
+          <div class="tools">
+            <div class="locale" data-locale>
+              <button type="button" class="is-active" data-lang="es">ES</button>
+              <button type="button" data-lang="en">EN</button>
+            </div>
+            <a class="cta" href="#" data-i18n="join">Únete</a>
+            <button type="button" class="menu-btn" data-menu-toggle aria-label="Open menu"><span></span></button>
+          </div>
+        </div>
+      </header>
+      <div class="mobile-panel" data-mobile-panel></div>
+      <div class="page-mock" data-page-mock></div>
+    </section>
+
+  </div>
+
+  <section class="theme-info">
+    <div class="theme-copy">
+      <strong id="themeName">Altiplano</strong>
+      <span id="themeDescription">Highland night. Bolivia’s flag red leads. Closest to the colors already on localhost:3000.</span>
+    </div>
+    <div class="swatches" aria-label="Current theme colors">
+      <span class="swatch primary" title="Primary"></span>
+      <span class="swatch secondary" title="Secondary"></span>
+      <span class="swatch gold" title="Gold"></span>
+      <span class="swatch green" title="Green"></span>
+    </div>
+  </section>
+  <div class="page-note">Navbar concept preview · Current is the live header; Split and Stripe are small moves from there</div>
+</main>
+
+<script>
+  const copy = {
+    es: {
+      home: 'Inicio', about: 'Nosotros', dances: 'Danzas', events: 'Eventos',
+      gallery: 'Galería', contact: 'Contacto', signin: 'Entrar', join: 'Únete',
+      city: 'Toronto', title: 'Melodía de Bolivia',
+      tagline: 'Danza folklórica boliviana en Toronto.',
+      intro: 'Melodía de Bolivia comparte la cultura boliviana a través de la danza. Este primer sitio es una vista previa.',
+      book: 'Contrátanos'
+    },
+    en: {
+      home: 'Home', about: 'About', dances: 'Dances', events: 'Events',
+      gallery: 'Gallery', contact: 'Contact', signin: 'Sign in', join: 'Join',
+      city: 'Toronto', title: 'Melodía de Bolivia',
+      tagline: 'Bolivian folk dance in Toronto.',
+      intro: 'Melodía de Bolivia shares Bolivian culture through dance. This first site is a preview.',
+      book: 'Book us'
+    }
+  };
+
+  const themeInfo = {
+    heritage: {
+      name: 'Altiplano',
+      description: 'Highland night. Bolivia’s flag red leads. Closest to the colors already on localhost:3000.'
+    },
+    copper: {
+      name: 'Cobre Andino',
+      description: 'Warm costume metal — copper, embroidery gold, and red from the pollera and the brass.'
+    },
+    festival: {
+      name: 'Entrada',
+      description: 'Parade night. Red, yellow, and green of the Bolivian flag, still on a dark street.'
+    },
+    anniversary: {
+      name: '35 Años',
+      description: 'From the anniversary party flyer: deep purple night, Melodía gold, magenta neon, and flag accents.'
+    }
+  };
+
+  const layoutButtons = document.querySelectorAll('.layout-btn');
+  const models = document.querySelectorAll('.model');
+  const themeButtons = document.querySelectorAll('.theme-btn');
+  const viewButtons = document.querySelectorAll('.view-btn');
+  const previewShell = document.getElementById('previewShell');
+
+  function lang() {
+    return document.body.dataset.copy === 'en' ? 'en' : 'es';
+  }
+
+  function applyCopy() {
+    const t = copy[lang()];
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key]) el.textContent = t[key];
+    });
+    document.querySelectorAll('[data-page-mock]').forEach((el) => {
+      el.innerHTML = `
+        <div class="page-mock__inner">
+          <div class="hero">
+            <div class="kicker">${t.city}</div>
+            <h2>${t.title}</h2>
+            <p>${t.tagline}</p>
+          </div>
+          <p class="page-copy">${t.intro}</p>
+          <div class="actions">
+            <a class="cta" href="#">${t.join}</a>
+            <a class="ghost" href="#" style="padding:8px 12px;font-size:13px;border-radius:8px">${t.book}</a>
+          </div>
+        </div>`;
+    });
+  }
+
+  function closeMenus() {
+    models.forEach((model) => model.classList.remove('is-menu-open'));
+  }
+
+  layoutButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      layoutButtons.forEach((b) => b.classList.remove('active'));
+      models.forEach((m) => m.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.target).classList.add('active');
+      closeMenus();
+    });
+  });
+
+  themeButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      themeButtons.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      const theme = btn.dataset.theme;
+      document.body.dataset.theme = theme;
+      document.getElementById('themeName').textContent = themeInfo[theme].name;
+      document.getElementById('themeDescription').textContent = themeInfo[theme].description;
+    });
+  });
+
+  viewButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      viewButtons.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      previewShell.classList.toggle('mobile', btn.dataset.view === 'mobile');
+      closeMenus();
+    });
+  });
+
+  document.querySelectorAll('[data-nav-links] a').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const nav = link.closest('[data-nav-links]');
+      nav.querySelectorAll('a').forEach((item) => item.classList.toggle('is-active', item === link));
+    });
+  });
+
+  document.querySelectorAll('[data-locale]').forEach((locale) => {
+    locale.querySelectorAll('button').forEach((button) => {
+      button.addEventListener('click', () => {
+        const next = button.dataset.lang;
+        document.body.dataset.copy = next;
+        document.querySelectorAll('[data-locale] button').forEach((item) => {
+          item.classList.toggle('is-active', item.dataset.lang === next);
+        });
+        applyCopy();
+      });
+    });
+  });
+
+  document.querySelectorAll('[data-menu-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const model = button.closest('.model');
+      const panel = model.querySelector('[data-mobile-panel]');
+      const links = model.querySelector('[data-nav-links]');
+      panel.innerHTML = links.innerHTML;
+      panel.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          panel.querySelectorAll('a').forEach((item) => item.classList.toggle('is-active', item === link));
+          links.querySelectorAll('a').forEach((item) => {
+            item.classList.toggle('is-active', item.dataset.i18n === link.dataset.i18n);
+          });
+          model.classList.remove('is-menu-open');
+        });
+      });
+      model.classList.toggle('is-menu-open');
+    });
+  });
+
+  applyCopy();
+</script>
+</body>
+</html>

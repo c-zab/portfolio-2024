@@ -4,7 +4,6 @@ import { getLocaleFromPath, getLocalizedPath, getPathWithoutLocale, getTranslati
 const currentLocale = getLocaleFromPath(Astro.url.pathname);
 const t = (key: string) => getTranslation(currentLocale, key);
 const pathWithoutLocale = getPathWithoutLocale(Astro.url.pathname);
-const isHome = pathWithoutLocale === "/";
 const isServices = pathWithoutLocale.startsWith("/services");
 const homeHref = getLocalizedPath("/", currentLocale);
 ---
@@ -98,12 +97,12 @@ const homeHref = getLocalizedPath("/", currentLocale);
     <div class="site-nav__end" id="site-menu">
       <nav class="site-nav__links" aria-label="Primary">
         <a
-          href={homeHref}
-          data-localized-href="/"
-          class:list={["nav-link", { "is-active": isHome }]}
-          aria-current={isHome ? "page" : undefined}
+          href={getLocalizedPath("/services", currentLocale)}
+          data-localized-href="/services"
+          class:list={["nav-link", { "is-active": isServices }]}
+          aria-current={isServices ? "page" : undefined}
         >
-          <span data-i18n="navigation.home">{t("navigation.home")}</span>
+          <span data-i18n="navigation.services">{t("navigation.services")}</span>
         </a>
         <button
           type="button"
@@ -115,23 +114,6 @@ const homeHref = getLocalizedPath("/", currentLocale);
           data-i18n-title="navigation.comingSoon"
         >
           <span data-i18n="navigation.blog">{t("navigation.blog")}</span>
-        </button>
-        <a
-          href={getLocalizedPath("/services", currentLocale)}
-          data-localized-href="/services"
-          class:list={["nav-link", { "is-active": isServices }]}
-          aria-current={isServices ? "page" : undefined}
-        >
-          <span data-i18n="navigation.services">{t("navigation.services")}</span>
-        </a>
-        <button
-          type="button"
-          class="nav-link"
-          data-contact-open
-          data-i18n-aria="navigation.contact"
-          aria-label={t("navigation.contact")}
-        >
-          <span data-i18n="navigation.contact">{t("navigation.contact")}</span>
         </button>
       </nav>
     </div>
@@ -166,7 +148,30 @@ const homeHref = getLocalizedPath("/", currentLocale);
   }
 
   function settleNavIntro() {
-    nav?.classList.add("is-intro-done");
+    if (!nav || nav.classList.contains("is-intro-done")) return;
+    nav.querySelectorAll<HTMLElement>(".cz-logo, .nav-toggle, .nav-link, .nav-utils").forEach((el) => {
+      el.style.removeProperty("opacity");
+      el.style.removeProperty("transform");
+    });
+    nav.classList.add("is-intro-done");
+    // #region agent log
+    fetch("http://127.0.0.1:7492/ingest/89ec010a-f3d9-4ec5-962c-ad0cd94b6d45", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "3bc5bd" },
+      body: JSON.stringify({
+        sessionId: "3bc5bd",
+        runId: "pre-fix",
+        hypothesisId: "D",
+        location: "site-nav.astro:settleNavIntro",
+        message: "nav intro settled",
+        data: {
+          introDone: nav.classList.contains("is-intro-done"),
+          logoOpacity: getComputedStyle(document.querySelector(".cz-logo")!).opacity,
+        },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+    // #endregion
   }
 
   if (nav) {
@@ -184,15 +189,36 @@ const homeHref = getLocalizedPath("/", currentLocale);
         el.style.transform = "translateY(-10px)";
       });
 
+      // If anime never ticks (background tab, blocked rAF, etc.), still reveal the nav.
+      const introFallback = window.setTimeout(settleNavIntro, 1200);
+
       anime({
         targets: items,
-        opacity: (el: HTMLElement) => (el.matches(".is-disabled, :disabled") ? [0, 0.45] : [0, 1]),
-        translateY: [-10, 0],
+        opacity: (el: HTMLElement) => (el.matches(".is-disabled, :disabled") ? 0.45 : 1),
+        translateY: 0,
         delay: anime.stagger(70, { start: 60 }),
         duration: 560,
         easing: "easeOutExpo",
-        complete: settleNavIntro,
+        complete: () => {
+          window.clearTimeout(introFallback);
+          settleNavIntro();
+        },
       });
+      // #region agent log
+      fetch("http://127.0.0.1:7492/ingest/89ec010a-f3d9-4ec5-962c-ad0cd94b6d45", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "3bc5bd" },
+        body: JSON.stringify({
+          sessionId: "3bc5bd",
+          runId: "pre-fix",
+          hypothesisId: "D",
+          location: "site-nav.astro:intro-start",
+          message: "nav intro anime started",
+          data: { itemCount: items.length, prefersReducedMotion },
+          timestamp: Date.now(),
+        }),
+      }).catch(() => {});
+      // #endregion
     }
   }
 
@@ -203,7 +229,7 @@ const homeHref = getLocalizedPath("/", currentLocale);
   menu?.addEventListener("click", (event) => {
     const target = event.target as HTMLElement | null;
     const item = target?.closest<HTMLElement>(
-      "a.nav-link, button.nav-link:not(.is-disabled):not(:disabled), [data-contact-open], .nav-lang__link, .nav-theme"
+      "a.nav-link, button.nav-link:not(.is-disabled):not(:disabled), .nav-lang__link, .nav-theme"
     );
     if (item) setMenuOpen(false);
   });
@@ -216,8 +242,8 @@ const homeHref = getLocalizedPath("/", currentLocale);
   });
 
   document.addEventListener("click", (event) => {
-    if (!nav?.classList.contains("is-open")) return;
     const target = event.target as Node | null;
+    if (!nav?.classList.contains("is-open")) return;
     if (target && !nav.contains(target)) setMenuOpen(false);
   });
 

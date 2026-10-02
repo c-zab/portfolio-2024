@@ -571,15 +571,46 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
         if (submitLabel) submitLabel.textContent = t("services.contact.sending");
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 450));
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            email,
+            phone,
+            package: pkg,
+            message,
+            humanQuestion: questionId,
+            human,
+            website: String(data.get("website") ?? ""),
+          }),
+        });
 
-      form.classList.add("hidden");
-      privacyEl?.classList.add("hidden");
-      successEl?.classList.remove("hidden");
+        const result = (await response.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
 
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        if (submitLabel) submitLabel.textContent = originalLabel;
+        if (!response.ok || !result?.ok) {
+          if (result?.error === "human") {
+            setError(t("services.contact.humanError"));
+            refreshHuman();
+          } else if (result?.error === "contact") {
+            setError(t("services.contact.contactRequired"));
+          } else {
+            setError(t("services.contact.error"));
+          }
+          return;
+        }
+
+        form.classList.add("hidden");
+        privacyEl?.classList.add("hidden");
+        successEl?.classList.remove("hidden");
+      } catch {
+        setError(t("services.contact.error"));
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          if (submitLabel) submitLabel.textContent = originalLabel;
+        }
       }
     });
   }

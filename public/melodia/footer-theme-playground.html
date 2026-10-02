@@ -9,37 +9,37 @@
     :root {
       color-scheme: dark;
 
-      /* Theme 01 — Heritage / current brand direction */
-      --page: #0a0a0a;
-      --surface: #1c1917;
-      --surface-soft: #151311;
-      --surface-hover: #24201d;
+      /* Theme 01 — Altiplano / highland night, Melodía red */
+      --page: #0b0a0c;
+      --surface: #1c1614;
+      --surface-soft: #15110f;
+      --surface-hover: #261c1a;
       --text: #fafaf9;
       --text-soft: #d6d3d1;
-      --muted: #78716c;
-      --line: #292524;
+      --muted: #7c736e;
+      --line: #2c2422;
 
-      --primary: #d42630;
-      --primary-hover: #e8333f;
+      --primary: #d52b1e;
+      --primary-hover: #ee3c2e;
       --secondary: #d4956a;
       --secondary-light: #e8b08a;
-      --gold: #e8b923;
-      --green: #3d9b4a;
+      --gold: #f4c51e;
+      --green: #007a33;
 
       --accent-text: #fecaca;
-      --focus: rgba(232, 51, 63, .5);
+      --focus: rgba(213, 43, 30, .5);
 
-      --flag-red:#d42630;
-      --flag-yellow:#e8b923;
-      --flag-green:#3d9b4a;
+      --flag-red:#d52b1e;
+      --flag-yellow:#f4c51e;
+      --flag-green:#007a33;
     }
 
     body[data-theme="copper"] {
-      /* Theme 02 — Copper Night / warmer and more premium */
-      --page: #0c0908;
-      --surface: #201713;
-      --surface-soft: #17110e;
-      --surface-hover: #2a1f19;
+      /* Theme 02 — Cobre Andino / costume metal, embroidery gold */
+      --page: #0e0907;
+      --surface: #211612;
+      --surface-soft: #18110d;
+      --surface-hover: #2c1e18;
       --text: #fff8f1;
       --text-soft: #ead8ca;
       --muted: #9f8778;
@@ -47,35 +47,69 @@
 
       --primary: #d4956a;
       --primary-hover: #e8b08a;
-      --secondary: #d42630;
+      --secondary: #d52b1e;
       --secondary-light: #ec6870;
       --gold: #e8b923;
-      --green: #4b9854;
+      --green: #1f8a3b;
 
       --accent-text: #f3c5a8;
       --focus: rgba(212, 149, 106, .48);
+
+      --flag-red:#d52b1e;
+      --flag-yellow:#f4c51e;
+      --flag-green:#007a33;
     }
 
     body[data-theme="festival"] {
-      /* Theme 03 — Festival Noir / expressive but still controlled */
-      --page: #080909;
-      --surface: #151715;
-      --surface-soft: #101210;
-      --surface-hover: #1d211d;
+      /* Theme 03 — Entrada / parade night, full tricolor */
+      --page: #090b08;
+      --surface: #141812;
+      --surface-soft: #10140f;
+      --surface-hover: #1c231a;
       --text: #fafaf7;
       --text-soft: #d8d8d2;
       --muted: #7e827b;
-      --line: #292d29;
+      --line: #2a3128;
 
-      --primary: #d42630;
-      --primary-hover: #e8333f;
-      --secondary: #e8b923;
-      --secondary-light: #f1d45e;
-      --gold: #e8b923;
-      --green: #3d9b4a;
+      --primary: #d52b1e;
+      --primary-hover: #ee3c2e;
+      --secondary: #f4c51e;
+      --secondary-light: #f8d85a;
+      --gold: #f4c51e;
+      --green: #1f8a3b;
 
       --accent-text: #f0d984;
-      --focus: rgba(232, 185, 35, .42);
+      --focus: rgba(244, 197, 30, .42);
+
+      --flag-red:#d52b1e;
+      --flag-yellow:#f4c51e;
+      --flag-green:#007a33;
+    }
+
+    body[data-theme="anniversary"] {
+      /* Theme 04 — 35 Años / anniversary party flyer direction */
+      --page: #0d0216;
+      --surface: #1a0f28;
+      --surface-soft: #140a1f;
+      --surface-hover: #261538;
+      --text: #fff8ff;
+      --text-soft: #e8d6f0;
+      --muted: #9b8490;
+      --line: #3a2648;
+
+      --primary: #f0a020;
+      --primary-hover: #ffb84a;
+      --secondary: #d946ef;
+      --secondary-light: #e879f9;
+      --gold: #f9a825;
+      --green: #45c400;
+
+      --flag-red: #d52b1e;
+      --flag-yellow: #f9e814;
+      --flag-green: #007934;
+
+      --accent-text: #fcd34d;
+      --focus: rgba(240, 160, 32, .45);
     }
 
     * { box-sizing:border-box; }
@@ -161,10 +195,13 @@
       vertical-align:1px;
     }
 
-    .theme-dot.heritage { background:#d42630; }
+    .theme-dot.heritage { background:#d52b1e; }
     .theme-dot.copper { background:#d4956a; }
     .theme-dot.festival {
-      background:linear-gradient(90deg,#d42630 0 33%,#e8b923 33% 66%,#3d9b4a 66%);
+      background:linear-gradient(90deg,#d52b1e 0 33%,#f4c51e 33% 66%,#007a33 66%);
+    }
+    .theme-dot.anniversary {
+      background:linear-gradient(135deg,#f0a020 0 40%,#d946ef 40% 70%,#0d0216 70%);
     }
 
     /* ---------- PAGE ---------- */
@@ -308,8 +345,45 @@
     /* ---------- 01 GIANT ---------- */
 
     .giant-footer {
+      position:relative;
       padding:40px clamp(22px,5vw,68px);
       background:var(--surface-soft);
+      overflow:hidden;
+    }
+
+    .giant-footer::before {
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      top:0;
+      height:3px;
+      background:linear-gradient(
+        90deg,
+        var(--flag-red) 0 33.33%,
+        var(--flag-yellow) 33.33% 66.66%,
+        var(--flag-green) 66.66%
+      );
+    }
+
+    body[data-theme="copper"] .giant-footer {
+      background:
+        linear-gradient(
+          180deg,
+          color-mix(in srgb,var(--primary) 8%,transparent),
+          transparent 28%
+        ),
+        var(--surface-soft);
+    }
+
+    body[data-theme="festival"] .giant-footer {
+      background:
+        linear-gradient(
+          180deg,
+          color-mix(in srgb,var(--gold) 7%,transparent),
+          transparent 26%
+        ),
+        var(--surface-soft);
     }
 
     .giant-top {
@@ -408,8 +482,7 @@
 
     .grid-cell a:hover { color:var(--accent-text); }
 
-    /* Festival uses tiny tricolor bars only */
-    body[data-theme="festival"] .grid-cell::before {
+    .grid-cell::before {
       content:"";
       display:block;
       width:38px;
@@ -421,7 +494,12 @@
         var(--flag-yellow) 33.33% 66.66%,
         var(--flag-green) 66.66%
       );
-      opacity:.85;
+      opacity:.7;
+    }
+
+    body[data-theme="festival"] .grid-cell::before,
+    body[data-theme="anniversary"] .grid-cell::before {
+      opacity:.95;
     }
 
     /* ---------- 03 CARD ---------- */
@@ -454,7 +532,7 @@
       overflow:hidden;
     }
 
-    body[data-theme="festival"] .card-footer::after {
+    .card-footer::after {
       content:"";
       position:absolute;
       left:0;
@@ -467,6 +545,41 @@
         var(--flag-yellow) 33.33% 66.66%,
         var(--flag-green) 66.66%
       );
+    }
+
+    body[data-theme="copper"] .card-footer {
+      background:
+        linear-gradient(
+          140deg,
+          color-mix(in srgb,var(--primary) 12%,transparent),
+          transparent 36%
+        ),
+        var(--surface);
+    }
+
+    body[data-theme="festival"] .card-footer {
+      background:
+        linear-gradient(
+          140deg,
+          color-mix(in srgb,var(--gold) 10%,transparent),
+          color-mix(in srgb,var(--green) 6%,transparent) 40%,
+          transparent 55%
+        ),
+        var(--surface);
+    }
+
+    body[data-theme="anniversary"] .card-footer {
+      background:
+        linear-gradient(
+          140deg,
+          color-mix(in srgb,var(--secondary) 10%,transparent),
+          color-mix(in srgb,var(--primary) 6%,transparent) 38%,
+          transparent 55%
+        ),
+        var(--surface);
+      box-shadow:
+        0 28px 75px rgba(0,0,0,.36),
+        0 0 60px color-mix(in srgb,var(--secondary) 12%,transparent);
     }
 
     .card-head {
@@ -512,7 +625,8 @@
       box-shadow:0 0 0 0 var(--focus);
     }
 
-    body[data-theme="copper"] .cta {
+    body[data-theme="copper"] .cta,
+    body[data-theme="anniversary"] .cta {
       color:#170d09;
     }
 
@@ -569,11 +683,10 @@
       width:28px;
       height:28px;
       border-radius:9px;
-      border:1px solid color-mix(in srgb,var(--line) 70%,var(--text) 30%);
+      border:1px solid rgba(255,255,255,.32);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.25);
     }
 
-    .swatch.page { background:var(--page); }
-    .swatch.surface { background:var(--surface); }
     .swatch.primary { background:var(--primary); }
     .swatch.secondary { background:var(--secondary); }
     .swatch.gold { background:var(--gold); }
@@ -703,13 +816,16 @@
     <div class="control-group">
       <span class="control-label">Theme</span>
       <button class="control-btn theme-btn active" data-theme="heritage">
-        <span class="theme-dot heritage"></span>Heritage
+        <span class="theme-dot heritage"></span>Altiplano
       </button>
       <button class="control-btn theme-btn" data-theme="copper">
-        <span class="theme-dot copper"></span>Copper Night
+        <span class="theme-dot copper"></span>Cobre Andino
       </button>
       <button class="control-btn theme-btn" data-theme="festival">
-        <span class="theme-dot festival"></span>Festival Noir
+        <span class="theme-dot festival"></span>Entrada
+      </button>
+      <button class="control-btn theme-btn" data-theme="anniversary">
+        <span class="theme-dot anniversary"></span>35 Años
       </button>
     </div>
 
@@ -726,7 +842,7 @@
   <section class="intro">
     <h1>Footer Direction Preview</h1>
     <div class="intro-copy">
-      Explore layout and color directions. Any option can be refined before the final footer is selected.
+      Explore footer layouts in colors from Bolivian folklore — highland night, Andean copper, carnival entrada, and 35 años.
     </div>
   </section>
 
@@ -746,7 +862,7 @@
             </div>
           </div>
 
-          <div class="giant-meta">Dance · Culture · Community</div>
+          <div class="giant-meta">Folklore · Bolivia · Toronto</div>
         </div>
 
         <h2 class="giant-title">
@@ -859,13 +975,11 @@
 
   <section class="theme-info">
     <div class="theme-copy">
-      <strong id="themeName">Heritage</strong>
-      <span id="themeDescription">Closest to the current site and logo. Best default for launch.</span>
+      <strong id="themeName">Altiplano</strong>
+      <span id="themeDescription">Highland night. Bolivia’s flag red leads, with gold and green as quiet cultural notes. Closest to the current brand.</span>
     </div>
 
     <div class="swatches" aria-label="Current theme colors">
-      <span class="swatch page" title="Page"></span>
-      <span class="swatch surface" title="Surface"></span>
       <span class="swatch primary" title="Primary"></span>
       <span class="swatch secondary" title="Secondary"></span>
       <span class="swatch gold" title="Gold"></span>
@@ -888,16 +1002,20 @@
 
   const themeInfo = {
     heritage: {
-      name: 'Heritage',
-      description: 'Closest to the current site and logo. Best default for launch.'
+      name: 'Altiplano',
+      description: 'Highland night. Bolivia’s flag red leads, with gold and green as quiet cultural notes. Closest to the current brand.'
     },
     copper: {
-      name: 'Copper Night',
-      description: 'Warmer and more premium. Copper leads; Melodía red becomes a supporting accent.'
+      name: 'Cobre Andino',
+      description: 'Warm costume metal — copper, embroidery gold, and red from the pollera and the brass. Premium without feeling generic.'
     },
     festival: {
-      name: 'Festival Noir',
-      description: 'More expressive. Red, yellow and green appear as small cultural details—not full-page decoration.'
+      name: 'Entrada',
+      description: 'Parade night. Red, yellow, and green of the Bolivian flag show up as the entrada does: bright, rhythmic, still on a dark street.'
+    },
+    anniversary: {
+      name: '35 Años',
+      description: 'From the anniversary party flyer: deep purple night, Melodía gold, magenta neon, and Bolivian flag accents.'
     }
   };
 

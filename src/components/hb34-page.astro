@@ -1,0 +1,66 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getLocaleFromPath, getLocalizedPath } from "../utils/i18n";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const homeHref = getLocalizedPath("/", locale);
+const hb33Href = getLocalizedPath("/HB33", locale);
+
+const copy =
+  locale === "es"
+    ? {
+        title: "Diego, estás invitado a mi parrillada 🔥",
+        description:
+          "Diego, estás invitado a mi parrillada. Abre el enlace para ver los detalles de la invitación.",
+        kicker: "HB34",
+        heading: "Treinta y cuatro",
+        body: "Espacio listo para la nueva página de cumpleaños. Por ahora es una página normal del sitio.",
+        backHome: "← Volver al inicio",
+        seeHb33: "Ver HB33",
+      }
+    : {
+        title: "Diego, you're invited to my barbecue 🔥",
+        description:
+          "Diego, you're invited to my barbecue. Open the link for the invitation details.",
+        kicker: "HB34",
+        heading: "Thirty-four",
+        body: "A place for the new birthday page. For now it’s a normal site page.",
+        backHome: "← Back to home",
+        seeHb33: "See HB33",
+      };
+---
+
+<Layout title={copy.title} description={copy.description} url={Astro.url.href} ambientSubtle>
+  <div
+    class="relative z-10 mx-auto min-h-dvh max-w-screen-xl px-5 pb-12 pt-24 font-sans sm:px-6 sm:pt-28 md:px-12 lg:px-16 xl:px-20"
+  >
+    <main role="main" class="max-w-2xl">
+      <p class="text-sm font-semibold tracking-wide" style="color: var(--primary);">{copy.kicker}</p>
+      <h1 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl" style="color: var(--text-primary);">
+        {copy.heading}
+      </h1>
+      <p class="mt-3 text-base leading-relaxed" style="color: var(--text-secondary);">
+        {copy.body}
+      </p>
+
+      <p class="mt-10 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+        <a
+          href={homeHref}
+          data-localized-href="/"
+          class="underline-offset-2 hover:underline"
+          style="color: var(--text-muted);"
+        >
+          {copy.backHome}
+        </a>
+        <a
+          href={hb33Href}
+          data-localized-href="/HB33"
+          class="underline-offset-2 hover:underline"
+          style="color: var(--text-muted);"
+        >
+          {copy.seeHb33}
+        </a>
+      </p>
+    </main>
+  </div>
+</Layout>

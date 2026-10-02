@@ -4,6 +4,7 @@ import { getLocaleFromPath, getLocalizedPath } from "../../utils/i18n";
 
 const locale = getLocaleFromPath(Astro.url.pathname);
 const footersHref = getLocalizedPath("/melodia/footers", locale);
+const navbarsHref = getLocalizedPath("/melodia/navbars", locale);
 const servicesHref = getLocalizedPath("/services", locale);
 ---
 
@@ -33,7 +34,20 @@ const servicesHref = getLocalizedPath("/services", locale);
           >
             <span class="text-base font-semibold" style="color: var(--text-primary);">Footers</span>
             <span class="mt-1 block text-sm" style="color: var(--text-muted);">
-              Layout + color palette playground for the Melodía team
+            Layout + color palettes for Melodía de Bolivia: Altiplano, Cobre Andino, Entrada, and 35 Años.
+            </span>
+          </a>
+        </li>
+        <li>
+          <a
+            href={navbarsHref}
+            data-localized-href="/melodia/navbars"
+            class="group block rounded-2xl border px-5 py-4 transition-colors"
+            style="border-color: var(--border-subtle); background: var(--surface-quiet);"
+          >
+            <span class="text-base font-semibold" style="color: var(--text-primary);">Navbars</span>
+            <span class="mt-1 block text-sm" style="color: var(--text-muted);">
+              Current site header, plus Split and Stripe — same palettes as the footer.
             </span>
           </a>
         </li>

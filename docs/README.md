@@ -25,6 +25,8 @@ npm run preview
 - Layout: `docs/layout.md`
 - Components: `docs/components.md`
 - Pages: `docs/pages.md`
+- HB pages (HB33/HB34 + SiteNav intro failures): `docs/hb-pages.md`
+- Architecture: `docs/architecture.md`
 
 ## Conventions
 

@@ -36,8 +36,10 @@
 
 ### HB Pages
 
-- **English**: `/en/HB33` - Uses `LanguageSwitcher` with positioning wrapper (`absolute top-4 left-4 z-20`)
-- **Spanish**: `/es/HB33` - Uses `LanguageSwitcher` with positioning wrapper (`absolute top-4 left-4 z-20`)
+There are two models. Full reference (file map, SiteNav intro postmortem, checklist): [`docs/hb-pages.md`](hb-pages.md).
+
+- **HB33** (`variant="hb"`): `/en/HB33`, `/es/HB33` — no SiteNav; local `LanguageSwitcher` with positioning wrapper (`absolute top-4 left-4 z-20`). Frozen in `.cursorignore`.
+- **HB34** (default Layout): `/en/HB34`, `/es/HB34` — normal site chrome via `hb34-page.astro` stub.
 
 ## URL Handling
 
@@ -100,3 +102,8 @@
 2. ✅ Responsive dark mode works on all pages
 3. ✅ Proper positioning on HB pages with wrapper div
 4. ✅ Consistent behavior and styling across all pages
+
+### SiteNav intro (see hb-pages.md)
+
+- Latent fail: inline `opacity: 0` + settle that only toggled `is-intro-done` could leave the nav invisible if anime never completed. Surfaced when HB34 mounted SiteNav (`variant="default"`); HB33 (`variant="hb"`) does not mount SiteNav.
+- Mitigated in `site-nav.astro` by clearing inline styles on settle and a timeout fallback. Details in [`docs/hb-pages.md`](hb-pages.md).
