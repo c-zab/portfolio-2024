@@ -833,6 +833,7 @@
       <span class="control-label">Preview</span>
       <button class="control-btn view-btn active" data-view="web">Web</button>
       <button class="control-btn view-btn" data-view="mobile">Mobile</button>
+      <button class="control-btn" type="button" data-fullscreen-toggle aria-pressed="false">Fullscreen</button>
     </div>
   </div>
 </header>
@@ -1047,6 +1048,30 @@
       previewShell.classList.toggle('mobile', btn.dataset.view === 'mobile');
     });
   });
+
+  const fullscreenBtn = document.querySelector('[data-fullscreen-toggle]');
+  function syncFullscreenLabel() {
+    const on = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+    if (!fullscreenBtn) return;
+    fullscreenBtn.textContent = on ? 'Exit fullscreen' : 'Fullscreen';
+    fullscreenBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    fullscreenBtn.classList.toggle('active', on);
+  }
+  fullscreenBtn?.addEventListener('click', async () => {
+    try {
+      if (document.fullscreenElement || document.webkitFullscreenElement) {
+        if (document.exitFullscreen) await document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      } else if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen();
+      }
+    } catch (_) {}
+    syncFullscreenLabel();
+  });
+  document.addEventListener('fullscreenchange', syncFullscreenLabel);
+  document.addEventListener('webkitfullscreenchange', syncFullscreenLabel);
 </script>
 
 </body>

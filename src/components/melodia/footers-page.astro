@@ -37,8 +37,24 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
         </p>
       </div>
 
+      <div class="mb-3 flex flex-wrap items-center justify-end gap-2">
+        <button
+          type="button"
+          data-melodia-fullscreen
+          class="melodia-footers__fs inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
+          style="border-color: var(--border-subtle); color: var(--text-primary); background: var(--surface-quiet);"
+          aria-pressed="false"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path>
+          </svg>
+          <span data-melodia-fullscreen-label>Fullscreen</span>
+        </button>
+      </div>
+
       <div
         data-melodia-footers
+        data-melodia-preview
         class="melodia-footers__frame overflow-hidden rounded-2xl border"
         style="border-color: var(--border-subtle); background: #0a0a0a;"
       >
@@ -47,11 +63,12 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
           src="/melodia/footer-theme-playground.html"
           class="melodia-footers__iframe block w-full border-0"
           loading="eager"
+          allowfullscreen
         ></iframe>
       </div>
 
       <p class="mt-3 text-center text-xs" style="color: var(--text-muted);">
-        Prefer fullscreen?
+        Or open as a page:
         <a
           href="/melodia/footer-theme-playground.html"
           target="_blank"
@@ -59,17 +76,81 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
           class="underline-offset-2 hover:underline"
           style="color: var(--primary);"
         >
-          Open the playground alone
+          playground alone
         </a>
       </p>
     </main>
   </div>
 </Layout>
 
+<script>
+  const frame = document.querySelector<HTMLElement>("[data-melodia-preview]");
+  const button = document.querySelector<HTMLButtonElement>("[data-melodia-fullscreen]");
+  const label = document.querySelector<HTMLElement>("[data-melodia-fullscreen-label]");
+
+  function isFullscreen() {
+    return document.fullscreenElement === frame || (document as any).webkitFullscreenElement === frame;
+  }
+
+  function syncLabel() {
+    const on = isFullscreen();
+    if (label) label.textContent = on ? "Exit fullscreen" : "Fullscreen";
+    button?.setAttribute("aria-pressed", on ? "true" : "false");
+  }
+
+  async function toggleFullscreen() {
+    if (!frame || !button) return;
+
+    try {
+      if (isFullscreen()) {
+        if (document.exitFullscreen) await document.exitFullscreen();
+        else if ((document as any).webkitExitFullscreen) (document as any).webkitExitFullscreen();
+      } else if (frame.requestFullscreen) {
+        await frame.requestFullscreen();
+      } else if ((frame as any).webkitRequestFullscreen) {
+        (frame as any).webkitRequestFullscreen();
+      } else {
+        window.open("/melodia/footer-theme-playground.html", "_blank", "noopener,noreferrer");
+      }
+    } catch {
+      window.open("/melodia/footer-theme-playground.html", "_blank", "noopener,noreferrer");
+    }
+
+    syncLabel();
+  }
+
+  button?.addEventListener("click", () => {
+    void toggleFullscreen();
+  });
+
+  document.addEventListener("fullscreenchange", syncLabel);
+  document.addEventListener("webkitfullscreenchange", syncLabel);
+</script>
+
 <style>
   .melodia-footers__iframe {
     height: min(920px, calc(100dvh - 11rem));
     min-height: 640px;
+  }
+
+  .melodia-footers__frame:fullscreen,
+  .melodia-footers__frame:-webkit-full-screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    border: 0;
+    background: #0a0a0a;
+  }
+
+  .melodia-footers__frame:fullscreen .melodia-footers__iframe,
+  .melodia-footers__frame:-webkit-full-screen .melodia-footers__iframe {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+
+  .melodia-footers__fs:hover {
+    border-color: color-mix(in srgb, var(--primary) 45%, var(--border-subtle));
+    color: var(--primary);
   }
 
   @media (max-width: 767px) {
