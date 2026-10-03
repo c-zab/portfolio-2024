@@ -3,14 +3,13 @@ import Layout from "../../layouts/Layout.astro";
 import { getLocaleFromPath, getLocalizedPath } from "../../utils/i18n";
 
 const locale = getLocaleFromPath(Astro.url.pathname);
-const footersHref = getLocalizedPath("/melodia/footers", locale);
-const navbarsHref = getLocalizedPath("/melodia/navbars", locale);
+const pageHref = getLocalizedPath("/melodia/page", locale);
 const servicesHref = getLocalizedPath("/services", locale);
 ---
 
 <Layout
   title="Melodia — Code with CZ"
-  description="Melodia project pages and footer work."
+  description="Melodía de Bolivia client review — page layouts and themes."
   url={Astro.url.href}
   ambientSubtle
 >
@@ -21,33 +20,20 @@ const servicesHref = getLocalizedPath("/services", locale);
         Project hub
       </h1>
       <p class="mt-3 text-base leading-relaxed" style="color: var(--text-secondary);">
-        Client work for Melodia. Paste page HTML into the routes below as we rebuild pieces here.
+        Client review for Melodía de Bolivia. Start with the full page, then dig into pieces as needed.
       </p>
 
       <ul class="mt-10 space-y-4">
         <li>
           <a
-            href={footersHref}
-            data-localized-href="/melodia/footers"
+            href={pageHref}
+            data-localized-href="/melodia/page"
             class="group block rounded-2xl border px-5 py-4 transition-colors"
             style="border-color: var(--border-subtle); background: var(--surface-quiet);"
           >
-            <span class="text-base font-semibold" style="color: var(--text-primary);">Footers</span>
+            <span class="text-base font-semibold" style="color: var(--text-primary);">Page</span>
             <span class="mt-1 block text-sm" style="color: var(--text-muted);">
-              Giant, Grid, and Card — Altiplano, Cobre Andino, Entrada, and 35 Años.
-            </span>
-          </a>
-        </li>
-        <li>
-          <a
-            href={navbarsHref}
-            data-localized-href="/melodia/navbars"
-            class="group block rounded-2xl border px-5 py-4 transition-colors"
-            style="border-color: var(--border-subtle); background: var(--surface-quiet);"
-          >
-            <span class="text-base font-semibold" style="color: var(--text-primary);">Navbars</span>
-            <span class="mt-1 block text-sm" style="color: var(--text-muted);">
-              Bar, Overlay, and Playbill — same palettes as the footer.
+              Full layout — navbar, body, and footer. Themes: Altiplano, Cobre Andino, Entrada, 35 Años.
             </span>
           </a>
         </li>

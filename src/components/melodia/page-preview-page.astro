@@ -7,18 +7,18 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
 ---
 
 <Layout
-  title="Melodia navbars — Code with CZ"
-  description="Navbar options for Melodía de Bolivia."
+  title="Melodia page — Code with CZ"
+  description="Full-page preview: navbar, body, and footer options for Melodía de Bolivia."
   url={Astro.url.href}
   ambientSubtle
 >
-  <div class="melodia-navbars relative z-10 mx-auto min-h-dvh max-w-[1400px] px-4 pb-8 pt-24 font-sans sm:px-6 sm:pt-28">
+  <div class="melodia-page relative z-10 mx-auto min-h-dvh max-w-[1400px] px-4 pb-8 pt-24 font-sans sm:px-6 sm:pt-28">
     <main role="main">
       <div class="mb-5 flex flex-wrap items-end justify-between gap-4">
         <div>
           <p class="text-sm font-semibold tracking-wide" style="color: var(--primary);">Melodia</p>
           <h1 class="mt-1 text-2xl font-bold tracking-tight sm:text-3xl" style="color: var(--text-primary);">
-            Navbars
+            Page
           </h1>
         </div>
         <p class="text-sm">
@@ -37,7 +37,7 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
         <button
           type="button"
           data-melodia-expand
-          class="melodia-navbars__fs inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
+          class="melodia-page__fs inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
           style="border-color: var(--border-subtle); color: var(--text-primary); background: var(--surface-quiet);"
           aria-pressed="false"
         >
@@ -56,23 +56,22 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
       </div>
 
       <div
-        data-melodia-navbars
         data-melodia-preview
-        class="melodia-navbars__frame overflow-hidden rounded-2xl border"
+        class="melodia-page__frame overflow-hidden rounded-2xl border"
         style="border-color: var(--border-subtle); background: #0a0a0a;"
       >
         <button
           type="button"
           data-melodia-expand-close
-          class="melodia-navbars__close"
+          class="melodia-page__close"
           hidden
         >
           Close
         </button>
         <iframe
-          title="Melodía de Bolivia — navbar layout and theme preview"
+          title="Melodía de Bolivia — page preview"
           src="/melodia/navbar-theme-playground.html"
-          class="melodia-navbars__iframe block w-full border-0"
+          class="melodia-page__iframe block w-full border-0"
           loading="eager"
         ></iframe>
       </div>
@@ -81,7 +80,7 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
 </Layout>
 
 <script>
-  const page = document.querySelector<HTMLElement>(".melodia-navbars");
+  const page = document.querySelector<HTMLElement>(".melodia-page");
   const frame = document.querySelector<HTMLElement>("[data-melodia-preview]");
   const expandBtn = document.querySelector<HTMLButtonElement>("[data-melodia-expand]");
   const closeBtn = document.querySelector<HTMLButtonElement>("[data-melodia-expand-close]");
@@ -110,21 +109,21 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
 </script>
 
 <style>
-  .melodia-navbars__iframe {
-    height: min(920px, calc(100dvh - 11rem));
-    min-height: 640px;
+  .melodia-page__iframe {
+    height: min(1100px, calc(100dvh - 11rem));
+    min-height: 720px;
   }
 
-  .melodia-navbars__close {
+  .melodia-page__close {
     display: none;
   }
 
   /* Escape the page z-10 stacking context so expand sits above SiteNav */
-  .melodia-navbars.is-preview-expanded {
+  .melodia-page.is-preview-expanded {
     z-index: auto;
   }
 
-  .melodia-navbars__frame.is-expanded {
+  .melodia-page__frame.is-expanded {
     position: fixed;
     inset: 0;
     z-index: 100;
@@ -135,12 +134,12 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
     background: #0a0a0a;
   }
 
-  .melodia-navbars__frame.is-expanded .melodia-navbars__iframe {
+  .melodia-page__frame.is-expanded .melodia-page__iframe {
     height: 100dvh;
     min-height: 100dvh;
   }
 
-  .melodia-navbars__frame.is-expanded .melodia-navbars__close {
+  .melodia-page__frame.is-expanded .melodia-page__close {
     display: inline-flex;
     position: absolute;
     top: max(12px, env(safe-area-inset-top));
@@ -164,13 +163,13 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
     pointer-events: none;
   }
 
-  .melodia-navbars__fs:hover {
+  .melodia-page__fs:hover {
     border-color: color-mix(in srgb, var(--primary) 45%, var(--border-subtle));
     color: var(--primary);
   }
 
   @media (max-width: 767px) {
-    .melodia-navbars__iframe {
+    .melodia-page__iframe {
       height: calc(100dvh - 9.5rem);
       min-height: 520px;
     }

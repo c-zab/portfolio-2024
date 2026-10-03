@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Melodía Navbar — Melodía de Bolivia</title>
+  <title>Melodía Page — Melodía de Bolivia</title>
   <style>
     :root {
       color-scheme: dark;
@@ -307,18 +307,200 @@
       .preview-shell:not(.mobile) .overlay .menu-btn,
       .preview-shell:not(.mobile) .playbill .menu-btn { display:inline-flex; }
     }
+
+    /* ---------- PAGE BODY (spacer) ---------- */
+    .page-body {
+      margin-top:18px;
+      padding:36px clamp(22px,4vw,48px) 48px;
+      border:1px solid var(--line);
+      border-radius:26px;
+      background:var(--surface-soft);
+    }
+    .page-body__label {
+      margin:0 0 22px;
+      color:var(--muted);
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+    .page-body__title {
+      margin:0 0 10px;
+      max-width:18ch;
+      color:var(--text);
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(28px,3.6vw,42px);
+      font-weight:400;
+      letter-spacing:-.04em;
+      line-height:1.05;
+    }
+    .page-body__copy {
+      margin:0 0 28px;
+      max-width:52ch;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+    .page-body__grid {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+    .page-body__card {
+      min-height:110px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:color-mix(in srgb,var(--surface) 80%, transparent);
+      padding:18px;
+    }
+    .page-body__card span {
+      display:block;
+      width:42%;
+      height:8px;
+      border-radius:999px;
+      background:color-mix(in srgb,var(--muted) 35%, transparent);
+      margin-bottom:10px;
+    }
+    .page-body__card span:last-child { width:68%; margin-bottom:0; }
+    .page-body__card span:nth-child(2) { width:78%; }
+    .preview-shell.mobile .page-body__grid { grid-template-columns:1fr; }
+    .preview-shell.mobile .page-body { padding:28px 18px 34px; }
+
+    /* ---------- FOOTERS ---------- */
+    .site-footers { margin-top:18px; border-top:0; }
+    .footer-model { display:none; }
+    .footer-model.active { display:block; }
+
+    .brand-lockup { display:flex; align-items:center; gap:14px; }
+    .brand-logo { width:64px; height:64px; object-fit:contain; flex:0 0 auto; filter:drop-shadow(0 6px 18px rgba(0,0,0,.24)); }
+    .brand-name { font-family:Georgia,"Times New Roman",serif; font-size:22px; }
+    .brand-city { margin-top:4px; color:var(--muted); font-size:12px; }
+
+    .signature-strip {
+      min-height:42px; display:flex; justify-content:center; align-items:center;
+      background:var(--page); border-top:1px solid var(--line); color:var(--muted); font-size:12px;
+    }
+    .signature { display:inline-flex; align-items:center; gap:8px; transition:.2s ease; }
+    .signature .arrow { transition:transform .2s ease; }
+    .signature:hover {
+      color:transparent;
+      background:linear-gradient(90deg,var(--flag-red) 0 33.33%,var(--flag-yellow) 33.33% 66.66%,var(--flag-green) 66.66% 100%);
+      -webkit-background-clip:text; background-clip:text;
+    }
+    .signature:hover .arrow { transform:translateX(4px); }
+
+    .giant-footer {
+      position:relative; padding:40px clamp(22px,5vw,68px); background:var(--surface-soft); overflow:hidden;
+    }
+    .giant-footer::before {
+      content:""; position:absolute; left:0; right:0; top:0; height:3px;
+      background:linear-gradient(90deg,var(--flag-red) 0 33.33%,var(--flag-yellow) 33.33% 66.66%,var(--flag-green) 66.66%);
+    }
+    body[data-theme="copper"] .giant-footer {
+      background:linear-gradient(180deg,color-mix(in srgb,var(--primary) 8%,transparent),transparent 28%),var(--surface-soft);
+    }
+    body[data-theme="festival"] .giant-footer {
+      background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 7%,transparent),transparent 26%),var(--surface-soft);
+    }
+    .giant-top { display:flex; justify-content:space-between; align-items:flex-start; gap:24px; margin-bottom:34px; }
+    .giant-meta { padding-top:5px; color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:.14em; }
+    .giant-title {
+      margin:0; color:var(--text); font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(56px,10vw,140px); line-height:.81; font-weight:400; letter-spacing:-.065em;
+    }
+    .giant-title .accent { color:var(--primary); }
+    .giant-bottom {
+      margin-top:38px; padding-top:17px; border-top:1px solid var(--line);
+      display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; color:var(--muted); font-size:13px;
+    }
+
+    .grid-footer { display:grid; grid-template-columns:repeat(3,1fr); background:var(--surface); }
+    .grid-brand {
+      grid-column:1/-1; min-height:112px; padding:24px 30px; display:flex; align-items:center;
+      justify-content:space-between; gap:22px; border-bottom:1px solid var(--line);
+    }
+    .grid-tagline { max-width:340px; color:var(--muted); font-size:12px; text-align:right; }
+    .grid-cell { min-height:168px; padding:28px 30px; border-right:1px solid var(--line); transition:.18s ease; }
+    .grid-cell:last-child { border-right:0; }
+    .grid-cell:hover { background:var(--surface-hover); }
+    .grid-num { color:var(--secondary); font-size:11px; margin-bottom:36px; }
+    .grid-cell h3 { margin:0 0 12px; font-size:21px; font-weight:600; }
+    .grid-cell p { margin:7px 0; color:var(--muted); font-size:13px; }
+    .grid-cell a:hover { color:var(--accent-text); }
+    .grid-cell::before {
+      content:""; display:block; width:38px; height:2px; margin:-2px 0 20px;
+      background:linear-gradient(90deg,var(--flag-red) 0 33.33%,var(--flag-yellow) 33.33% 66.66%,var(--flag-green) 66.66%);
+      opacity:.7;
+    }
+    body[data-theme="festival"] .grid-cell::before,
+    body[data-theme="anniversary"] .grid-cell::before { opacity:.95; }
+
+    .card-wrap { padding:22px; background:var(--page); }
+    .card-footer {
+      min-height:360px; padding:38px clamp(26px,5vw,62px); border:1px solid var(--line); border-radius:26px;
+      background:linear-gradient(140deg,color-mix(in srgb,var(--primary) 5%,transparent),transparent 32%),var(--surface);
+      color:var(--text); box-shadow:0 28px 75px rgba(0,0,0,.30);
+      display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden;
+    }
+    .card-footer::after {
+      content:""; position:absolute; left:0; right:0; top:0; height:3px;
+      background:linear-gradient(90deg,var(--flag-red) 0 33.33%,var(--flag-yellow) 33.33% 66.66%,var(--flag-green) 66.66%);
+    }
+    body[data-theme="copper"] .card-footer {
+      background:linear-gradient(140deg,color-mix(in srgb,var(--primary) 12%,transparent),transparent 36%),var(--surface);
+    }
+    body[data-theme="festival"] .card-footer {
+      background:linear-gradient(140deg,color-mix(in srgb,var(--gold) 10%,transparent),color-mix(in srgb,var(--green) 6%,transparent) 40%,transparent 55%),var(--surface);
+    }
+    body[data-theme="anniversary"] .card-footer {
+      background:linear-gradient(140deg,color-mix(in srgb,var(--secondary) 10%,transparent),color-mix(in srgb,var(--primary) 6%,transparent) 38%,transparent 55%),var(--surface);
+      box-shadow:0 28px 75px rgba(0,0,0,.36),0 0 60px color-mix(in srgb,var(--secondary) 12%,transparent);
+    }
+    .card-head { display:flex; justify-content:space-between; align-items:flex-start; gap:24px; }
+    .card-social { color:var(--muted); font-size:12px; text-align:right; }
+    .card-social a:hover { color:var(--accent-text); }
+    .card-title {
+      max-width:820px; margin:34px 0 0; font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(40px,7vw,88px); line-height:.95; font-weight:400; letter-spacing:-.05em;
+    }
+    .card-title .accent { color:var(--primary); }
+    .footer-cta {
+      display:inline-flex; align-items:center; gap:9px; width:max-content; margin-top:24px;
+      padding:11px 16px; border-radius:9px; background:var(--primary); color:white;
+      font-size:13px; font-weight:650; transition:.18s ease; box-shadow:0 0 0 0 var(--focus);
+    }
+    body[data-theme="copper"] .footer-cta,
+    body[data-theme="anniversary"] .footer-cta { color:#170d09; }
+    .footer-cta:hover { background:var(--primary-hover); transform:translateY(-1px); box-shadow:0 0 0 4px var(--focus); }
+    .card-row {
+      margin-top:42px; padding-top:17px; border-top:1px solid var(--line);
+      display:grid; grid-template-columns:repeat(3,1fr); gap:20px; color:var(--muted); font-size:12px;
+    }
+
+    .preview-shell.mobile .grid-footer { grid-template-columns:1fr; }
+    .preview-shell.mobile .grid-tagline { text-align:left; }
+    .preview-shell.mobile .grid-cell { border-right:0; border-bottom:1px solid var(--line); }
+    .preview-shell.mobile .card-row { grid-template-columns:1fr; }
+    .preview-shell.mobile .giant-title { font-size:clamp(42px,14vw,72px); }
+
   </style>
 </head>
 <body data-theme="heritage" data-copy="es">
 
 <header class="topbar">
   <div class="topbar-inner">
-    <div class="topbar-title">Melodía · Navbar</div>
+    <div class="topbar-title">Melodía · Page</div>
     <div class="control-group">
-      <span class="control-label">Layout</span>
+      <span class="control-label">Navbar</span>
       <button class="control-btn layout-btn active" data-target="model1">01 Bar</button>
       <button class="control-btn layout-btn" data-target="model2">02 Overlay</button>
       <button class="control-btn layout-btn" data-target="model3">03 Playbill</button>
+    </div>
+    <div class="control-group">
+      <span class="control-label">Footer</span>
+      <button class="control-btn footer-btn active" data-footer="footer1">01 Giant</button>
+      <button class="control-btn footer-btn" data-footer="footer2">02 Grid</button>
+      <button class="control-btn footer-btn" data-footer="footer3">03 Card</button>
     </div>
     <div class="spacer"></div>
     <div class="control-group">
@@ -443,6 +625,106 @@
         </div>
       </div>
     </section>
+
+    <section class="page-body" aria-hidden="true">
+      <p class="page-body__label">Page body</p>
+      <h2 class="page-body__title" data-i18n="bodyTitle">Ensayos, entradas y comunidad.</h2>
+      <p class="page-body__copy" data-i18n="bodyCopy">Placeholder content so you can see how the navbar and footer sit on a full page.</p>
+      <div class="page-body__grid">
+        <div class="page-body__card"><span></span><span></span><span></span></div>
+        <div class="page-body__card"><span></span><span></span><span></span></div>
+        <div class="page-body__card"><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <div class="site-footers" id="siteFooters">
+      <div class="footer-model active" id="footer1">
+        <footer class="giant-footer">
+          <div class="giant-top">
+            <div class="brand-lockup">
+              <img class="brand-logo" src="/melodia/logo.png" alt="" />
+              <div>
+                <div class="brand-name">Melodía de Bolivia</div>
+                <div class="brand-city">Toronto · Canada</div>
+              </div>
+            </div>
+            <div class="giant-meta">Folklore · Bolivia · Toronto</div>
+          </div>
+          <h2 class="giant-title">LET'S<br><span class="accent">DANCE.</span></h2>
+          <div class="giant-bottom">
+            <div>Events · Instagram · YouTube</div>
+            <div>© 2026 Melodía de Bolivia</div>
+          </div>
+        </footer>
+        <div class="signature-strip"><a href="#" class="signature">Site by CZ <span class="arrow">↗</span></a></div>
+      </div>
+
+      <div class="footer-model" id="footer2">
+        <footer class="grid-footer">
+          <div class="grid-brand">
+            <div class="brand-lockup">
+              <img class="brand-logo" src="/melodia/logo.png" alt="" />
+              <div>
+                <div class="brand-name">Melodía de Bolivia</div>
+                <div class="brand-city">Toronto · Canada</div>
+              </div>
+            </div>
+            <div class="grid-tagline">Sharing Bolivian culture through dance · © 2026</div>
+          </div>
+          <div class="grid-cell">
+            <div class="grid-num">01</div>
+            <h3>Events</h3>
+            <p><a href="#">Upcoming events</a></p>
+            <p><a href="#">Calendar</a></p>
+          </div>
+          <div class="grid-cell">
+            <div class="grid-num">02</div>
+            <h3>Social</h3>
+            <p><a href="#">Instagram ↗</a></p>
+            <p><a href="#">YouTube ↗</a></p>
+          </div>
+          <div class="grid-cell">
+            <div class="grid-num">03</div>
+            <h3>Toronto, Canada</h3>
+            <p><a href="#">Contact</a></p>
+            <p><a href="#">Community</a></p>
+          </div>
+        </footer>
+        <div class="signature-strip"><a href="#" class="signature">Site by CZ <span class="arrow">↗</span></a></div>
+      </div>
+
+      <div class="footer-model" id="footer3">
+        <div class="card-wrap">
+          <footer class="card-footer">
+            <div>
+              <div class="card-head">
+                <div class="brand-lockup">
+                  <img class="brand-logo" src="/melodia/logo.png" alt="" />
+                  <div>
+                    <div class="brand-name">Melodía de Bolivia</div>
+                    <div class="brand-city">Toronto · Canada</div>
+                  </div>
+                </div>
+                <div class="card-social">
+                  <a href="#">Instagram ↗</a>
+                  &nbsp;&nbsp;
+                  <a href="#">YouTube ↗</a>
+                </div>
+              </div>
+              <h2 class="card-title">See you on the <span class="accent">dance floor.</span></h2>
+              <a href="#" class="footer-cta">View upcoming events <span>↗</span></a>
+            </div>
+            <div class="card-row">
+              <div>Events · About · Contact</div>
+              <div>Toronto · Canada</div>
+              <div style="text-align:right;">© 2026 Melodía de Bolivia</div>
+            </div>
+          </footer>
+        </div>
+        <div class="signature-strip"><a href="#" class="signature">Site by CZ <span class="arrow">↗</span></a></div>
+      </div>
+    </div>
+
   </div>
 
   <section class="theme-info">
@@ -472,7 +754,9 @@
       overlayTitle: 'La entrada empieza aquí.',
       overlayBody: 'Caporales, morenada, saya — en las calles de Toronto, con el corazón en Bolivia.',
       rail: 'Toronto · Folklore boliviano',
-      playbillBody: 'Una fraternidad folklórica. Ensayos, entradas y fiestas — para quien baila y para quien quiere contratar el grupo.'
+      playbillBody: 'Una fraternidad folklórica. Ensayos, entradas y fiestas — para quien baila y para quien quiere contratar el grupo.',
+      bodyTitle: 'Ensayos, entradas y comunidad.',
+      bodyCopy: 'Contenido de ejemplo para ver cómo quedan el navbar y el footer en una página completa.'
     },
     en: {
       home: 'Home', about: 'About', dances: 'Dances', events: 'Events',
@@ -485,7 +769,9 @@
       overlayTitle: 'The parade starts here.',
       overlayBody: 'Caporales, morenada, saya — on Toronto streets, with Bolivia in the music.',
       rail: 'Toronto · Bolivian folklore',
-      playbillBody: 'A folk-dance fraternity. Rehearsals, parades, and parties — for dancers, and for anyone booking the group.'
+      playbillBody: 'A folk-dance fraternity. Rehearsals, parades, and parties — for dancers, and for anyone booking the group.',
+      bodyTitle: 'Rehearsals, parades, and community.',
+      bodyCopy: 'Placeholder content so you can see how the navbar and footer sit on a full page.'
     }
   };
   const themeInfo = {
@@ -569,6 +855,19 @@
       model.classList.toggle('is-menu-open');
     });
   });
+
+  document.querySelectorAll('.footer-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-footer');
+      const target = id ? document.getElementById(id) : null;
+      if (!target) return;
+      document.querySelectorAll('.footer-btn').forEach((b) => b.classList.remove('active'));
+      document.querySelectorAll('.footer-model').forEach((m) => m.classList.remove('active'));
+      btn.classList.add('active');
+      target.classList.add('active');
+    });
+  });
+
   applyCopy();
 </script>
 </body>
