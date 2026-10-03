@@ -40,7 +40,7 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
       <div class="mb-3 flex flex-wrap items-center justify-end gap-2">
         <button
           type="button"
-          data-melodia-fullscreen
+          data-melodia-expand
           class="melodia-navbars__fs inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
           style="border-color: var(--border-subtle); color: var(--text-primary); background: var(--surface-quiet);"
           aria-pressed="false"
@@ -48,8 +48,15 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path>
           </svg>
-          <span data-melodia-fullscreen-label>Fullscreen</span>
+          <span data-melodia-expand-label>Expand</span>
         </button>
+        <a
+          href="/melodia/navbar-theme-playground.html"
+          class="inline-flex items-center rounded-full border px-4 py-2 text-sm font-medium"
+          style="border-color: var(--border-subtle); color: var(--text-muted);"
+        >
+          Open as page
+        </a>
       </div>
 
       <div
@@ -58,73 +65,50 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
         class="melodia-navbars__frame overflow-hidden rounded-2xl border"
         style="border-color: var(--border-subtle); background: #0a0a0a;"
       >
+        <button
+          type="button"
+          data-melodia-expand-close
+          class="melodia-navbars__close"
+          hidden
+        >
+          Close
+        </button>
         <iframe
           title="Melodía de Bolivia — navbar layout and theme preview"
           src="/melodia/navbar-theme-playground.html"
           class="melodia-navbars__iframe block w-full border-0"
           loading="eager"
-          allowfullscreen
         ></iframe>
       </div>
-
-      <p class="mt-3 text-center text-xs" style="color: var(--text-muted);">
-        Or open as a page:
-        <a
-          href="/melodia/navbar-theme-playground.html"
-          target="_blank"
-          rel="noreferrer"
-          class="underline-offset-2 hover:underline"
-          style="color: var(--primary);"
-        >
-          playground alone
-        </a>
-      </p>
     </main>
   </div>
 </Layout>
 
 <script>
   const frame = document.querySelector<HTMLElement>("[data-melodia-preview]");
-  const button = document.querySelector<HTMLButtonElement>("[data-melodia-fullscreen]");
-  const label = document.querySelector<HTMLElement>("[data-melodia-fullscreen-label]");
+  const expandBtn = document.querySelector<HTMLButtonElement>("[data-melodia-expand]");
+  const closeBtn = document.querySelector<HTMLButtonElement>("[data-melodia-expand-close]");
+  const label = document.querySelector<HTMLElement>("[data-melodia-expand-label]");
 
-  function isFullscreen() {
-    return document.fullscreenElement === frame || (document as any).webkitFullscreenElement === frame;
+  function isExpanded() {
+    return frame?.classList.contains("is-expanded") ?? false;
   }
 
-  function syncLabel() {
-    const on = isFullscreen();
-    if (label) label.textContent = on ? "Exit fullscreen" : "Fullscreen";
-    button?.setAttribute("aria-pressed", on ? "true" : "false");
+  function setExpanded(on: boolean) {
+    if (!frame) return;
+    frame.classList.toggle("is-expanded", on);
+    document.body.classList.toggle("melodia-preview-locked", on);
+    if (label) label.textContent = on ? "Exit" : "Expand";
+    expandBtn?.setAttribute("aria-pressed", on ? "true" : "false");
+    if (closeBtn) closeBtn.hidden = !on;
   }
 
-  async function toggleFullscreen() {
-    if (!frame || !button) return;
+  expandBtn?.addEventListener("click", () => setExpanded(!isExpanded()));
+  closeBtn?.addEventListener("click", () => setExpanded(false));
 
-    try {
-      if (isFullscreen()) {
-        if (document.exitFullscreen) await document.exitFullscreen();
-        else if ((document as any).webkitExitFullscreen) (document as any).webkitExitFullscreen();
-      } else if (frame.requestFullscreen) {
-        await frame.requestFullscreen();
-      } else if ((frame as any).webkitRequestFullscreen) {
-        (frame as any).webkitRequestFullscreen();
-      } else {
-        window.open("/melodia/navbar-theme-playground.html", "_blank", "noopener,noreferrer");
-      }
-    } catch {
-      window.open("/melodia/navbar-theme-playground.html", "_blank", "noopener,noreferrer");
-    }
-
-    syncLabel();
-  }
-
-  button?.addEventListener("click", () => {
-    void toggleFullscreen();
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && isExpanded()) setExpanded(false);
   });
-
-  document.addEventListener("fullscreenchange", syncLabel);
-  document.addEventListener("webkitfullscreenchange", syncLabel);
 </script>
 
 <style>
@@ -133,19 +117,43 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
     min-height: 640px;
   }
 
-  .melodia-navbars__frame:fullscreen,
-  .melodia-navbars__frame:-webkit-full-screen {
+  .melodia-navbars__close {
+    display: none;
+  }
+
+  .melodia-navbars__frame.is-expanded {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
     width: 100%;
-    height: 100%;
+    height: 100dvh;
     border-radius: 0;
     border: 0;
     background: #0a0a0a;
   }
 
-  .melodia-navbars__frame:fullscreen .melodia-navbars__iframe,
-  .melodia-navbars__frame:-webkit-full-screen .melodia-navbars__iframe {
+  .melodia-navbars__frame.is-expanded .melodia-navbars__iframe {
     height: 100dvh;
     min-height: 100dvh;
+  }
+
+  .melodia-navbars__frame.is-expanded .melodia-navbars__close {
+    display: inline-flex;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  :global(body.melodia-preview-locked) {
+    overflow: hidden;
   }
 
   .melodia-navbars__fs:hover {
