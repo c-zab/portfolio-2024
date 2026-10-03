@@ -58,24 +58,39 @@
 
     .topbar {
       position:sticky; top:0; z-index:50;
-      background:color-mix(in srgb,var(--page) 93%, transparent);
-      border-bottom:1px solid var(--line); backdrop-filter:blur(18px);
+      background:#e8e6e1;
+      border-bottom:2px solid #111;
+      color:#111;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
     }
     .topbar-inner {
-      max-width:1400px; margin:0 auto; padding:13px 18px;
-      display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+      max-width:1400px; margin:0 auto; padding:10px 14px;
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
     }
-    .topbar-title { font-weight:700; white-space:nowrap; margin-right:5px; }
-    .control-group { display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+    .topbar-title {
+      font-weight:700; white-space:nowrap; margin-right:4px;
+      font-size:12px; letter-spacing:.04em; text-transform:uppercase;
+      padding:6px 8px; background:#111; color:#f5f4f0; border-radius:2px;
+    }
+    .control-group {
+      display:flex; align-items:center; gap:4px; flex-wrap:wrap;
+      padding:4px; background:#f7f6f2; border:1px solid #cfcbc3; border-radius:4px;
+    }
     .spacer { flex:1; }
-    .control-label { color:var(--muted); font-size:10px; letter-spacing:.11em; text-transform:uppercase; margin-right:2px; }
-    .control-btn {
-      border:1px solid var(--line); background:var(--surface-soft); color:var(--muted);
-      border-radius:999px; padding:8px 12px; cursor:pointer;
+    .control-label {
+      color:#6b655c; font-size:9px; letter-spacing:.14em; text-transform:uppercase;
+      margin:0 4px 0 2px; font-weight:700;
     }
-    .control-btn:hover, .control-btn.active {
-      color:var(--text); background:var(--surface-hover);
-      border-color:color-mix(in srgb,var(--line) 55%,var(--text) 45%);
+    .control-btn {
+      border:1px solid transparent; background:transparent; color:#3f3a34;
+      border-radius:3px; padding:6px 9px; cursor:pointer; font-size:12px; font-weight:600;
+    }
+    .control-btn:hover {
+      background:#ddd8ce; color:#111;
+    }
+    .control-btn.active {
+      color:#111; background:#fff;
+      border-color:#111; box-shadow:2px 2px 0 #111;
     }
     .theme-dot { width:7px; height:7px; border-radius:50%; display:inline-block; margin-right:6px; vertical-align:1px; }
     .theme-dot.heritage { background:#d52b1e; }
