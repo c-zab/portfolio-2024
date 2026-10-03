@@ -154,24 +154,6 @@ const homeHref = getLocalizedPath("/", currentLocale);
       el.style.removeProperty("transform");
     });
     nav.classList.add("is-intro-done");
-    // #region agent log
-    fetch("http://127.0.0.1:7492/ingest/89ec010a-f3d9-4ec5-962c-ad0cd94b6d45", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "3bc5bd" },
-      body: JSON.stringify({
-        sessionId: "3bc5bd",
-        runId: "pre-fix",
-        hypothesisId: "D",
-        location: "site-nav.astro:settleNavIntro",
-        message: "nav intro settled",
-        data: {
-          introDone: nav.classList.contains("is-intro-done"),
-          logoOpacity: getComputedStyle(document.querySelector(".cz-logo")!).opacity,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
   }
 
   if (nav) {
@@ -204,21 +186,6 @@ const homeHref = getLocalizedPath("/", currentLocale);
           settleNavIntro();
         },
       });
-      // #region agent log
-      fetch("http://127.0.0.1:7492/ingest/89ec010a-f3d9-4ec5-962c-ad0cd94b6d45", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "3bc5bd" },
-        body: JSON.stringify({
-          sessionId: "3bc5bd",
-          runId: "pre-fix",
-          hypothesisId: "D",
-          location: "site-nav.astro:intro-start",
-          message: "nav intro anime started",
-          data: { itemCount: items.length, prefersReducedMotion },
-          timestamp: Date.now(),
-        }),
-      }).catch(() => {});
-      // #endregion
     }
   }
 

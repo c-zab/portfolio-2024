@@ -47,44 +47,6 @@ const t = (key: string) => getTranslation(locale, key);
   const textWrapper = document.querySelector(".ml11 .letters");
   const enterEls = document.querySelectorAll<HTMLElement>(".hero-enter");
 
-  // #region agent log
-  const __dbg = (hypothesisId: string, message: string, data: Record<string, unknown> = {}) => {
-    fetch("http://127.0.0.1:7492/ingest/89ec010a-f3d9-4ec5-962c-ad0cd94b6d45", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "3bc5bd" },
-      body: JSON.stringify({
-        sessionId: "3bc5bd",
-        runId: "post-fix",
-        hypothesisId,
-        location: "header-left-side.astro",
-        message,
-        data,
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-  };
-  const __snap = () => {
-    const letter = document.querySelector<HTMLElement>(".ml11 .letter");
-    const letters = document.querySelector<HTMLElement>(".ml11 .letters");
-    const title = document.querySelector<HTMLElement>("[data-hero-title]");
-    return {
-      heroReady: document.documentElement.classList.contains("hero-ready"),
-      isSplit: letters?.classList.contains("is-split") ?? false,
-      letterCount: document.querySelectorAll(".ml11 .letter").length,
-      lettersOpacity: letters ? getComputedStyle(letters).opacity : null,
-      lettersInline: letters?.style.opacity || "",
-      letterOpacity: letter ? getComputedStyle(letter).opacity : null,
-      letterInline: letter?.style.opacity || "",
-      titleOpacity: title ? getComputedStyle(title).opacity : null,
-      titleInline: title?.style.opacity || "",
-      themeDark: document.documentElement.classList.contains("dark"),
-      reducedMotion,
-      visibility: document.visibilityState,
-    };
-  };
-  __dbg("A", "hero script start", __snap());
-  // #endregion
-
   function showHeroSettled() {
     enterEls.forEach((el) => {
       el.style.opacity = "1";
@@ -95,15 +57,9 @@ const t = (key: string) => getTranslation(locale, key);
     });
     textWrapper?.classList.add("is-split");
     document.documentElement.classList.add("hero-ready");
-    // #region agent log
-    __dbg("A", "showHeroSettled called", __snap());
-    // #endregion
   }
 
   if (reducedMotion) {
-    // #region agent log
-    __dbg("A", "branch reducedMotion", {});
-    // #endregion
     showHeroSettled();
   } else {
     enterEls.forEach((el) => {
@@ -121,15 +77,9 @@ const t = (key: string) => getTranslation(locale, key);
 
       // Reveal the name container only after letters exist (CSS keeps raw text hidden pre-JS).
       textWrapper.classList.add("is-split");
-      // #region agent log
-      __dbg("C", "letters split done", __snap());
-      // #endregion
 
       // Anime can stall (hidden tab, competing tweens). Match SiteNav: always reveal.
       const heroFallback = window.setTimeout(() => {
-        // #region agent log
-        __dbg("A", "hero fallback settle", __snap());
-        // #endregion
         showHeroSettled();
       }, 2800);
 
@@ -151,9 +101,6 @@ const t = (key: string) => getTranslation(locale, key);
             window.clearTimeout(heroFallback);
             showHeroSettled();
             startLinePulse();
-            // #region agent log
-            __dbg("A", "timeline complete → hero-ready", __snap());
-            // #endregion
           },
         })
         .add({
@@ -211,17 +158,7 @@ const t = (key: string) => getTranslation(locale, key);
           },
           "-=100"
         );
-      // #region agent log
-      __dbg("E", "timeline started; line loop deferred until complete/fallback", {
-        lineCount: document.querySelectorAll(".ml11 .line").length,
-      });
-      window.setTimeout(() => __dbg("A", "t+2s snapshot", __snap()), 2000);
-      window.setTimeout(() => __dbg("B", "t+4s snapshot", __snap()), 4000);
-      // #endregion
     } else {
-      // #region agent log
-      __dbg("C", "no textWrapper — settle immediately", {});
-      // #endregion
       showHeroSettled();
     }
   }
