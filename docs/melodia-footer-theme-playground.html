@@ -34,31 +34,32 @@
       --flag-green:#007a33;
     }
 
-    body[data-theme="copper"] {
-      /* Theme 02 — Cobre Andino / costume metal, embroidery gold */
-      --page: #0e0907;
-      --surface: #211612;
-      --surface-soft: #18110d;
-      --surface-hover: #2c1e18;
-      --text: #fff8f1;
-      --text-soft: #ead8ca;
-      --muted: #9f8778;
-      --line: #3a2b24;
-
-      --primary: #d4956a;
-      --primary-hover: #e8b08a;
-      --secondary: #d52b1e;
-      --secondary-light: #ec6870;
-      --gold: #e8b923;
-      --green: #1f8a3b;
-
-      --accent-text: #f3c5a8;
-      --focus: rgba(212, 149, 106, .48);
-
-      --flag-red:#d52b1e;
-      --flag-yellow:#f4c51e;
-      --flag-green:#007a33;
+    body[data-theme="titicaca"] {
+      --page: #060d18; --surface: #0f1c2e; --surface-soft: #0b1524; --surface-hover: #16263a;
+      --text: #f2f7fc; --text-soft: #c9d7e8; --muted: #7e93ab; --line: #24374d;
+      --primary: #38bdf8; --primary-hover: #7dd3fc; --secondary: #f0a0b8; --gold: #f0d78c; --green: #2a9d8f;
+      --accent-text: #bae6fd; --accent-muted: rgba(56, 189, 248, .16); --focus: rgba(56, 189, 248, .45);
     }
+
+    body[data-theme="cholita"] {
+      --page: #12010f; --surface: #24101f; --surface-soft: #1a0a17; --surface-hover: #321628;
+      --text: #fff5fb; --text-soft: #f5d0e8; --muted: #a87f9a; --line: #4a2440;
+      --primary: #e11d8a; --primary-hover: #f472b6; --secondary: #2dd4bf; --gold: #fbbf24; --green: #14b8a6;
+      --accent-text: #f9a8d4; --accent-muted: rgba(225, 29, 138, .18); --focus: rgba(45, 212, 191, .42);
+    }
+    body[data-theme="oruro"] {
+      --page: #090505; --surface: #1a0e0c; --surface-soft: #120908; --surface-hover: #2a1510;
+      --text: #fff7f2; --text-soft: #ead6cb; --muted: #9a7b6f; --line: #3a241c;
+      --primary: #c41010; --primary-hover: #ef4444; --secondary: #f5c518; --gold: #ffd54a; --green: #168a3a;
+      --accent-text: #fecaca; --accent-muted: rgba(196, 16, 16, .18); --focus: rgba(245, 197, 24, .4);
+    }
+    body[data-theme="uyuni"] {
+      --page: #0b1016; --surface: #151c26; --surface-soft: #10161e; --surface-hover: #1e2836;
+      --text: #f5f8fc; --text-soft: #d5deea; --muted: #8796ab; --line: #2a3545;
+      --primary: #e8eef5; --primary-hover: #ffffff; --secondary: #7dd3fc; --gold: #fde68a; --green: #5eead4;
+      --accent-text: #e2e8f0; --accent-muted: rgba(232, 238, 245, .14); --focus: rgba(125, 211, 252, .4);
+    }
+
 
     body[data-theme="festival"] {
       /* Theme 03 — Entrada / parade night, full tricolor */
@@ -216,7 +217,10 @@
     }
 
     .theme-dot.heritage { background:#d52b1e; }
-    .theme-dot.copper { background:#d4956a; }
+    .theme-dot.titicaca { background:linear-gradient(135deg,#38bdf8 0 55%,#0ea5e9 55% 100%); }
+    .theme-dot.cholita { background:linear-gradient(135deg,#e11d8a 0 50%,#2dd4bf 50%); }
+    .theme-dot.oruro { background:linear-gradient(135deg,#c41010 0 45%,#f5c518 45% 75%,#090505 75%); }
+    .theme-dot.uyuni { background:linear-gradient(135deg,#e8eef5 0 55%,#7dd3fc 55%); }
     .theme-dot.festival {
       background:linear-gradient(90deg,#d52b1e 0 33%,#f4c51e 33% 66%,#007a33 66%);
     }
@@ -386,7 +390,7 @@
       );
     }
 
-    body[data-theme="copper"] .giant-footer {
+    body[data-theme="titicaca"] .giant-footer {
       background:
         linear-gradient(
           180deg,
@@ -567,7 +571,7 @@
       );
     }
 
-    body[data-theme="copper"] .card-footer {
+    body[data-theme="titicaca"] .card-footer {
       background:
         linear-gradient(
           140deg,
@@ -645,7 +649,7 @@
       box-shadow:0 0 0 0 var(--focus);
     }
 
-    body[data-theme="copper"] .cta,
+    body[data-theme="titicaca"] .cta,
     body[data-theme="anniversary"] .cta {
       color:#170d09;
     }
@@ -838,8 +842,17 @@
       <button class="control-btn theme-btn active" data-theme="heritage">
         <span class="theme-dot heritage"></span>Altiplano
       </button>
-      <button class="control-btn theme-btn" data-theme="copper">
-        <span class="theme-dot copper"></span>Cobre Andino
+      <button class="control-btn theme-btn" data-theme="titicaca">
+        <span class="theme-dot titicaca"></span>Titicaca
+      </button>
+      <button class="control-btn theme-btn" data-theme="cholita">
+        <span class="theme-dot cholita"></span>Cholita
+      </button>
+      <button class="control-btn theme-btn" data-theme="oruro">
+        <span class="theme-dot oruro"></span>Oruro
+      </button>
+      <button class="control-btn theme-btn" data-theme="uyuni">
+        <span class="theme-dot uyuni"></span>Uyuni
       </button>
       <button class="control-btn theme-btn" data-theme="festival">
         <span class="theme-dot festival"></span>Entrada
@@ -1010,19 +1023,31 @@
   const themeInfo = {
     heritage: {
       name: 'Altiplano',
-      description: 'Highland night. Bolivia’s flag red leads, with gold and green as quiet cultural notes. Closest to the current brand.'
+      description: 'Noche altiplánica — rojo de la bandera, oro y verde como notas culturales.'
     },
-    copper: {
-      name: 'Cobre Andino',
-      description: 'Warm costume metal — copper, embroidery gold, and red from the pollera and the brass. Premium without feeling generic.'
+    titicaca: {
+      name: 'Titicaca',
+      description: 'Noche en el lago — azul profundo, plata andina y destello frío sobre el agua.'
+    },
+    cholita: {
+      name: 'Cholita',
+      description: 'Pollera viva — fucsia, turquesa y oro de feria paceña.'
+    },
+    oruro: {
+      name: 'Oruro',
+      description: 'Carnaval — rojo diablo, negro de noche y oro de la Diablada.'
+    },
+    uyuni: {
+      name: 'Uyuni',
+      description: 'Salar — blanco plata, cielo claro y reflejo frío del salar.'
     },
     festival: {
       name: 'Entrada',
-      description: 'Parade night. Red, yellow, and green of the Bolivian flag show up as the entrada does: bright, rhythmic, still on a dark street.'
+      description: 'Calle de entrada — rojo, amarillo y verde de bandera en la noche.'
     },
     anniversary: {
       name: '35 Años',
-      description: 'From the anniversary party flyer: deep purple night, Melodía gold, magenta neon, and Bolivian flag accents.'
+      description: 'Flyer aniversario — noche violeta, oro Melodía y magenta neón.'
     }
   };
 

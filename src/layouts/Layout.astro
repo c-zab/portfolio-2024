@@ -7,6 +7,7 @@ interface Props {
   variant?: "default" | "hb";
   i18nPage?: "home" | "services" | "blog";
   ambientSubtle?: boolean;
+  forceDark?: boolean;
 }
 
 const {
@@ -17,6 +18,7 @@ const {
   variant = "default",
   i18nPage,
   ambientSubtle,
+  forceDark = false,
 } = Astro.props;
 
 import "@fontsource/inter";
@@ -30,10 +32,12 @@ import { getLocaleFromPath } from "../utils/i18n";
 const locale = getLocaleFromPath(Astro.url.pathname);
 const showChrome = variant === "default";
 const useSubtleAmbient = ambientSubtle ?? (i18nPage === "services" || i18nPage === "blog");
+const isMelodia = Astro.url.pathname.includes("/melodia");
+const lockDark = forceDark || isMelodia;
 ---
 
 <!doctype html>
-<html lang={locale} prefix="og: http://ogp.me/ns#">
+<html lang={locale} prefix="og: http://ogp.me/ns#" class:list={[{ dark: lockDark }]} data-force-theme={lockDark ? "dark" : undefined}>
   <head>
     <!-- Critical inline styles to avoid flash on HB pages -->
     <style>
@@ -91,9 +95,14 @@ const useSubtleAmbient = ambientSubtle ?? (i18nPage === "services" || i18nPage =
 
     <script is:inline>
       try {
-        const theme = localStorage.getItem("theme");
-        // Brand default is dark; only honor an explicit user choice.
-        document.documentElement.classList.toggle("dark", theme !== "light");
+        const forced = document.documentElement.getAttribute("data-force-theme");
+        if (forced === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          const theme = localStorage.getItem("theme");
+          // Brand default is dark; only honor an explicit user choice.
+          document.documentElement.classList.toggle("dark", theme !== "light");
+        }
       } catch {
         document.documentElement.classList.add("dark");
       }
@@ -155,7 +164,7 @@ const useSubtleAmbient = ambientSubtle ?? (i18nPage === "services" || i18nPage =
     style="color: var(--text-secondary);"
   >
     {showChrome && <AmbientBackground subtle={useSubtleAmbient} />}
-    {showChrome && <SiteNav />}
+    {showChrome && <SiteNav lockDark={lockDark} />}
     <div class="inset-0 z-30">
       <slot />
     </div>

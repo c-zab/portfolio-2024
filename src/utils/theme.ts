@@ -1,11 +1,16 @@
 let themeToggleReady = false;
 
 export function applyTheme(theme: "light" | "dark") {
+  if (document.documentElement.getAttribute("data-force-theme") === "dark") {
+    document.documentElement.classList.add("dark");
+    return;
+  }
   document.documentElement.classList.toggle("dark", theme === "dark");
   localStorage.setItem("theme", theme);
 }
 
 export function getPreferredTheme(): "light" | "dark" {
+  if (document.documentElement.getAttribute("data-force-theme") === "dark") return "dark";
   const saved = localStorage.getItem("theme");
   if (saved === "light" || saved === "dark") return saved;
   return "dark";
