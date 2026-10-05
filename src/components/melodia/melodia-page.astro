@@ -5,6 +5,7 @@ import { getLocaleFromPath, getLocalizedPath } from "../../utils/i18n";
 const locale = getLocaleFromPath(Astro.url.pathname);
 const pageHref = getLocalizedPath("/melodia/page", locale);
 const servicesHref = getLocalizedPath("/services", locale);
+const loadingLabel = locale === "es" ? "Cargando…" : "Loading…";
 ---
 
 <Layout
@@ -28,12 +29,17 @@ const servicesHref = getLocalizedPath("/services", locale);
           <a
             href={pageHref}
             data-localized-href="/melodia/page"
-            class="group block rounded-2xl border px-5 py-4 transition-colors"
+            data-melodia-nav-loading
+            class="group relative block rounded-2xl border px-5 py-4 transition-colors"
             style="border-color: var(--border-subtle); background: var(--surface-quiet);"
           >
             <span class="text-base font-semibold" style="color: var(--text-primary);">Page</span>
             <span class="mt-1 block text-sm" style="color: var(--text-muted);">
               Four art directions to vote on: Entrada, Tejido, Toronto ↔ Bolivia, and Escenario. Header and footer stay locked together.
+            </span>
+            <span class="melodia-hub__nav-status" data-melodia-nav-status hidden aria-live="polite">
+              <span class="melodia-hub__nav-spinner" aria-hidden="true"></span>
+              {loadingLabel}
             </span>
           </a>
         </li>
@@ -59,3 +65,71 @@ const servicesHref = getLocalizedPath("/services", locale);
     </main>
   </div>
 </Layout>
+
+<script>
+  const pageLink = document.querySelector("[data-melodia-nav-loading]");
+  const status = document.querySelector("[data-melodia-nav-status]");
+
+  function clearNavigating() {
+    pageLink?.classList.remove("is-navigating");
+    pageLink?.removeAttribute("aria-busy");
+    if (status) status.hidden = true;
+  }
+
+  pageLink?.addEventListener("click", (event) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (event.button !== 0) return;
+    pageLink.classList.add("is-navigating");
+    pageLink.setAttribute("aria-busy", "true");
+    if (status) status.hidden = false;
+  });
+
+  window.addEventListener("pageshow", clearNavigating);
+</script>
+
+<style>
+  .melodia-hub__nav-status {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--primary);
+  }
+
+  a[data-melodia-nav-loading].is-navigating .melodia-hub__nav-status {
+    display: inline-flex;
+  }
+
+  .melodia-hub__nav-spinner {
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    border: 1.5px solid color-mix(in srgb, var(--primary) 30%, transparent);
+    border-top-color: var(--primary);
+    animation: melodia-hub-spin 0.65s linear infinite;
+  }
+
+  a[data-melodia-nav-loading].is-navigating {
+    opacity: 0.72;
+    pointer-events: none;
+  }
+
+  @keyframes melodia-hub-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .melodia-hub__nav-spinner {
+      animation: none;
+      border-top-color: var(--primary);
+      border-right-color: var(--primary);
+    }
+  }
+</style>

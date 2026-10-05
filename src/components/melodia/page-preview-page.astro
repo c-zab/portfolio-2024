@@ -6,8 +6,18 @@ const locale = getLocaleFromPath(Astro.url.pathname);
 const melodiaHref = getLocalizedPath("/melodia", locale);
 const copy =
   locale === "es"
-    ? { expand: "Expandir", exit: "Salir", openPage: "Abrir como página", back: "← Volver a Melodia" }
-    : { expand: "Expand", exit: "Exit", openPage: "Open as page", back: "← Back to Melodia" };
+    ? {
+        expand: "Expandir",
+        exit: "Salir",
+        back: "← Volver a Melodia",
+        loading: "Cargando vista previa…",
+      }
+    : {
+        expand: "Expand",
+        exit: "Exit",
+        back: "← Back to Melodia",
+        loading: "Loading preview…",
+      };
 ---
 
 <Layout
@@ -50,19 +60,13 @@ const copy =
           </svg>
           <span data-melodia-expand-label>{copy.expand}</span>
         </button>
-        <a
-          href="/melodia/directions-playground.html?v=dir3"
-          class="inline-flex items-center rounded-full border px-4 py-2 text-sm font-medium"
-          style="border-color: var(--border-subtle); color: var(--text-muted);"
-        >
-          {copy.openPage}
-        </a>
       </div>
 
       <div
         data-melodia-preview
-        class="melodia-page__frame overflow-hidden rounded-2xl border"
+        class="melodia-page__frame is-loading overflow-hidden rounded-2xl border"
         style="border-color: var(--border-subtle); background: #0a0a0a;"
+        aria-busy="true"
       >
         <div class="melodia-page__exitbar" hidden data-melodia-exitbar>
           <button
@@ -73,11 +77,16 @@ const copy =
             {copy.exit}
           </button>
         </div>
+        <div class="melodia-page__loading" data-melodia-loading role="status" aria-live="polite">
+          <span class="melodia-page__spinner" aria-hidden="true"></span>
+          <span>{copy.loading}</span>
+        </div>
         <iframe
           title="Melodía de Bolivia — page preview"
-          src="/melodia/directions-playground.html?v=dir3"
+          src="/melodia/directions-playground.html?d=tejido&v=fix5"
           class="melodia-page__iframe block w-full border-0"
           loading="eager"
+          data-melodia-iframe
         ></iframe>
       </div>
     </main>
@@ -91,6 +100,21 @@ const copy =
   const closeBtn = document.querySelector("[data-melodia-expand-close]");
   const exitBar = document.querySelector("[data-melodia-exitbar]");
   const label = document.querySelector("[data-melodia-expand-label]");
+  const iframe = document.querySelector("[data-melodia-iframe]");
+
+  function clearLoading() {
+    if (!frame) return;
+    frame.classList.remove("is-loading");
+    frame.setAttribute("aria-busy", "false");
+  }
+
+  if (iframe) {
+    if (iframe.contentDocument?.readyState === "complete") {
+      clearLoading();
+    } else {
+      iframe.addEventListener("load", clearLoading, { once: true });
+    }
+  }
 
   function isExpanded() {
     return frame?.classList.contains("is-expanded") ?? false;
@@ -115,9 +139,65 @@ const copy =
 </script>
 
 <style>
+  .melodia-page__frame {
+    position: relative;
+  }
+
+  .melodia-page__loading {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: #0a0a0a;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 180ms ease, visibility 180ms ease;
+  }
+
+  .melodia-page__frame.is-loading .melodia-page__loading {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .melodia-page__spinner {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    border: 2px solid rgba(255, 255, 255, 0.16);
+    border-top-color: rgba(255, 255, 255, 0.85);
+    animation: melodia-page-spin 0.7s linear infinite;
+  }
+
+  @keyframes melodia-page-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .melodia-page__spinner {
+      animation: none;
+      border-top-color: rgba(255, 255, 255, 0.55);
+      border-right-color: rgba(255, 255, 255, 0.55);
+    }
+
+    .melodia-page__loading {
+      transition: none;
+    }
+  }
+
   .melodia-page__iframe {
-    height: min(1100px, calc(100dvh - 11rem));
-    min-height: 720px;
+    height: min(900px, calc(100dvh - 10rem));
+    min-height: 560px;
   }
 
   .melodia-page__exitbar {
