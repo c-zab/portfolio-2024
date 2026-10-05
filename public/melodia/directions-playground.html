@@ -184,7 +184,7 @@
       --red:#b91c14; --gold:#f7e017; --cream:#fff4c4; --ink:#141414; --band: var(--green);
     }
     .aguayo-border .aguayo-inner {
-      position: absolute; top: 0; left: 0; width: 137.5%; height: 66px;
+      position: absolute; top: 0; left: 0; width: 300%; height: 66px;
       transform: scale(0.333); transform-origin: 0 0;
       background: repeating-linear-gradient(180deg,var(--field) 0px 6px,var(--gold) 6px 8px,var(--cream) 8px 10px,var(--green) 10px 13px,var(--ink) 13px 15px,var(--pink) 15px 19px,var(--cream) 19px 21px,var(--band) 21px 47px,var(--cream) 47px 49px,var(--pink) 49px 53px,var(--ink) 53px 55px,var(--green) 55px 58px,var(--gold) 58px 60px,var(--field) 60px 66px);
     }
@@ -222,35 +222,41 @@
 
     .tejido-shell { background: #050505; display: flex; flex-direction: column; }
     .tejido-header {
-      display: flex; align-items: center;
-      min-height: 92px; padding: 14px 28px 12px 24px;
+      display: flex; align-items: flex-end;
+      min-height: 48px; padding: 4px 20px 6px 16px;
       background: #050505;
     }
-    .tejido-header .brand { padding: 0; gap: 12px; flex: 0 0 auto; margin-right: 72px; }
-    .tejido-header .brand img { width: 48px; height: 48px; border-radius: 50%; }
+    .tejido-header .brand {
+      padding: 0 0 14px; gap: 8px; flex: 0 0 auto; margin-right: 28px;
+      display: flex; align-items: center;
+    }
+    .tejido-header .brand img { width: 32px; height: 32px; border-radius: 50%; }
     .tejido-header .brand-name b {
-      font-family: var(--font-display); font-size: 19px; font-weight: 600;
+      font-family: var(--font-display); font-size: 15px; font-weight: 600;
       text-transform: none; letter-spacing: -.02em; color: #f7efe4;
     }
-    .tejido-header .brand-name span { font-size: 9px; letter-spacing: .18em; color: #c9bfb2; opacity: .85; }
+    .tejido-header .brand-name span { font-size: 8px; letter-spacing: .16em; color: #c9bfb2; opacity: .85; }
     .tejido-nav {
-      display: flex; align-items: flex-end; justify-content: flex-start; flex-wrap: wrap;
-      gap: 4px 22px; min-width: 0; flex: 1 1 auto;
+      display: flex; align-items: flex-end; justify-content: flex-start; flex-wrap: nowrap;
+      gap: 0 14px; min-width: 0; flex: 1 1 auto;
     }
     .tejido-nav a {
       display: flex; flex-direction: column; align-items: stretch; justify-content: flex-end;
-      gap: 0; flex: 1 1 0; min-width: 70px; max-width: 110px; padding: 0;
-      font-size: 13px; font-weight: 500; color: #ddd4c8; background: none;
+      gap: 0; flex: 1 1 0; min-width: 0; padding: 0;
+      font-size: 12px; font-weight: 500; color: #ddd4c8; background: none;
       transition: color .2s ease;
     }
     .tejido-nav a .num { display: none; }
-    .tejido-nav a > span[data-i18n] { line-height: 1.2; display: block; width: 100%; }
+    .tejido-nav a > span[data-i18n] {
+      line-height: 1; display: block; width: 100%;
+      font-size: 12px; letter-spacing: .02em;
+    }
     .tejido-nav a .nav-mark {
-      display: block; position: relative; width: 100%; height: 16px;
-      margin-top: 8px; overflow: hidden;
+      display: block; position: relative; width: 100%; height: 10px;
+      margin-top: 4px; overflow: hidden;
     }
     .tejido-nav a .nav-line {
-      position: absolute; left: 0; right: 0; top: 7px; height: 2px;
+      position: absolute; left: 0; right: 0; top: 5px; height: 2px;
       background: #d8003f; opacity: .35;
       transition: opacity .22s ease, transform .22s ease;
     }
@@ -263,12 +269,13 @@
     .tejido-nav a:focus-visible .nav-line { opacity: 0; }
     .tejido-nav a:focus-visible .nav-aguayo { opacity: .9; transform: translateY(0); }
     .tejido-nav a .nav-aguayo {
-      position: absolute; inset: 0; width: 100%; height: 16px; overflow: hidden;
-      opacity: 0; transform: translateY(5px);
+      position: absolute; inset: 0; width: 100%; height: 10px; overflow: hidden;
+      opacity: 0; transform: translateY(3px);
       transition: opacity .25s ease, transform .25s ease;
     }
-    .tejido-nav a .nav-aguayo .aguayo-border { height: 16px; width: 100%; }
-    .tejido-nav a .nav-aguayo .aguayo-inner { top: -4px; }
+    .tejido-nav a .nav-aguayo .aguayo-border { height: 10px; width: 100%; }
+    /* Show colorful stripe edge across full link width (not sparse diamond crop) */
+    .tejido-nav a .nav-aguayo .aguayo-inner { top: 0; }
     .tejido-nav a:hover { color: #f7efe4; }
     .tejido-nav a:hover .nav-line { opacity: 0; }
     .tejido-nav a:hover .nav-aguayo { opacity: .9; transform: translateY(0); }
@@ -276,22 +283,22 @@
     .tejido-nav a.is-current .nav-line { opacity: 0; }
     .tejido-nav a.is-current .nav-aguayo { opacity: 1; transform: translateY(0); }
     .tejido-tools {
-      display: flex; align-items: flex-end; gap: 10px; padding: 0 0 14px;
-      align-self: stretch; flex: 0 0 auto; margin-left: 28px;
+      display: flex; align-items: center; gap: 6px; padding: 0 0 14px;
+      align-self: flex-end; flex: 0 0 auto; margin-left: 16px;
     }
     .tejido-tools .locale {
       display: inline-flex; align-items: center; gap: 2px;
-      border: 0; border-radius: 0; overflow: visible;
+      border: 0; border-radius: 0; overflow: visible; height: 12px;
     }
     .tejido-tools .locale button {
       background: none; border: 0; color: #8a8176; cursor: pointer;
-      font-weight: 700; font-size: 11px; letter-spacing: .08em;
-      padding: 0 6px 2px; opacity: 1;
+      font-weight: 600; font-size: 12px; letter-spacing: .06em;
+      padding: 0 4px; line-height: 1; height: 12px; opacity: 1;
       box-shadow: inset 0 -1px 0 transparent;
       transition: color .2s ease, box-shadow .2s ease;
     }
     .tejido-tools .locale button.is-active {
-      color: #f4ebdd; background: none;
+      color: #f4ebdd; background: none; font-weight: 700;
       box-shadow: inset 0 -1px 0 rgba(244,235,221,.7);
     }
     .tejido-tools .locale button:hover { color: #f4ebdd; }
@@ -314,14 +321,31 @@
     .tejido-hero-photo { position: relative; min-height: 280px; overflow: hidden; }
     .tejido-hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 55% 20%; }
     .tejido-hero-photo .hero-photo-band {
-      position: absolute; left: 0; right: 0; bottom: 0; height: 18px; z-index: 2; overflow: hidden;
+      position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 22px; z-index: 2; overflow: hidden;
     }
-    .tejido-hero-photo .hero-photo-band .aguayo-border { height: 18px; }
-    .tejido-hero-corners {
-      position: absolute; right: 0; bottom: 0; z-index: 3;
-      display: flex; gap: 0; height: 38%; max-height: 160px; pointer-events: none;
+    .tejido-hero-photo .hero-photo-band .aguayo-border {
+      height: 22px; width: 100%;
+      /* Bright blue band so the textile reads edge-to-edge on dark photo */
+      --field: #c81e3a; --pink: #ed4190; --green: #216437; --blue: #1e4a8c;
+      --red: #cf203a; --gold: #f0a134; --cream: #f2e0d0; --ink: #1a2744; --band: #1e4a8c;
     }
-    .tejido-hero-corners .aguayo-rail-v { width: 14px; flex-basis: 14px; height: 100%; min-height: 100%; align-self: stretch; }
+    .tejido-hero-photo .hero-photo-band .aguayo-inner { top: 0; }
+    .tejido-hero-photo .tejido-hero-corners {
+      position: absolute; right: 0; bottom: 22px; z-index: 3;
+      display: flex; flex-direction: row; align-items: stretch; gap: 3px;
+      height: 38%; max-height: 160px; pointer-events: none;
+    }
+    .tejido-hero-photo .tejido-hero-corners .aguayo-rail-v {
+      width: 14px; flex: 0 0 14px; height: 100%; min-height: 100%; align-self: stretch;
+      overflow: hidden; position: relative;
+    }
+    .tejido-hero-photo .tejido-hero-corners .aguayo-rail-v .aguayo-border {
+      /* left:0 keeps untransformed box inside the photo (rightmost rail was clipped at edge) */
+      top: 0; left: 0; height: 14px; width: 200vh;
+      transform: translateX(14px) rotate(90deg);
+      transform-origin: top left;
+    }
+    .tejido-hero-photo .tejido-hero-corners .aguayo-inner { top: 0; }
 
     .tejido-cards {
       display: grid; grid-template-columns: 14px repeat(4, minmax(0, 1fr));
@@ -423,7 +447,7 @@
     }
     .preview-shell.mobile .tejido-menu-btn { display: inline-flex; }
     .preview-shell.mobile .tejido-hero { grid-template-columns: 1fr; }
-    .preview-shell.mobile .tejido-hero-corners { display: none; }
+    .preview-shell.mobile .tejido-hero-photo .tejido-hero-corners { display: none; }
     .preview-shell.mobile .tejido-cards { grid-template-columns: 1fr 1fr; }
     .preview-shell.mobile .tejido-cards > .corner-rail { display: none; }
     .preview-shell.mobile .tejido-card { grid-template-columns: 1fr; }
@@ -440,7 +464,7 @@
       .tejido-tools { margin-left: 0; padding: 0; align-items: center; }
       .tejido-menu-btn { display: inline-flex; }
       .tejido-hero { grid-template-columns: 1fr; }
-      .tejido-hero-corners { display: none; }
+      .tejido-hero-photo .tejido-hero-corners { display: none; }
       .tejido-cards { grid-template-columns: 1fr 1fr; }
       .tejido-cards > .corner-rail { display: none; }
       .tejido-card { grid-template-columns: 1fr; }
@@ -833,12 +857,13 @@
             <div class="tejido-hero-photo">
               <img class="photo" src="/melodia/media/library/tejido-hero-dancer.jpg" alt="" data-i18n-alt="tejidoHeroAlt" />
               <div class="hero-photo-band" aria-hidden="true">
-                <div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div>
+                <div class="aguayo-border is-geometry"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div>
               </div>
-            </div>
-            <div class="tejido-hero-corners" aria-hidden="true">
-              <div class="aguayo-rail-v"><div class="aguayo-border is-gold"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
-              <div class="aguayo-rail-v"><div class="aguayo-border is-teal"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+              <div class="tejido-hero-corners" aria-hidden="true">
+                <div class="aguayo-rail-v"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+                <div class="aguayo-rail-v"><div class="aguayo-border is-geometry"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+                <div class="aguayo-rail-v"><div class="aguayo-border is-gold"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+              </div>
             </div>
           </section>
 
