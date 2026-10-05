@@ -169,7 +169,7 @@
     .aguayo-border {
       --field: #e90068; --pink: #fa168b; --green: #13603b; --blue: #153b72;
       --red: #f34246; --gold: #fbb140; --cream: #f8e2d4; --ink: #231e2c; --band: var(--blue);
-      position: relative; height: 22px; overflow: hidden; isolation: isolate; flex: 0 0 auto;
+      display: block; position: relative; height: 22px; width: 100%; overflow: hidden; isolation: isolate; flex: 0 0 auto;
     }
     .aguayo-border.is-crimson { --field:#d8003f; --pink:#fa138b; --green:#117145; --blue:#095882; --red:#ff4324; --gold:#ffd03c; --cream:#f5e6c2; --ink:#14152a; --band: var(--blue); }
     .aguayo-border.is-forest { --field:#07523b; --pink:#f00e7b; --green:#1f9953; --blue:#116c9c; --red:#e53540; --gold:#edab3d; --cream:#f4ebd6; --ink:#172b27; --band: var(--red); }
@@ -208,15 +208,9 @@
     }
     .aguayo-border.is-patch .aguayo-inner { transform: none; width: 100%; }
     .aguayo-ribbon {
-      width: 196px; height: 18px; overflow: hidden; position: relative; isolation: isolate;
+      width: 220px; height: 22px; overflow: hidden; position: relative; isolation: isolate; margin-top: 14px;
     }
-    .aguayo-ribbon .aguayo-border { height: 18px; }
-    .aguayo-pinstripe {
-      height: 8px; width: 100%;
-      background: repeating-linear-gradient(90deg,
-        #e11d48 0 4px, #fbb140 4px 7px, #14b8a6 7px 11px, #fa168b 11px 14px,
-        #111 14px 16px, #ff6632 16px 20px, #fbb140 20px 23px, #0f766e 23px 27px, #153b72 27px 31px);
-    }
+    .aguayo-ribbon .aguayo-border { height: 22px; }
 
     .tejido-shell { background: #050505; display: flex; flex-direction: column; }
     .tejido-header {
@@ -227,22 +221,28 @@
     .tejido-header .brand img { width: 40px; height: 40px; border-radius: 50%; }
     .tejido-header .brand-name b { font-family: var(--font-display); font-size: 17px; text-transform: none; letter-spacing: -.02em; }
     .tejido-nav {
-      position: relative; display: flex; align-items: stretch; justify-content: center; gap: 0;
-      padding-top: 10px;
+      display: flex; align-items: stretch; justify-content: center; gap: 0;
     }
-    .tejido-nav .nav-ribbon {
-      position: absolute; top: 0; left: 0; right: 0; height: 10px; overflow: hidden; z-index: 2;
-    }
-    .tejido-nav .nav-ribbon .aguayo-border { height: 10px; }
     .tejido-nav a {
-      display: flex; flex-direction: column; justify-content: center; gap: 3px;
-      min-width: 76px; padding: 12px 14px 14px; font-size: 13px; font-weight: 600; position: relative;
+      display: flex; flex-direction: column; justify-content: flex-start; gap: 4px;
+      min-width: 76px; padding: 0 0 12px; font-size: 13px; font-weight: 600; position: relative;
     }
-    .tejido-nav a .num { font-size: 9px; letter-spacing: .14em; opacity: .55; font-weight: 700; }
+    .tejido-nav a .nav-aguayo {
+      display: block; height: 12px; width: 100%; overflow: hidden; flex: 0 0 12px;
+      opacity: .65;
+    }
+    .tejido-nav a .nav-aguayo .aguayo-border { height: 12px; }
+    .tejido-nav a .nav-aguayo .aguayo-inner { top: -6px; }
+    .tejido-nav a .num {
+      font-size: 9px; letter-spacing: .14em; opacity: .55; font-weight: 700;
+      padding: 8px 14px 0;
+    }
+    .tejido-nav a > span:last-child { padding: 0 14px; }
     .tejido-nav a.is-current {
       background: #e11d48; color: #fff;
     }
-    .tejido-nav a.is-current .num { opacity: .85; }
+    .tejido-nav a.is-current .nav-aguayo { opacity: 1; }
+    .tejido-nav a.is-current .num { opacity: .9; }
     .tejido-tools { display: flex; align-items: center; gap: 8px; padding: 0 14px; }
     .tejido-tools .locale {
       display: inline-flex; border: 1px solid rgba(255,255,255,.28); border-radius: 3px; overflow: hidden;
@@ -252,7 +252,7 @@
     .tejido-menu-btn { display: none; }
 
     .tejido-hero {
-      display: grid; grid-template-columns: minmax(280px, 1.05fr) minmax(280px, 1.2fr) 36px;
+      display: grid; grid-template-columns: minmax(280px, 1.05fr) minmax(280px, 1.2fr) 16px;
       min-height: min(56vh, 520px); align-items: stretch;
     }
     .tejido-hero-copy { padding: clamp(32px, 4.5vw, 56px) 32px; display: flex; flex-direction: column; justify-content: center; }
@@ -264,25 +264,10 @@
     .tejido-hero-photo { position: relative; min-height: 280px; overflow: hidden; }
     .tejido-hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 55% 20%; }
     .tejido-hero-rail {
-      display: grid; grid-template-rows: 1fr 1.15fr .85fr; min-height: 100%;
+      display: grid; grid-template-rows: 1fr 1fr 1fr; min-height: 100%; width: 16px;
     }
-    .tejido-hero-rail .stripe {
-      background: repeating-linear-gradient(90deg,
-        #e11d48 0 3px, #fbb140 3px 5px, #14b8a6 5px 8px, #fa168b 8px 10px,
-        #111 10px 12px, #ff6632 12px 15px, #fbb140 15px 17px, #0f766e 17px 20px);
-    }
-    .tejido-hero-rail .block-teal {
-      position: relative; overflow: hidden; background: #0f766e;
-    }
-    .tejido-hero-rail .block-teal .aguayo-border {
-      position: absolute; top: 0; left: 36px; width: 160vh; height: 36px;
-      transform: rotate(90deg); transform-origin: top left;
-    }
-    .tejido-hero-rail .block-gold {
-      background:
-        repeating-linear-gradient(45deg, #fbb140 0 6px, #e8a030 6px 12px),
-        #fbb140;
-    }
+    .tejido-hero-rail .aguayo-rail-v { width: 16px; flex-basis: 16px; min-height: 0; }
+    .tejido-hero-rail .aguayo-rail-v .aguayo-border { left: 16px; height: 16px; }
 
     .tejido-cards {
       display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -326,21 +311,9 @@
       border-left: 1px solid rgba(255,255,255,.12); font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
       max-width: 12ch; line-height: 1.5; opacity: .8;
     }
-    .tejido-close-cta { padding: 28px 20px; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
-    .tejido-close-cta p { margin: 0; font-size: 14px; color: #d8d0c6; max-width: 28ch; line-height: 1.45; }
-
-    .tejido-book {
-      display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: end;
-      padding: 36px 32px 32px; background: #0a090b;
-    }
-    .tejido-book .eyebrow {
-      margin: 0 0 10px; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; opacity: .6;
-    }
-    .tejido-book h2 {
-      margin: 0; font-size: clamp(36px, 5.2vw, 64px); font-weight: 500; letter-spacing: -.04em; line-height: .92;
-    }
-    .tejido-book-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding-bottom: 8px; }
-    .tejido-book-cta .btn-text { color: #e11d48; letter-spacing: .04em; text-transform: none; font-size: 14px; }
+    .tejido-close-cta { padding: 28px 20px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+    .tejido-close-cta p { margin: 0 0 8px; font-size: 14px; color: #d8d0c6; max-width: 28ch; line-height: 1.45; }
+    .tejido-close-cta .btn-text { align-self: flex-start; }
 
     .tejido-footer {
       display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr auto; gap: 18px; align-items: center;
@@ -378,7 +351,6 @@
     .preview-shell.mobile .tejido-hero-rail { display: none; }
     .preview-shell.mobile .tejido-cards { grid-template-columns: 1fr 1fr; }
     .preview-shell.mobile .tejido-close { grid-template-columns: 1fr; }
-    .preview-shell.mobile .tejido-book { grid-template-columns: 1fr; }
     .preview-shell.mobile .tejido-footer { grid-template-columns: 1fr 1fr; }
 
     @media (max-width: 820px) {
@@ -387,7 +359,7 @@
       .tejido-menu-btn { display: inline-flex; }
       .tejido-hero { grid-template-columns: 1fr; }
       .tejido-cards { grid-template-columns: 1fr 1fr; }
-      .tejido-close, .tejido-book, .tejido-footer { grid-template-columns: 1fr; }
+      .tejido-close, .tejido-footer { grid-template-columns: 1fr; }
     }
 
     /* ——— Entrada ——— */
@@ -709,13 +681,30 @@
               <span class="brand-name"><b>Melodía</b><span>de Bolivia</span></span>
             </a>
             <nav class="tejido-nav" data-nav-links>
-              <div class="nav-ribbon" aria-hidden="true"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
-              <a class="is-current" href="#inicio"><span class="num">01</span><span data-i18n="home">Inicio</span></a>
-              <a href="#nosotros"><span class="num">02</span><span data-i18n="about">Nosotros</span></a>
-              <a href="#danzas"><span class="num">03</span><span data-i18n="dances">Danzas</span></a>
-              <a href="#eventos"><span class="num">04</span><span data-i18n="events">Eventos</span></a>
-              <a href="#galeria"><span class="num">05</span><span data-i18n="gallery">Galería</span></a>
-              <a href="#contratanos"><span class="num">06</span><span data-i18n="contact">Contacto</span></a>
+              <a class="is-current" href="#inicio">
+                <span class="nav-aguayo" aria-hidden="true"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                <span class="num">01</span><span data-i18n="home">Inicio</span>
+              </a>
+              <a href="#nosotros">
+                <span class="nav-aguayo" aria-hidden="true"><div class="aguayo-border is-gold"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                <span class="num">02</span><span data-i18n="about">Nosotros</span>
+              </a>
+              <a href="#danzas">
+                <span class="nav-aguayo" aria-hidden="true"><div class="aguayo-border is-teal"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                <span class="num">03</span><span data-i18n="dances">Danzas</span>
+              </a>
+              <a href="#eventos">
+                <span class="nav-aguayo" aria-hidden="true"><div class="aguayo-border is-orange"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                <span class="num">04</span><span data-i18n="events">Eventos</span>
+              </a>
+              <a href="#galeria">
+                <span class="nav-aguayo" aria-hidden="true"><div class="aguayo-border is-geometry"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                <span class="num">05</span><span data-i18n="gallery">Galería</span>
+              </a>
+              <a href="#contratanos">
+                <span class="nav-aguayo" aria-hidden="true"><div class="aguayo-border is-forest"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                <span class="num">06</span><span data-i18n="contact">Contacto</span>
+              </a>
             </nav>
             <div class="tejido-tools">
               <div class="locale" data-locale>
@@ -740,11 +729,9 @@
               <img class="photo" src="/melodia/media/library/tejido-hero-dancer.jpg" alt="" data-i18n-alt="tejidoHeroAlt" />
             </div>
             <div class="tejido-hero-rail" aria-hidden="true">
-              <div class="stripe"></div>
-              <div class="block-teal">
-                <div class="aguayo-border is-teal"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div>
-              </div>
-              <div class="block-gold"></div>
+              <div class="aguayo-rail-v"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+              <div class="aguayo-rail-v"><div class="aguayo-border is-teal"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+              <div class="aguayo-rail-v"><div class="aguayo-border is-gold"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
             </div>
           </section>
 
@@ -807,19 +794,9 @@
               <h2 class="display"><span data-i18n="tejido35A">35 años</span><br /><em data-i18n="tejido35B">bailando.</em></h2>
             </div>
             <p class="tejido-close-meta" data-i18n="tejidoSince">Cultura boliviana en Toronto desde 1990</p>
-            <div class="tejido-close-cta">
+            <div class="tejido-close-cta" id="contratanos">
               <p data-i18n="tejidoCloseBody">Ensayos, entradas, fiestas — para quien baila y para quien quiere contratar el grupo.</p>
               <a class="btn btn-text" href="#contratanos" data-i18n="bookArrow">Contrátanos →</a>
-            </div>
-          </section>
-
-          <section class="tejido-book" id="contratanos">
-            <div>
-              <p class="eyebrow" data-i18n="tejidoBookEyebrow">Llevemos nuestra cultura a tu evento</p>
-              <h2 class="display" data-i18n="tejidoBookTitle">Bailamos contigo.</h2>
-            </div>
-            <div class="tejido-book-cta">
-              <a class="btn btn-text" href="#contratanos" data-i18n="bookArrow">Contrátanos ↗</a>
               <div class="aguayo-ribbon" aria-hidden="true">
                 <div class="aguayo-border is-geometry"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div>
               </div>
