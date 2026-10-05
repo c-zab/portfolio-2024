@@ -7,7 +7,6 @@ import { accentize } from "../utils/accent-text";
 
 const locale = getLocaleFromPath(Astro.url.pathname);
 const t = (key: string) => getTranslation(locale, key);
-const melodiaFootersHref = getLocalizedPath("/melodia/footers", locale);
 
 const packageConfig = {
   discovery: {

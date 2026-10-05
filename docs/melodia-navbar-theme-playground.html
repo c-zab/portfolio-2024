@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <title>Melodía Page — Melodía de Bolivia</title>
   <style>
     :root {
@@ -47,10 +50,20 @@
       --flag-red:#d52b1e; --flag-yellow:#f9e814; --flag-green:#007934;
     }
 
+
+    /* Brand type — one voice; layouts only tweak weight/tracking */
+    :root,
+    .preview-shell,
+    .model {
+      --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+      --font-ui: "Manrope", ui-sans-serif, system-ui, sans-serif;
+      --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
+    }
+
     * { box-sizing:border-box; }
     body {
       margin:0; background:var(--page); color:var(--text);
-      font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      font-family:var(--font-body);
       transition:background .25s ease,color .25s ease;
     }
     a { color:inherit; text-decoration:none; }
@@ -64,35 +77,65 @@
       font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
     }
     .topbar-inner {
-      max-width:1400px; margin:0 auto; padding:10px 14px;
+      max-width:1400px; margin:0 auto; padding:12px 14px 10px;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .topbar-row {
       display:flex; align-items:center; gap:10px; flex-wrap:wrap;
     }
+    .topbar-row.controls {
+      align-items:flex-end;
+    }
     .topbar-title {
-      font-weight:700; white-space:nowrap; margin-right:4px;
+      font-weight:700; white-space:nowrap;
       font-size:12px; letter-spacing:.04em; text-transform:uppercase;
-      padding:6px 8px; background:#111; color:#f5f4f0; border-radius:2px;
+      padding:7px 10px; background:#111; color:#f5f4f0; border-radius:2px;
     }
-    .control-group {
-      display:flex; align-items:center; gap:4px; flex-wrap:wrap;
-      padding:4px; background:#f7f6f2; border:1px solid #cfcbc3; border-radius:4px;
+    .topbar-hint {
+      color:#6b655c; font-size:12px; line-height:1.35;
     }
-    .spacer { flex:1; }
-    .control-label {
-      color:#6b655c; font-size:9px; letter-spacing:.14em; text-transform:uppercase;
-      margin:0 4px 0 2px; font-weight:700;
+    .topbar-hint strong { color:#111; font-weight:700; }
+    .field {
+      display:flex; flex-direction:column; gap:4px;
     }
-    .control-btn {
-      border:1px solid transparent; background:transparent; color:#3f3a34;
-      border-radius:3px; padding:6px 9px; cursor:pointer; font-size:12px; font-weight:600;
+    .field-label {
+      color:#6b655c; font-size:9px; letter-spacing:.14em; text-transform:uppercase; font-weight:700;
+      min-height:12px; line-height:12px;
     }
-    .control-btn:hover {
-      background:#ddd8ce; color:#111;
+    .seg {
+      display:inline-flex; flex-wrap:wrap; align-items:stretch; border:1px solid #111; border-radius:3px;
+      overflow:hidden; background:#fff; box-shadow:2px 2px 0 #111;
+      min-height:36px;
     }
-    .control-btn.active {
-      color:#111; background:#fff;
-      border-color:#111; box-shadow:2px 2px 0 #111;
+    .seg button {
+      border:0; background:transparent; color:#3f3a34;
+      padding:0 12px; min-height:36px; cursor:pointer; font:inherit; font-size:12px; font-weight:600;
+      display:inline-flex; align-items:center; gap:6px;
     }
-    .theme-dot { width:7px; height:7px; border-radius:50%; display:inline-block; margin-right:6px; vertical-align:1px; }
+    .seg button + button { border-left:1px solid #111; }
+    .seg button.is-on {
+      background:#111; color:#f5f4f0;
+    }
+    .view-toggle {
+      display:inline-flex; margin-left:auto; border:1px solid #111; border-radius:3px;
+      overflow:hidden; box-shadow:2px 2px 0 #111; background:#fff; min-height:36px;
+    }
+    .view-toggle button {
+      border:0; background:transparent; color:#3f3a34;
+      padding:0 12px; min-height:36px; cursor:pointer; font:inherit; font-size:12px; font-weight:600;
+      display:inline-flex; align-items:center;
+    }
+    .view-toggle button + button { border-left:1px solid #111; }
+    .view-toggle button.is-on { background:#111; color:#f5f4f0; }
+    .combo-pill {
+      display:inline-flex; align-items:center; gap:6px;
+      min-height:36px; padding:0 12px;
+      background:#fff; border:1px solid #111; border-radius:3px;
+      box-shadow:2px 2px 0 #111;
+      font-size:12px; line-height:1; color:#3f3a34;
+    }
+    .combo-pill b { color:#111; font-weight:700; }
+    .theme-dot { width:8px; height:8px; border-radius:50%; display:inline-block; vertical-align:1px; }
     .theme-dot.heritage { background:#d52b1e; }
     .theme-dot.copper { background:#d4956a; }
     .theme-dot.festival { background:linear-gradient(90deg,#d52b1e 0 33%,#f4c51e 33% 66%,#007a33 66%); }
@@ -101,7 +144,7 @@
     .page { max-width:1400px; margin:0 auto; padding:16px 20px 36px; }
     .intro { display:flex; align-items:flex-end; justify-content:space-between; gap:30px; padding:8px 2px 22px; }
     .intro h1 {
-      margin:0; font-family:Georgia,"Times New Roman",serif;
+      margin:0; font-family:var(--font-display);
       font-size:clamp(34px,4.4vw,58px); font-weight:400; letter-spacing:-.045em;
     }
     .intro-copy { max-width:540px; color:var(--muted); font-size:13px; line-height:1.6; }
@@ -113,6 +156,61 @@
     }
     .model { display:none; overflow:hidden; border:1px solid var(--line); border-radius:26px; background:var(--page); }
     .model.active { display:block; }
+
+    .model, .page-body, .site-footers {
+      font-family: var(--font-body);
+    }
+    .brand span,
+    .links,
+    .locale,
+    .ghost-in,
+    .cta-join,
+    .cta-book,
+    .kicker,
+    .bar-header,
+    .overlay-header,
+    .playbill-rail,
+    .playbill-nav,
+    .menu-btn,
+    .footer-cta,
+    .grid-num,
+    .grid-cell h3,
+    .card-social,
+    .giant-meta,
+    .page-body__label {
+      font-family: var(--font-ui);
+    }
+    .bar-hero h2,
+    .overlay-hero h2,
+    .playbill-mast h2,
+    .playbill-mast .sub,
+    .giant-title,
+    .card-title,
+    .brand-name,
+    .page-body__title {
+      font-family: var(--font-display);
+    }
+    .bar-hero h2 {
+      font-weight: 600;
+      font-variation-settings: "SOFT" 40, "WONK" 0;
+    }
+    .overlay-hero h2 {
+      font-weight: 500;
+      font-style: normal;
+      letter-spacing: -.03em;
+    }
+    .playbill-mast h2 {
+      font-weight: 700;
+      letter-spacing: -.03em;
+      text-transform: none;
+    }
+    .page-body__copy,
+    .page-copy,
+    .playbill-body p,
+    .overlay-hero p,
+    .bar-hero p {
+      font-family: var(--font-body);
+    }
 
     .brand { display:flex; min-width:0; align-items:center; gap:8px; }
     .brand img { width:32px; height:32px; object-fit:contain; }
@@ -168,11 +266,13 @@
 
     /* ---- 01 BAR (live site) ---- */
     .bar-header {
-      background:color-mix(in srgb,var(--page) 95%, transparent);
+      position:relative; z-index:2;
+      background:color-mix(in srgb,var(--page) 92%, transparent);
       border-bottom:1px solid var(--line); padding:12px 24px;
+      backdrop-filter:blur(10px);
     }
     .bar-header__inner {
-      max-width:896px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:center; gap:12px;
+      max-width:960px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:center; gap:12px;
     }
     .bar-header .links { flex:1; }
     .bar-header .tools { margin-left:auto; display:flex; align-items:center; gap:8px; }
@@ -184,30 +284,76 @@
     .bar-header .locale button.is-active {
       background:var(--accent-muted); border-radius:6px; color:var(--accent-text);
     }
-    .bar-body { padding:28px 24px 40px; }
-    .bar-body__inner { max-width:896px; margin:0 auto; }
     .bar-hero {
-      min-height:220px; border-radius:16px; padding:28px;
-      display:flex; flex-direction:column; justify-content:flex-end;
-      background:
-        linear-gradient(180deg,transparent 20%,rgba(0,0,0,.72)),
-        radial-gradient(circle at 30% 40%,color-mix(in srgb,var(--gold) 28%,transparent),transparent 42%),
-        #140e0c;
+      position:relative; isolation:isolate;
+      min-height:min(420px,70vh); padding:56px 28px 48px;
+      display:flex; align-items:flex-end;
+      overflow:hidden;
+      background:var(--page);
     }
-    .bar-hero .kicker { font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#d6d3d1; }
-    .bar-hero h2 { margin:6px 0 0; font-size:30px; font-weight:600; }
-    .bar-hero p { margin:8px 0 0; color:#e7e5e4; font-size:14px; }
-    .bar-body .page-copy { margin:22px 0 18px; color:var(--muted); font-size:14px; max-width:540px; line-height:1.6; }
+    .bar-hero::before {
+      content:""; position:absolute; inset:0; z-index:0;
+      background:
+        radial-gradient(ellipse 70% 60% at 18% 30%, color-mix(in srgb,var(--primary) 34%, transparent), transparent 58%),
+        radial-gradient(ellipse 55% 50% at 78% 70%, color-mix(in srgb,var(--gold) 26%, transparent), transparent 55%),
+        radial-gradient(ellipse 40% 35% at 55% 20%, color-mix(in srgb,var(--green) 16%, transparent), transparent 50%),
+        linear-gradient(165deg, color-mix(in srgb,var(--surface) 80%, transparent), var(--page) 70%);
+      animation: barGlow 7s ease-in-out infinite alternate;
+    }
+    .bar-hero::after {
+      content:""; position:absolute; left:0; right:0; top:0; height:4px; z-index:2;
+      background:linear-gradient(90deg,var(--flag-red) 0 33.33%,var(--flag-yellow) 33.33% 66.66%,var(--flag-green) 66.66%);
+    }
+    @keyframes barGlow {
+      from { filter:saturate(1) brightness(1); transform:scale(1); }
+      to { filter:saturate(1.15) brightness(1.08); transform:scale(1.04); }
+    }
+    .bar-hero__inner {
+      position:relative; z-index:1; max-width:960px; width:100%; margin:0 auto;
+    }
+    .bar-hero .kicker {
+      display:inline-flex; align-items:center; gap:8px;
+      margin:0 0 14px; padding:5px 11px;
+      border:1px solid color-mix(in srgb,var(--gold) 45%, transparent);
+      color:var(--gold); font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+      background:rgba(0,0,0,.28);
+      animation: barIn .7s ease both;
+    }
+    .bar-hero h2 {
+      margin:0; max-width:12ch;
+      font-size:clamp(40px,7vw,72px); font-weight:600; line-height:.92; letter-spacing:-.045em;
+      animation: barIn .75s ease .08s both;
+    }
+    .bar-hero p {
+      margin:14px 0 0; max-width:34ch; color:var(--text-soft); font-size:16px; line-height:1.45;
+      animation: barIn .75s ease .14s both;
+    }
+    .bar-hero .actions {
+      margin-top:28px;
+      animation: barIn .75s ease .2s both;
+    }
+    @keyframes barIn {
+      from { opacity:0; transform:translateY(14px); }
+      to { opacity:1; transform:none; }
+    }
+    .bar-body { padding:28px 28px 40px; }
+    .bar-body__inner { max-width:960px; margin:0 auto; }
+    .bar-body .page-copy { margin:0; color:var(--muted); font-size:14px; max-width:540px; line-height:1.65; }
     .actions { display:flex; flex-wrap:wrap; align-items:center; gap:18px; }
+    @media (prefers-reduced-motion: reduce) {
+      .bar-hero::before, .bar-hero .kicker, .bar-hero h2, .bar-hero p, .bar-hero .actions {
+        animation:none;
+      }
+    }
 
     /* ---- 02 OVERLAY (festival / dance photography) ---- */
     .overlay {
       position:relative; min-height:520px;
       background:
-        linear-gradient(180deg,rgba(0,0,0,.35) 0%, rgba(0,0,0,.2) 40%, rgba(0,0,0,.78) 100%),
+        linear-gradient(180deg,rgba(0,0,0,.28) 0%, rgba(0,0,0,.12) 40%, rgba(0,0,0,.55) 100%),
         radial-gradient(circle at 70% 40%, color-mix(in srgb,var(--primary) 35%, transparent), transparent 42%),
         radial-gradient(circle at 20% 80%, color-mix(in srgb,var(--gold) 22%, transparent), transparent 36%),
-        #1a1010;
+        var(--page);
     }
     .overlay-header {
       position:relative; z-index:2; padding:18px 28px 0;
@@ -237,7 +383,7 @@
       color:var(--gold); font-size:10px; letter-spacing:.22em; text-transform:uppercase;
     }
     .overlay-hero h2 {
-      margin:0; font-family:Georgia,"Times New Roman",serif;
+      margin:0; font-family:var(--font-display);
       font-size:clamp(42px,7vw,76px); font-weight:400; line-height:.92; letter-spacing:-.04em;
     }
     .overlay-hero p { margin:16px 0 0; max-width:420px; color:rgba(255,255,255,.78); font-size:16px; line-height:1.5; }
@@ -256,10 +402,18 @@
     }
     .playbill-mast img { width:72px; height:72px; object-fit:contain; }
     .playbill-mast h2 {
-      margin:10px 0 0; font-family:Georgia,"Times New Roman",serif;
+      margin:10px 0 0; font-family:var(--font-display);
       font-size:clamp(40px,8vw,84px); font-weight:400; letter-spacing:-.045em; line-height:.9;
     }
-    .playbill-mast .sub { margin:8px 0 0; color:var(--gold); letter-spacing:.28em; text-transform:uppercase; font-size:11px; }
+    .playbill-mast .sub {
+      margin:8px 0 0;
+      color:var(--gold);
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      font-size:11px;
+      font-family:var(--font-ui);
+      font-weight:600;
+    }
     .playbill-nav {
       display:flex; justify-content:center; flex-wrap:wrap; gap:8px 28px;
       padding:18px 24px 16px; font-size:13px;
@@ -314,7 +468,7 @@
       padding:36px clamp(22px,4vw,48px) 48px;
       border:1px solid var(--line);
       border-radius:26px;
-      background:var(--surface-soft);
+      background:var(--page);
     }
     .page-body__label {
       margin:0 0 22px;
@@ -328,7 +482,7 @@
       margin:0 0 10px;
       max-width:18ch;
       color:var(--text);
-      font-family:Georgia,"Times New Roman",serif;
+      font-family:var(--font-display);
       font-size:clamp(28px,3.6vw,42px);
       font-weight:400;
       letter-spacing:-.04em;
@@ -373,7 +527,7 @@
 
     .brand-lockup { display:flex; align-items:center; gap:14px; }
     .brand-logo { width:64px; height:64px; object-fit:contain; flex:0 0 auto; filter:drop-shadow(0 6px 18px rgba(0,0,0,.24)); }
-    .brand-name { font-family:Georgia,"Times New Roman",serif; font-size:22px; }
+    .brand-name { font-family:var(--font-display); font-size:22px; }
     .brand-city { margin-top:4px; color:var(--muted); font-size:12px; }
 
     .signature-strip {
@@ -390,22 +544,22 @@
     .signature:hover .arrow { transform:translateX(4px); }
 
     .giant-footer {
-      position:relative; padding:40px clamp(22px,5vw,68px); background:var(--surface-soft); overflow:hidden;
+      position:relative; padding:40px clamp(22px,5vw,68px); background:var(--page); overflow:hidden;
     }
     .giant-footer::before {
       content:""; position:absolute; left:0; right:0; top:0; height:3px;
       background:linear-gradient(90deg,var(--flag-red) 0 33.33%,var(--flag-yellow) 33.33% 66.66%,var(--flag-green) 66.66%);
     }
     body[data-theme="copper"] .giant-footer {
-      background:linear-gradient(180deg,color-mix(in srgb,var(--primary) 8%,transparent),transparent 28%),var(--surface-soft);
+      background:linear-gradient(180deg,color-mix(in srgb,var(--primary) 8%,transparent),transparent 28%),var(--page);
     }
     body[data-theme="festival"] .giant-footer {
-      background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 7%,transparent),transparent 26%),var(--surface-soft);
+      background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 7%,transparent),transparent 26%),var(--page);
     }
     .giant-top { display:flex; justify-content:space-between; align-items:flex-start; gap:24px; margin-bottom:34px; }
     .giant-meta { padding-top:5px; color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:.14em; }
     .giant-title {
-      margin:0; color:var(--text); font-family:Georgia,"Times New Roman",serif;
+      margin:0; color:var(--text); font-family:var(--font-display);
       font-size:clamp(56px,10vw,140px); line-height:.81; font-weight:400; letter-spacing:-.065em;
     }
     .giant-title .accent { color:var(--primary); }
@@ -414,7 +568,7 @@
       display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; color:var(--muted); font-size:13px;
     }
 
-    .grid-footer { display:grid; grid-template-columns:repeat(3,1fr); background:var(--surface); }
+    .grid-footer { display:grid; grid-template-columns:repeat(3,1fr); background:var(--page); }
     .grid-brand {
       grid-column:1/-1; min-height:112px; padding:24px 30px; display:flex; align-items:center;
       justify-content:space-between; gap:22px; border-bottom:1px solid var(--line);
@@ -460,7 +614,7 @@
     .card-social { color:var(--muted); font-size:12px; text-align:right; }
     .card-social a:hover { color:var(--accent-text); }
     .card-title {
-      max-width:820px; margin:34px 0 0; font-family:Georgia,"Times New Roman",serif;
+      max-width:820px; margin:34px 0 0; font-family:var(--font-display);
       font-size:clamp(40px,7vw,88px); line-height:.95; font-weight:400; letter-spacing:-.05em;
     }
     .card-title .accent { color:var(--primary); }
@@ -487,39 +641,54 @@
 </head>
 <body data-theme="heritage" data-copy="es">
 
-<header class="topbar">
+<header class="topbar" id="toolChrome">
   <div class="topbar-inner">
-    <div class="topbar-title">Melodía · Page</div>
-    <div class="control-group">
-      <span class="control-label">Navbar</span>
-      <button class="control-btn layout-btn active" data-target="model1">01 Bar</button>
-      <button class="control-btn layout-btn" data-target="model2">02 Overlay</button>
-      <button class="control-btn layout-btn" data-target="model3">03 Playbill</button>
+    <div class="topbar-row">
+      <div class="topbar-title">Melodía · Page</div>
+      <p class="topbar-hint">Toca una opción — <strong>menú + pie + tema</strong> se combinan.</p>
+      <div class="view-toggle" role="group" aria-label="Vista">
+        <button type="button" data-view="web" class="is-on">Web</button>
+        <button type="button" data-view="mobile">Móvil</button>
+      </div>
     </div>
-    <div class="control-group">
-      <span class="control-label">Footer</span>
-      <button class="control-btn footer-btn active" data-footer="footer1">01 Giant</button>
-      <button class="control-btn footer-btn" data-footer="footer2">02 Grid</button>
-      <button class="control-btn footer-btn" data-footer="footer3">03 Card</button>
-    </div>
-    <div class="spacer"></div>
-    <div class="control-group">
-      <span class="control-label">Theme</span>
-      <button class="control-btn theme-btn active" data-theme="heritage"><span class="theme-dot heritage"></span>Altiplano</button>
-      <button class="control-btn theme-btn" data-theme="copper"><span class="theme-dot copper"></span>Cobre Andino</button>
-      <button class="control-btn theme-btn" data-theme="festival"><span class="theme-dot festival"></span>Entrada</button>
-      <button class="control-btn theme-btn" data-theme="anniversary"><span class="theme-dot anniversary"></span>35 Años</button>
-    </div>
-    <div class="control-group">
-      <span class="control-label">Preview</span>
-      <button class="control-btn view-btn active" data-view="web">Web</button>
-      <button class="control-btn view-btn" data-view="mobile">Mobile</button>
+    <div class="topbar-row controls">
+      <div class="field">
+        <span class="field-label">1 · Menú</span>
+        <div class="seg" data-group="nav" role="group" aria-label="Menú">
+          <button type="button" data-nav="model1" class="is-on">Barra</button>
+          <button type="button" data-nav="model2">Escena</button>
+          <button type="button" data-nav="model3">Cartel</button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label">2 · Pie</span>
+        <div class="seg" data-group="footer" role="group" aria-label="Pie de página">
+          <button type="button" data-footer="footer1" class="is-on">Gigante</button>
+          <button type="button" data-footer="footer2">Columnas</button>
+          <button type="button" data-footer="footer3">Tarjeta</button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label">3 · Tema</span>
+        <div class="seg" data-group="theme" role="group" aria-label="Tema">
+          <button type="button" data-theme="heritage" class="is-on"><span class="theme-dot heritage"></span>Altiplano</button>
+          <button type="button" data-theme="copper"><span class="theme-dot copper"></span>Cobre</button>
+          <button type="button" data-theme="festival"><span class="theme-dot festival"></span>Entrada</button>
+          <button type="button" data-theme="anniversary"><span class="theme-dot anniversary"></span>35 Años</button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label">Resumen</span>
+        <div class="combo-pill" id="comboPill" aria-live="polite">
+          Viendo: <b id="comboText">Barra + Gigante · Altiplano</b>
+        </div>
+      </div>
     </div>
   </div>
 </header>
 
 <main class="page">
-  <div class="preview-shell" id="previewShell">
+  <div class="preview-shell" id="previewShell" data-layout="model1">
 
     <section class="model active" id="model1">
       <header class="bar-header">
@@ -544,18 +713,20 @@
         </div>
       </header>
       <div class="mobile-panel" data-mobile-panel></div>
-      <div class="bar-body">
-        <div class="bar-body__inner">
-          <div class="bar-hero">
-            <div class="kicker" data-i18n="city">Toronto</div>
-            <h2>Melodía de Bolivia</h2>
-            <p data-i18n="tagline">Danza folklórica boliviana en Toronto.</p>
-          </div>
-          <p class="page-copy" data-i18n="intro">Melodía de Bolivia comparte la cultura boliviana a través de la danza. Este primer sitio es una vista previa.</p>
+      <div class="bar-hero">
+        <div class="bar-hero__inner">
+          <div class="kicker" data-i18n="city">Toronto</div>
+          <h2>Melodía de Bolivia</h2>
+          <p data-i18n="tagline">Danza folklórica boliviana en Toronto.</p>
           <div class="actions">
             <a class="cta-join" href="#" data-i18n="join">Únete a la fraternidad</a>
             <a class="cta-book" href="#" data-i18n="book">Contrátanos →</a>
           </div>
+        </div>
+      </div>
+      <div class="bar-body">
+        <div class="bar-body__inner">
+          <p class="page-copy" data-i18n="intro">Melodía de Bolivia comparte la cultura boliviana a través de la danza. Este primer sitio es una vista previa.</p>
         </div>
       </div>
     </section>
@@ -645,15 +816,14 @@
               <img class="brand-logo" src="/melodia/logo.png" alt="" />
               <div>
                 <div class="brand-name">Melodía de Bolivia</div>
-                <div class="brand-city">Toronto · Canada</div>
               </div>
             </div>
-            <div class="giant-meta">Folklore · Bolivia · Toronto</div>
+            <div class="giant-meta">Toronto · Canada</div>
           </div>
-          <h2 class="giant-title">LET'S<br><span class="accent">DANCE.</span></h2>
+          <h2 class="giant-title">35 AÑOS<br><span class="accent">BAILANDO.</span></h2>
           <div class="giant-bottom">
-            <div>Events · Instagram · YouTube</div>
-            <div>© 2026 Melodía de Bolivia</div>
+            <div>Eventos · Instagram · YouTube</div>
+            <div>© 2026</div>
           </div>
         </footer>
         <div class="signature-strip"><a href="#" class="signature">Site by CZ <span class="arrow">↗</span></a></div>
@@ -666,28 +836,27 @@
               <img class="brand-logo" src="/melodia/logo.png" alt="" />
               <div>
                 <div class="brand-name">Melodía de Bolivia</div>
-                <div class="brand-city">Toronto · Canada</div>
               </div>
             </div>
-            <div class="grid-tagline">Sharing Bolivian culture through dance · © 2026</div>
+            <div class="grid-tagline">Cultura boliviana a través de la danza</div>
           </div>
           <div class="grid-cell">
             <div class="grid-num">01</div>
-            <h3>Events</h3>
-            <p><a href="#">Upcoming events</a></p>
-            <p><a href="#">Calendar</a></p>
+            <h3>Eventos</h3>
+            <p><a href="#">Próximas fechas</a></p>
+            <p><a href="#">Calendario</a></p>
           </div>
           <div class="grid-cell">
             <div class="grid-num">02</div>
-            <h3>Social</h3>
+            <h3>Redes</h3>
             <p><a href="#">Instagram ↗</a></p>
             <p><a href="#">YouTube ↗</a></p>
           </div>
           <div class="grid-cell">
             <div class="grid-num">03</div>
-            <h3>Toronto, Canada</h3>
-            <p><a href="#">Contact</a></p>
-            <p><a href="#">Community</a></p>
+            <h3>Contacto</h3>
+            <p><a href="#">Escríbenos</a></p>
+            <p>© 2026</p>
           </div>
         </footer>
         <div class="signature-strip"><a href="#" class="signature">Site by CZ <span class="arrow">↗</span></a></div>
@@ -701,8 +870,8 @@
                 <div class="brand-lockup">
                   <img class="brand-logo" src="/melodia/logo.png" alt="" />
                   <div>
-                    <div class="brand-name">Melodía de Bolivia</div>
-                    <div class="brand-city">Toronto · Canada</div>
+                    <div class="brand-name">Melodía</div>
+                    <div class="brand-city">de Bolivia</div>
                   </div>
                 </div>
                 <div class="card-social">
@@ -711,13 +880,13 @@
                   <a href="#">YouTube ↗</a>
                 </div>
               </div>
-              <h2 class="card-title">See you on the <span class="accent">dance floor.</span></h2>
-              <a href="#" class="footer-cta">View upcoming events <span>↗</span></a>
+              <h2 class="card-title">Próxima <span class="accent">entrada.</span></h2>
+              <a href="#" class="footer-cta">Ver eventos <span>↗</span></a>
             </div>
             <div class="card-row">
-              <div>Events · About · Contact</div>
-              <div>Toronto · Canada</div>
-              <div style="text-align:right;">© 2026 Melodía de Bolivia</div>
+              <div>Nosotros · Danzas · Contacto</div>
+              <div>Toronto</div>
+              <div style="text-align:right;">© 2026</div>
             </div>
           </footer>
         </div>
@@ -730,7 +899,7 @@
   <section class="theme-info">
     <div class="theme-copy">
       <strong id="themeName">Altiplano</strong>
-      <span id="themeDescription">Highland night. Bolivia’s flag red leads. Closest to the colors already on localhost:3000.</span>
+      <span id="themeDescription">Highland night. Bolivia’s flag red leads. Closest to the live site colors.</span>
     </div>
     <div class="swatches">
       <span class="swatch primary"></span>
@@ -742,7 +911,8 @@
 </main>
 
 <script>
-  const copy = {
+(function () {
+  var copy = {
     es: {
       home: 'Inicio', about: 'Nosotros', dances: 'Danzas', events: 'Eventos',
       gallery: 'Galería', contact: 'Contacto', signin: 'Entrar',
@@ -774,80 +944,168 @@
       bodyCopy: 'Placeholder content so you can see how the navbar and footer sit on a full page.'
     }
   };
-  const themeInfo = {
+
+  var themeInfo = {
     heritage: { name: 'Altiplano', description: 'Highland night. Bolivia’s flag red leads. Closest to the live site.' },
     copper: { name: 'Cobre Andino', description: 'Warm costume metal — copper, embroidery gold, and brass.' },
     festival: { name: 'Entrada', description: 'Parade night. Flag red, yellow, and green on a dark street.' },
     anniversary: { name: '35 Años', description: 'Anniversary flyer: purple night, Melodía gold, magenta neon.' }
   };
 
-  const models = document.querySelectorAll('.model');
-  const previewShell = document.getElementById('previewShell');
+  var layoutNames = { model1: 'Barra', model2: 'Escena', model3: 'Cartel' };
+  var footerNames = { footer1: 'Gigante', footer2: 'Columnas', footer3: 'Tarjeta' };
+
+  var state = { nav: 'model1', footer: 'footer1', theme: 'heritage', view: 'web' };
+
+  var shell = document.getElementById('previewShell');
+  var comboText = document.getElementById('comboText');
+  var themeName = document.getElementById('themeName');
+  var themeDescription = document.getElementById('themeDescription');
+  var chrome = document.getElementById('toolChrome');
 
   function applyCopy() {
-    const t = copy[document.body.dataset.copy === 'en' ? 'en' : 'es'];
-    document.querySelectorAll('[data-i18n]').forEach((el) => {
-      const key = el.getAttribute('data-i18n');
+    var lang = document.body.getAttribute('data-copy') === 'en' ? 'en' : 'es';
+    var t = copy[lang];
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n');
       if (t[key]) el.textContent = t[key];
     });
   }
 
-  document.querySelectorAll('.layout-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const targetId = btn.getAttribute('data-target');
-      const target = targetId ? document.getElementById(targetId) : null;
-      if (!target) return;
+  function setOnGroup(group, attr, value) {
+    var root = chrome.querySelector('[data-group="' + group + '"]');
+    if (!root) return;
+    root.querySelectorAll('button').forEach(function (btn) {
+      var on = btn.getAttribute(attr) === value;
+      btn.classList.toggle('is-on', on);
+    });
+  }
 
-      document.querySelectorAll('.layout-btn').forEach((b) => b.classList.remove('active'));
-      models.forEach((m) => m.classList.remove('active', 'is-menu-open'));
-      btn.classList.add('active');
-      target.classList.add('active');
+  function showNav(id) {
+    document.querySelectorAll('.model').forEach(function (m) {
+      m.classList.remove('active', 'is-menu-open');
+    });
+    var target = document.getElementById(id);
+    if (target) target.classList.add('active');
+    if (shell) shell.setAttribute('data-layout', id);
+  }
+
+  function showFooter(id) {
+    document.querySelectorAll('.footer-model').forEach(function (m) {
+      m.classList.remove('active');
+    });
+    var target = document.getElementById(id);
+    if (target) target.classList.add('active');
+  }
+
+  function showTheme(theme) {
+    var info = themeInfo[theme];
+    if (!info) return;
+    document.body.setAttribute('data-theme', theme);
+    if (themeName) themeName.textContent = info.name;
+    if (themeDescription) themeDescription.textContent = info.description;
+  }
+
+  function showView(view) {
+    if (!shell) return;
+    shell.classList.toggle('mobile', view === 'mobile');
+    chrome.querySelectorAll('[data-view]').forEach(function (btn) {
+      btn.classList.toggle('is-on', btn.getAttribute('data-view') === view);
+    });
+  }
+
+  function updateCombo() {
+    if (!comboText) return;
+    comboText.textContent =
+      (layoutNames[state.nav] || state.nav) +
+      ' + ' +
+      (footerNames[state.footer] || state.footer) +
+      ' · ' +
+      ((themeInfo[state.theme] && themeInfo[state.theme].name) || state.theme);
+  }
+
+  function apply() {
+    showNav(state.nav);
+    showFooter(state.footer);
+    showTheme(state.theme);
+    showView(state.view);
+    setOnGroup('nav', 'data-nav', state.nav);
+    setOnGroup('footer', 'data-footer', state.footer);
+    setOnGroup('theme', 'data-theme', state.theme);
+    updateCombo();
+  }
+
+  chrome.addEventListener('click', function (event) {
+    var btn = event.target.closest('button');
+    if (!btn || !chrome.contains(btn)) return;
+
+    var nav = btn.getAttribute('data-nav');
+    var footer = btn.getAttribute('data-footer');
+    var theme = btn.getAttribute('data-theme');
+    var view = btn.getAttribute('data-view');
+
+    if (nav) {
+      state.nav = nav;
+      apply();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+      return;
+    }
+    if (footer) {
+      state.footer = footer;
+      apply();
+      var footers = document.getElementById('siteFooters');
+      if (footers) {
+        var topbar = document.getElementById('toolChrome');
+        var offset = (topbar ? topbar.offsetHeight : 0) + 28;
+        var top = footers.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+      }
+      return;
+    }
+    if (theme) {
+      state.theme = theme;
+      apply();
+      return;
+    }
+    if (view) {
+      state.view = view;
+      apply();
+    }
   });
-  document.querySelectorAll('.theme-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.theme-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.body.dataset.theme = btn.dataset.theme;
-      document.getElementById('themeName').textContent = themeInfo[btn.dataset.theme].name;
-      document.getElementById('themeDescription').textContent = themeInfo[btn.dataset.theme].description;
-    });
-  });
-  document.querySelectorAll('.view-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.view-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      previewShell.classList.toggle('mobile', btn.dataset.view === 'mobile');
-      models.forEach((m) => m.classList.remove('is-menu-open'));
+
+  document.querySelectorAll('[data-nav-links] a').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      var nav = link.closest('[data-nav-links]');
+      if (!nav) return;
+      nav.querySelectorAll('a').forEach(function (item) {
+        item.classList.toggle('is-active', item === link);
+      });
     });
   });
 
-  document.querySelectorAll('[data-nav-links] a').forEach((link) => {
-    link.addEventListener('click', (event) => {
-      event.preventDefault();
-      link.closest('[data-nav-links]').querySelectorAll('a').forEach((item) => item.classList.toggle('is-active', item === link));
-    });
-  });
-  document.querySelectorAll('[data-locale]').forEach((locale) => {
-    locale.querySelectorAll('button').forEach((button) => {
-      button.addEventListener('click', () => {
-        document.body.dataset.copy = button.dataset.lang;
-        document.querySelectorAll('[data-locale] button').forEach((item) => {
-          item.classList.toggle('is-active', item.dataset.lang === button.dataset.lang);
+  document.querySelectorAll('[data-locale]').forEach(function (locale) {
+    locale.querySelectorAll('button').forEach(function (button) {
+      button.addEventListener('click', function () {
+        document.body.setAttribute('data-copy', button.getAttribute('data-lang') || 'es');
+        document.querySelectorAll('[data-locale] button').forEach(function (item) {
+          item.classList.toggle('is-active', item.getAttribute('data-lang') === button.getAttribute('data-lang'));
         });
         applyCopy();
       });
     });
   });
-  document.querySelectorAll('[data-menu-toggle]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const model = button.closest('.model');
-      const panel = model.querySelector('[data-mobile-panel]');
-      const links = model.querySelector('[data-nav-links]');
+
+  document.querySelectorAll('[data-menu-toggle]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var model = button.closest('.model');
+      if (!model) return;
+      var panel = model.querySelector('[data-mobile-panel]');
+      var links = model.querySelector('[data-nav-links]');
+      if (!panel || !links) return;
       panel.innerHTML = links.innerHTML;
-      panel.querySelectorAll('a').forEach((link) => {
-        link.addEventListener('click', (event) => {
+      panel.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function (event) {
           event.preventDefault();
           model.classList.remove('is-menu-open');
         });
@@ -856,19 +1114,9 @@
     });
   });
 
-  document.querySelectorAll('.footer-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const id = btn.getAttribute('data-footer');
-      const target = id ? document.getElementById(id) : null;
-      if (!target) return;
-      document.querySelectorAll('.footer-btn').forEach((b) => b.classList.remove('active'));
-      document.querySelectorAll('.footer-model').forEach((m) => m.classList.remove('active'));
-      btn.classList.add('active');
-      target.classList.add('active');
-    });
-  });
-
+  apply();
   applyCopy();
+})();
 </script>
 </body>
 </html>
