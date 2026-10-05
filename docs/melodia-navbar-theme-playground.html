@@ -99,8 +99,7 @@
       border-bottom:2px solid #111;
       color:#111;
       font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-      touch-action:none;
-      overscroll-behavior:none;
+      overscroll-behavior:contain;
       -webkit-user-select:none;
       user-select:none;
     }
@@ -123,12 +122,23 @@
       color:#6b655c; font-size:12px; line-height:1.35;
     }
     .topbar-hint strong { color:#111; font-weight:700; }
+    .chrome-toggle {
+      display:none;
+      border:1px solid #111; background:#fff; color:#111;
+      border-radius:3px; padding:0 12px; min-height:36px;
+      font:inherit; font-size:12px; font-weight:700; cursor:pointer;
+      box-shadow:2px 2px 0 #111;
+    }
+    .chrome-toggle[aria-expanded="true"] { background:#111; color:#f5f4f0; }
     .field {
       display:flex; flex-direction:column; gap:4px;
     }
     .field-label {
       color:#6b655c; font-size:9px; letter-spacing:.14em; text-transform:uppercase; font-weight:700;
       min-height:12px; line-height:12px;
+    }
+    .field-label b {
+      color:#111; font-weight:700; letter-spacing:.02em; text-transform:none; margin-left:6px;
     }
     .seg {
       display:inline-flex; flex-wrap:wrap; align-items:stretch; border:1px solid #111; border-radius:3px; max-width:100%;
@@ -163,6 +173,161 @@
     .theme-dot.cholita { background:linear-gradient(135deg,#e11d8a 0 50%,#2dd4bf 50%); }
     .theme-dot.oruro { background:linear-gradient(135deg,#c41010 0 45%,#f5c518 45% 75%,#090505 75%); }
     .theme-dot.uyuni { background:linear-gradient(135deg,#e8eef5 0 55%,#7dd3fc 55%); }
+    .theme-name { display:inline; }
+
+    @media (max-width: 820px) {
+      .topbar {
+        max-height:42vh;
+        overflow-x:hidden;
+        overflow-y:auto;
+        -webkit-overflow-scrolling:touch;
+        touch-action:pan-y;
+      }
+      .topbar-inner { padding:8px 10px; gap:8px; }
+      .topbar-hint { display:none; }
+      .chrome-toggle { display:inline-flex; align-items:center; }
+      .topbar-row:not(.controls) {
+        flex-wrap:nowrap;
+        gap:6px;
+      }
+      .topbar-title {
+        flex:0 1 auto;
+        min-width:0;
+        max-width:34vw;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        padding:6px 8px;
+        font-size:11px;
+      }
+      .chrome-toggle {
+        flex:0 0 auto;
+        margin-right:auto;
+        min-height:32px;
+        padding:0 10px;
+        font-size:11px;
+        box-shadow:none;
+      }
+      .chrome-lang {
+        display:inline-flex;
+        flex:0 0 auto;
+        width:auto;
+        max-width:none;
+        margin-left:0;
+        box-shadow:none;
+        min-height:32px;
+      }
+      .chrome-lang button {
+        flex:0 0 auto;
+        min-width:40px;
+        min-height:32px;
+        padding:0 10px;
+        font-size:11px;
+      }
+      .view-toggle {
+        flex:0 0 auto;
+        margin-left:0;
+        min-height:32px;
+        box-shadow:none;
+      }
+      .view-toggle button {
+        min-height:32px;
+        padding:0 10px;
+        font-size:11px;
+      }
+      .topbar-row.controls {
+        display:none;
+        width:100%;
+        flex-direction:column;
+        align-items:stretch;
+        gap:8px;
+      }
+      .topbar.is-controls-open .topbar-row.controls { display:flex; }
+      .topbar .field { width:100%; min-width:0; }
+      .topbar-row.controls .seg {
+        display:inline-flex; flex-wrap:nowrap;
+        width:fit-content; max-width:100%;
+        overflow-x:auto; overflow-y:hidden;
+        -webkit-overflow-scrolling:touch;
+        touch-action:pan-x;
+        overscroll-behavior-x:contain;
+        box-shadow:none;
+      }
+      .topbar-row.controls .seg button {
+        flex:0 0 auto;
+        min-height:32px;
+        padding:0 10px;
+        font-size:11px;
+      }
+      .topbar-row.controls [data-group="theme"] {
+        display:flex !important;
+        flex-wrap:nowrap;
+        align-items:center;
+        width:100% !important;
+        max-width:100%;
+        gap:0;
+        padding:3px;
+        border:1px solid #111;
+        border-radius:999px;
+        background:#eceae4;
+        overflow:visible;
+        touch-action:manipulation;
+        box-shadow:none;
+      }
+      .topbar-row.controls [data-group="theme"] button {
+        flex:1 1 0;
+        width:auto;
+        min-width:0;
+        min-height:40px;
+        height:40px;
+        padding:0;
+        justify-content:center;
+        gap:0;
+        border:0 !important;
+        border-radius:999px;
+        background:transparent;
+        opacity:.5;
+      }
+      .topbar-row.controls [data-group="theme"] button + button {
+        border-left:0 !important;
+      }
+      .topbar-row.controls [data-group="theme"] button.is-on {
+        background:#111;
+        opacity:1;
+        flex:1.25 1 0;
+      }
+      .topbar-row.controls [data-group="theme"] .theme-name { display:none; }
+      .topbar-row.controls [data-group="theme"] .theme-dot {
+        width:14px;
+        height:14px;
+        box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
+      }
+      .topbar-row.controls [data-group="theme"] button.is-on .theme-dot {
+        width:18px;
+        height:18px;
+        box-shadow:
+          0 0 0 2px #f5f4f0,
+          0 0 0 3px rgba(245,244,240,.35);
+      }
+      .topbar .field[data-theme-field] .field-label {
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:8px;
+        min-height:18px;
+      }
+      .topbar .field[data-theme-field] .field-label b {
+        margin-left:0;
+        padding:4px 10px;
+        border-radius:999px;
+        background:#111;
+        color:#f5f4f0;
+        font-size:10px;
+        letter-spacing:.04em;
+      }
+      .preview-shell .locale button {
+        min-width:44px; min-height:40px; padding:8px 12px; font-size:12px;
+      }
+    }
 
     .page {
       flex:1 1 auto;
@@ -256,12 +421,19 @@
     .links a:hover { color:var(--text-soft); }
     .links a.is-active { color:var(--accent-text); font-weight:500; }
 
-    .locale { display:inline-flex; gap:2px; }
+    .locale { display:inline-flex; align-items:center; gap:2px; }
     .locale button {
       border:0; background:transparent; color:var(--muted); cursor:pointer;
-      padding:4px 6px; font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+      padding:8px 10px; min-width:40px; min-height:36px; font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
     }
     .locale button.is-active { color:var(--accent-text); }
+    .locale > span {
+      display:inline-flex; align-items:center; height:1em; line-height:1;
+      color:var(--muted); opacity:.45; transform:none;
+    }
+    .chrome-lang { margin-left:auto; }
+    .topbar .chrome-lang button.is-on,
+    .topbar .chrome-lang button.is-active { background:#111; color:#f5f4f0; }
 
     .cta-join {
       display:inline-flex; align-items:center; justify-content:center;
@@ -448,7 +620,14 @@
       padding:10px 28px; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
       color:var(--muted); border-bottom:1px solid var(--line);
     }
-    .playbill-rail .tools { display:flex; align-items:center; gap:16px; }
+    .playbill-rail > [data-i18n="rail"] {
+      flex:1 1 auto; min-width:0;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    }
+    .playbill-rail .tools { display:flex; align-items:center; gap:10px; flex:0 0 auto; }
+    .playbill-rail .locale button {
+      min-width:auto; min-height:32px; padding:6px 8px; font-size:11px;
+    }
     .playbill-mast {
       padding:28px 24px 8px; text-align:center;
     }
@@ -512,8 +691,33 @@
     .preview-shell.mobile .bar-header__inner { gap:10px; }
     .preview-shell.mobile .bar-header .brand span { font-size:13px; max-width:42vw; }
     .preview-shell.mobile .mobile-panel { padding-left:16px; padding-right:16px; }
+    .preview-shell.mobile .overlay-header {
+      padding:14px 16px 0;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .preview-shell.mobile .overlay-header .brand {
+      flex:1 1 auto; min-width:0;
+    }
+    .preview-shell.mobile .overlay-header .tools {
+      margin-left:auto; flex:0 0 auto; gap:8px;
+    }
+    .preview-shell.mobile .overlay-hero { padding:48px 20px 36px; }
     .preview-shell.mobile .overlay-hero h2 { font-size:40px; }
     .preview-shell.mobile .playbill-mast h2 { font-size:36px; }
+    .preview-shell.mobile .playbill-rail {
+      padding:10px 16px; gap:8px;
+    }
+    .preview-shell.mobile .playbill-rail .tools { gap:6px; }
+    .preview-shell.mobile .giant-top {
+      flex-wrap:nowrap; align-items:center; gap:12px; margin-bottom:22px;
+    }
+    .preview-shell.mobile .brand-logo { width:52px; height:52px; }
+    .preview-shell.mobile .brand-name { font-size:18px; }
+    .preview-shell.mobile .giant-meta {
+      font-size:9px; letter-spacing:.08em; white-space:nowrap;
+    }
+    .preview-shell.mobile .giant-title { font-size:clamp(42px,14vw,72px); }
 
     @media (max-width: 820px) {
       .preview-shell:not(.mobile) .bar-header .links,
@@ -525,6 +729,22 @@
       .preview-shell:not(.mobile) .playbill .menu-btn { display:inline-flex; }
       .preview-shell:not(.mobile) .bar-header { padding:12px 16px; }
       .preview-shell:not(.mobile) .bar-header .brand span { font-size:13px; max-width:42vw; }
+      .preview-shell:not(.mobile) .overlay-header {
+        padding:14px 16px 0;
+        justify-content:space-between;
+        gap:10px;
+      }
+      .preview-shell:not(.mobile) .overlay-header .brand {
+        flex:1 1 auto; min-width:0;
+      }
+      .preview-shell:not(.mobile) .overlay-header .tools {
+        margin-left:auto; flex:0 0 auto; gap:8px;
+      }
+      .preview-shell:not(.mobile) .playbill-rail { padding:10px 16px; gap:8px; }
+      .preview-shell:not(.mobile) .giant-top { gap:12px; margin-bottom:22px; }
+      .preview-shell:not(.mobile) .brand-logo { width:52px; height:52px; }
+      .preview-shell:not(.mobile) .brand-name { font-size:18px; }
+      .preview-shell:not(.mobile) .giant-meta { font-size:9px; letter-spacing:.08em; }
     }
 
     /* ---------- PAGE BODY (spacer) ---------- */
@@ -590,9 +810,9 @@
     .footer-model { display:none; }
     .footer-model.active { display:block; }
 
-    .brand-lockup { display:flex; align-items:center; gap:14px; }
+    .brand-lockup { display:flex; align-items:center; gap:14px; min-width:0; }
     .brand-logo { width:64px; height:64px; object-fit:contain; flex:0 0 auto; filter:drop-shadow(0 6px 18px rgba(0,0,0,.24)); }
-    .brand-name { font-family:var(--font-display); font-size:22px; }
+    .brand-name { font-family:var(--font-display); font-size:22px; line-height:1.05; }
     .brand-city { margin-top:4px; color:var(--muted); font-size:12px; }
 
     .signature-strip {
@@ -621,8 +841,11 @@
     body[data-theme="festival"] .giant-footer {
       background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 7%,transparent),transparent 26%),var(--page);
     }
-    .giant-top { display:flex; justify-content:space-between; align-items:flex-start; gap:24px; margin-bottom:34px; }
-    .giant-meta { padding-top:5px; color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:.14em; }
+    .giant-top { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:34px; }
+    .giant-meta {
+      padding-top:0; color:var(--muted); font-size:10px; text-transform:uppercase;
+      letter-spacing:.1em; white-space:nowrap; flex:0 0 auto;
+    }
     .giant-title {
       margin:0; color:var(--text); font-family:var(--font-display);
       font-size:clamp(56px,10vw,140px); line-height:.81; font-weight:400; letter-spacing:-.065em;
@@ -712,12 +935,19 @@
     <div class="topbar-row">
       <div class="topbar-title">Melodía · Page</div>
       <p class="topbar-hint">Toca una opción — <strong>menú + footer + tema</strong> se combinan.</p>
+      <button type="button" class="chrome-toggle" id="chromeToggle" aria-expanded="false" aria-controls="chromeControls">
+        Controles
+      </button>
+      <div class="seg chrome-lang" data-group="lang" role="group" aria-label="Idioma">
+        <button type="button" data-lang="es" class="is-on">ES</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
       <div class="view-toggle" role="group" aria-label="Vista">
         <button type="button" data-view="web" class="is-on">Web</button>
         <button type="button" data-view="mobile">Móvil</button>
       </div>
     </div>
-    <div class="topbar-row controls">
+    <div class="topbar-row controls" id="chromeControls">
       <div class="field">
         <span class="field-label">1 · Menú</span>
         <div class="seg" data-group="nav" role="group" aria-label="Menú">
@@ -734,16 +964,16 @@
           <button type="button" data-footer="footer3">Tarjeta</button>
         </div>
       </div>
-      <div class="field">
-        <span class="field-label">3 · Tema</span>
+      <div class="field" data-theme-field>
+        <span class="field-label">3 · Tema <b id="themeFieldName">Altiplano</b></span>
         <div class="seg" data-group="theme" role="group" aria-label="Tema">
-          <button type="button" data-theme="heritage" class="is-on"><span class="theme-dot heritage"></span>Altiplano</button>
-          <button type="button" data-theme="titicaca"><span class="theme-dot titicaca"></span>Titicaca</button>
-          <button type="button" data-theme="cholita"><span class="theme-dot cholita"></span>Cholita</button>
-          <button type="button" data-theme="oruro"><span class="theme-dot oruro"></span>Oruro</button>
-          <button type="button" data-theme="uyuni"><span class="theme-dot uyuni"></span>Uyuni</button>
-          <button type="button" data-theme="festival"><span class="theme-dot festival"></span>Entrada</button>
-          <button type="button" data-theme="anniversary"><span class="theme-dot anniversary"></span>35 Años</button>
+          <button type="button" data-theme="heritage" class="is-on" title="Altiplano" aria-label="Altiplano"><span class="theme-dot heritage"></span><span class="theme-name">Altiplano</span></button>
+          <button type="button" data-theme="titicaca" title="Titicaca" aria-label="Titicaca"><span class="theme-dot titicaca"></span><span class="theme-name">Titicaca</span></button>
+          <button type="button" data-theme="cholita" title="Cholita" aria-label="Cholita"><span class="theme-dot cholita"></span><span class="theme-name">Cholita</span></button>
+          <button type="button" data-theme="oruro" title="Oruro" aria-label="Oruro"><span class="theme-dot oruro"></span><span class="theme-name">Oruro</span></button>
+          <button type="button" data-theme="uyuni" title="Uyuni" aria-label="Uyuni"><span class="theme-dot uyuni"></span><span class="theme-name">Uyuni</span></button>
+          <button type="button" data-theme="festival" title="Entrada" aria-label="Entrada"><span class="theme-dot festival"></span><span class="theme-name">Entrada</span></button>
+          <button type="button" data-theme="anniversary" title="35 Años" aria-label="35 Años"><span class="theme-dot anniversary"></span><span class="theme-name">35 Años</span></button>
         </div>
       </div>
     </div>
@@ -806,9 +1036,9 @@
         </nav>
         <div class="tools">
           <div class="locale" data-locale>
-            <button type="button" class="is-active" data-lang="es" data-i18n="langEs">Español</button>
-            <span style="opacity:.35">/</span>
-            <button type="button" data-lang="en" data-i18n="langEn">English</button>
+            <button type="button" class="is-active" data-lang="es" aria-label="Español">ES</button>
+            <span>/</span>
+            <button type="button" data-lang="en" aria-label="English">EN</button>
           </div>
           <button type="button" class="menu-btn" data-menu-toggle aria-label="Open menu"><span></span></button>
         </div>
@@ -827,12 +1057,12 @@
 
     <section class="model playbill" id="model3">
       <div class="playbill-rail">
-        <span data-i18n="rail">Toronto · Folklore boliviano</span>
+        <span data-i18n="rail">Toronto · Folklore</span>
         <div class="tools">
           <div class="locale" data-locale>
-            <button type="button" class="is-active" data-lang="es" data-i18n="langEs">Español</button>
+            <button type="button" class="is-active" data-lang="es" aria-label="Español">ES</button>
             <span>/</span>
-            <button type="button" data-lang="en" data-i18n="langEn">English</button>
+            <button type="button" data-lang="en" aria-label="English">EN</button>
           </div>
           <button type="button" class="menu-btn" data-menu-toggle aria-label="Open menu"><span></span></button>
         </div>
@@ -987,7 +1217,7 @@
       overlayKicker: 'Folklore · Toronto · 35 años',
       overlayTitle: 'La entrada empieza aquí.',
       overlayBody: 'Caporales, morenada, saya — en las calles de Toronto, con el corazón en Bolivia.',
-      rail: 'Toronto · Folklore boliviano',
+      rail: 'Toronto · Folklore',
       playbillBody: 'Una fraternidad folklórica. Ensayos, entradas y fiestas — para quien baila y para quien quiere contratar el grupo.',
       bodyTitle: 'Ensayos, entradas y comunidad.',
       bodyCopy: 'Contenido de ejemplo para ver cómo quedan el navbar y el footer en una página completa.'
@@ -1002,7 +1232,7 @@
       overlayKicker: 'Folk dance · Toronto · 35 years',
       overlayTitle: 'The parade starts here.',
       overlayBody: 'Caporales, morenada, saya — on Toronto streets, with Bolivia in the music.',
-      rail: 'Toronto · Bolivian folklore',
+      rail: 'Toronto · Folklore',
       playbillBody: 'A folk-dance fraternity. Rehearsals, parades, and parties — for dancers, and for anyone booking the group.',
       bodyTitle: 'Rehearsals, parades, and community.',
       bodyCopy: 'Placeholder content so you can see how the navbar and footer sit on a full page.'
@@ -1027,6 +1257,7 @@
   var shell = document.getElementById('previewShell');
   var comboText = document.getElementById('comboText');
   var themeName = document.getElementById('themeName');
+  var themeFieldName = document.getElementById('themeFieldName');
   var themeDescription = document.getElementById('themeDescription');
   var chrome = document.getElementById('toolChrome');
   var previewPane = document.querySelector('main.page');
@@ -1036,6 +1267,20 @@
     previewPane.scrollTo({ top: Math.max(0, top || 0), behavior: smooth ? 'smooth' : 'auto' });
   }
 
+  function fillMobilePanel(model) {
+    if (!model) return;
+    var panel = model.querySelector('[data-mobile-panel]');
+    var links = model.querySelector('[data-nav-links]');
+    if (!panel || !links) return;
+    panel.innerHTML = links.innerHTML;
+    panel.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        model.classList.remove('is-menu-open');
+      });
+    });
+  }
+
   function applyCopy() {
     var lang = document.body.getAttribute('data-copy') === 'en' ? 'en' : 'es';
     var t = copy[lang];
@@ -1043,6 +1288,18 @@
       var key = el.getAttribute('data-i18n');
       if (t[key]) el.textContent = t[key];
     });
+    document.querySelectorAll('.model.is-menu-open').forEach(fillMobilePanel);
+  }
+
+  function setLang(lang) {
+    lang = lang === 'en' ? 'en' : 'es';
+    document.body.setAttribute('data-copy', lang);
+    document.querySelectorAll('[data-lang]').forEach(function (item) {
+      var on = item.getAttribute('data-lang') === lang;
+      item.classList.toggle('is-active', on);
+      item.classList.toggle('is-on', on);
+    });
+    applyCopy();
   }
 
   function setOnGroup(group, attr, value) {
@@ -1076,6 +1333,7 @@
     if (!info) return;
     document.body.setAttribute('data-theme', theme);
     if (themeName) themeName.textContent = info.name;
+    if (themeFieldName) themeFieldName.textContent = info.name;
     if (themeDescription) themeDescription.textContent = info.description;
   }
 
@@ -1112,6 +1370,15 @@
   }
 
   chrome.addEventListener('click', function (event) {
+    var toggle = event.target.closest('#chromeToggle');
+    if (toggle) {
+      var open = !chrome.classList.contains('is-controls-open');
+      chrome.classList.toggle('is-controls-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.textContent = open ? 'Ocultar' : 'Controles';
+      return;
+    }
+
     var btn = event.target.closest('button');
     if (!btn || !chrome.contains(btn)) return;
 
@@ -1119,7 +1386,12 @@
     var footer = btn.getAttribute('data-footer');
     var theme = btn.getAttribute('data-theme');
     var view = btn.getAttribute('data-view');
+    var lang = btn.getAttribute('data-lang');
 
+    if (lang) {
+      setLang(lang);
+      return;
+    }
     if (nav) {
       state.nav = nav;
       apply();
@@ -1159,42 +1431,29 @@
     });
   });
 
-  document.querySelectorAll('[data-locale]').forEach(function (locale) {
-    locale.querySelectorAll('button').forEach(function (button) {
-      button.addEventListener('click', function () {
-        document.body.setAttribute('data-copy', button.getAttribute('data-lang') || 'es');
-        document.querySelectorAll('[data-locale] button').forEach(function (item) {
-          item.classList.toggle('is-active', item.getAttribute('data-lang') === button.getAttribute('data-lang'));
-        });
-        applyCopy();
-      });
-    });
+  document.addEventListener('click', function (event) {
+    var btn = event.target.closest('button[data-lang]');
+    if (!btn || (chrome && chrome.contains(btn))) return;
+    setLang(btn.getAttribute('data-lang') || 'es');
   });
 
   document.querySelectorAll('[data-menu-toggle]').forEach(function (button) {
     button.addEventListener('click', function () {
       var model = button.closest('.model');
       if (!model) return;
-      var panel = model.querySelector('[data-mobile-panel]');
-      var links = model.querySelector('[data-nav-links]');
-      if (!panel || !links) return;
-      panel.innerHTML = links.innerHTML;
-      panel.querySelectorAll('a').forEach(function (link) {
-        link.addEventListener('click', function (event) {
-          event.preventDefault();
-          model.classList.remove('is-menu-open');
-        });
+      var opening = !model.classList.contains('is-menu-open');
+      document.querySelectorAll('.model').forEach(function (m) {
+        m.classList.remove('is-menu-open');
       });
-      model.classList.toggle('is-menu-open');
+      if (opening) {
+        fillMobilePanel(model);
+        model.classList.add('is-menu-open');
+      }
     });
   });
 
-  chrome.addEventListener('touchmove', function (event) {
-    event.preventDefault();
-  }, { passive: false });
-
   apply();
-  applyCopy();
+  setLang(document.body.getAttribute('data-copy') || 'es');
 })();
 </script>
 </body>

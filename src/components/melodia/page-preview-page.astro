@@ -4,6 +4,10 @@ import { getLocaleFromPath, getLocalizedPath } from "../../utils/i18n";
 
 const locale = getLocaleFromPath(Astro.url.pathname);
 const melodiaHref = getLocalizedPath("/melodia", locale);
+const copy =
+  locale === "es"
+    ? { expand: "Expandir", exit: "Salir", openPage: "Abrir como página", back: "← Volver a Melodia" }
+    : { expand: "Expand", exit: "Exit", openPage: "Open as page", back: "← Back to Melodia" };
 ---
 
 <Layout
@@ -28,7 +32,7 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
             class="underline-offset-2 hover:underline"
             style="color: var(--text-muted);"
           >
-            ← Back to Melodia
+            {copy.back}
           </a>
         </p>
       </div>
@@ -44,14 +48,14 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path>
           </svg>
-          <span data-melodia-expand-label>Expand</span>
+          <span data-melodia-expand-label>{copy.expand}</span>
         </button>
         <a
-          href="/melodia/navbar-theme-playground.html?v=page14"
+          href="/melodia/navbar-theme-playground.html?v=page23"
           class="inline-flex items-center rounded-full border px-4 py-2 text-sm font-medium"
           style="border-color: var(--border-subtle); color: var(--text-muted);"
         >
-          Open as page
+          {copy.openPage}
         </a>
       </div>
 
@@ -60,17 +64,18 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
         class="melodia-page__frame overflow-hidden rounded-2xl border"
         style="border-color: var(--border-subtle); background: #0a0a0a;"
       >
-        <button
-          type="button"
-          data-melodia-expand-close
-          class="melodia-page__close"
-          hidden
-        >
-          Close
-        </button>
+        <div class="melodia-page__exitbar" hidden data-melodia-exitbar>
+          <button
+            type="button"
+            data-melodia-expand-close
+            class="melodia-page__close"
+          >
+            {copy.exit}
+          </button>
+        </div>
         <iframe
           title="Melodía de Bolivia — page preview"
-          src="/melodia/navbar-theme-playground.html?v=page14"
+          src="/melodia/navbar-theme-playground.html?v=page23"
           class="melodia-page__iframe block w-full border-0"
           loading="eager"
         ></iframe>
@@ -79,25 +84,26 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
   </div>
 </Layout>
 
-<script>
-  const page = document.querySelector<HTMLElement>(".melodia-page");
-  const frame = document.querySelector<HTMLElement>("[data-melodia-preview]");
-  const expandBtn = document.querySelector<HTMLButtonElement>("[data-melodia-expand]");
-  const closeBtn = document.querySelector<HTMLButtonElement>("[data-melodia-expand-close]");
-  const label = document.querySelector<HTMLElement>("[data-melodia-expand-label]");
+<script define:vars={{ expandLabel: copy.expand, exitLabel: copy.exit }}>
+  const page = document.querySelector(".melodia-page");
+  const frame = document.querySelector("[data-melodia-preview]");
+  const expandBtn = document.querySelector("[data-melodia-expand]");
+  const closeBtn = document.querySelector("[data-melodia-expand-close]");
+  const exitBar = document.querySelector("[data-melodia-exitbar]");
+  const label = document.querySelector("[data-melodia-expand-label]");
 
   function isExpanded() {
     return frame?.classList.contains("is-expanded") ?? false;
   }
 
-  function setExpanded(on: boolean) {
+  function setExpanded(on) {
     if (!frame) return;
     frame.classList.toggle("is-expanded", on);
     page?.classList.toggle("is-preview-expanded", on);
     document.body.classList.toggle("melodia-preview-locked", on);
-    if (label) label.textContent = on ? "Exit" : "Expand";
+    if (label) label.textContent = on ? exitLabel : expandLabel;
     expandBtn?.setAttribute("aria-pressed", on ? "true" : "false");
-    if (closeBtn) closeBtn.hidden = !on;
+    if (exitBar) exitBar.hidden = !on;
   }
 
   expandBtn?.addEventListener("click", () => setExpanded(!isExpanded()));
@@ -114,7 +120,7 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
     min-height: 720px;
   }
 
-  .melodia-page__close {
+  .melodia-page__exitbar {
     display: none;
   }
 
@@ -131,27 +137,43 @@ const melodiaHref = getLocalizedPath("/melodia", locale);
     height: 100dvh;
     border-radius: 0;
     border: 0;
-    background: #0a0a0a;
+    background: #111;
+    display: flex;
+    flex-direction: column;
   }
 
-  .melodia-page__frame.is-expanded .melodia-page__iframe {
-    height: 100dvh;
-    min-height: 100dvh;
+  .melodia-page__frame.is-expanded .melodia-page__exitbar {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding:
+      max(8px, env(safe-area-inset-top))
+      max(12px, env(safe-area-inset-right))
+      8px
+      max(12px, env(safe-area-inset-left));
+    background: #111;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   }
 
   .melodia-page__frame.is-expanded .melodia-page__close {
     display: inline-flex;
-    position: absolute;
-    top: max(12px, env(safe-area-inset-top));
-    left: max(12px, env(safe-area-inset-left));
-    z-index: 3;
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.28);
     border-radius: 999px;
-    background: rgba(0, 0, 0, 0.82);
+    background: rgba(255, 255, 255, 0.08);
     color: #fff;
     padding: 8px 14px;
     font-size: 13px;
     font-weight: 600;
+  }
+
+  .melodia-page__frame.is-expanded .melodia-page__iframe {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
   }
 
   :global(body.melodia-preview-locked) {
