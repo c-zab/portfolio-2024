@@ -118,6 +118,13 @@
       font-size:12px; letter-spacing:.04em; text-transform:uppercase;
       padding:7px 10px; background:#111; color:#f5f4f0; border-radius:2px;
     }
+    .topbar-back {
+      flex:0 0 auto; white-space:nowrap;
+      font-size:12px; font-weight:700; color:#3f3a34;
+      padding:7px 10px; border:1px solid #111; border-radius:3px;
+      background:#fff; box-shadow:2px 2px 0 #111;
+    }
+    .topbar-back:hover { background:#111; color:#f5f4f0; }
     .topbar-hint {
       color:#6b655c; font-size:12px; line-height:1.35;
     }
@@ -193,11 +200,14 @@
       .topbar-title {
         flex:0 1 auto;
         min-width:0;
-        max-width:34vw;
+        max-width:28vw;
         overflow:hidden;
         text-overflow:ellipsis;
         padding:6px 8px;
         font-size:11px;
+      }
+      .topbar-back {
+        padding:6px 8px; font-size:11px; box-shadow:none;
       }
       .chrome-toggle {
         flex:0 0 auto;
@@ -933,8 +943,9 @@
 <header class="topbar" id="toolChrome">
   <div class="topbar-inner">
     <div class="topbar-row">
-      <div class="topbar-title">Melodía · Page</div>
-      <p class="topbar-hint">Toca una opción — <strong>menú + footer + tema</strong> se combinan.</p>
+      <a class="topbar-back" href="/en/melodia">← Melodia</a>
+      <div class="topbar-title">Melodía · Archive</div>
+      <p class="topbar-hint">Archivo — <strong>menú + footer + tema</strong> se combinan.</p>
       <button type="button" class="chrome-toggle" id="chromeToggle" aria-expanded="false" aria-controls="chromeControls">
         Controles
       </button>

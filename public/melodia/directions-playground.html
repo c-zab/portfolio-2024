@@ -1,0 +1,1465 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <title>Melodía Directions — Melodía de Bolivia</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+      --font-ui: "Manrope", ui-sans-serif, system-ui, sans-serif;
+      --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
+      --page: #0b0a0c;
+      --text: #faf7f2;
+      --muted: #b9b0a6;
+      --focus: #f4c51e;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      margin: 0;
+      background: #0b0a0c;
+      color: var(--text);
+      font-family: var(--font-body);
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    img { display: block; max-width: 100%; }
+    :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+    .topbar {
+      position: relative; z-index: 50; flex: 0 0 auto;
+      background: #e8e6e1; border-bottom: 2px solid #111; color: #111;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      overscroll-behavior: contain; user-select: none;
+    }
+    .topbar-inner { max-width: 1400px; margin: 0 auto; padding: 12px 14px 10px; display: flex; flex-direction: column; gap: 10px; }
+    .topbar-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .topbar-row.controls { align-items: flex-end; }
+    .topbar-title {
+      font-weight: 700; white-space: nowrap; font-size: 12px; letter-spacing: .04em; text-transform: uppercase;
+      padding: 7px 10px; background: #111; color: #f5f4f0; border-radius: 2px;
+    }
+    .topbar-hint { color: #6b655c; font-size: 12px; line-height: 1.35; margin: 0; flex: 1 1 auto; min-width: 12ch; }
+    .topbar-hint strong { color: #111; }
+    .topbar-tools { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; flex: 0 0 auto; }
+    .chrome-toggle {
+      display: none; border: 1px solid #111; background: #fff; color: #111;
+      border-radius: 3px; padding: 0 12px; min-height: 36px; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+      box-shadow: 2px 2px 0 #111;
+    }
+    .chrome-toggle[aria-expanded="true"] { background: #111; color: #f5f4f0; }
+    .field { display: flex; flex-direction: column; gap: 4px; }
+    .field-label { color: #6b655c; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; min-height: 12px; }
+    .seg {
+      display: inline-flex; flex-wrap: wrap; align-items: stretch; border: 1px solid #111; border-radius: 3px;
+      overflow: hidden; background: #fff; box-shadow: 2px 2px 0 #111; min-height: 36px;
+    }
+    .seg button {
+      border: 0; background: transparent; color: #3f3a34; padding: 0 12px; min-height: 36px; cursor: pointer;
+      font: inherit; font-size: 12px; font-weight: 600;
+    }
+    .seg button + button { border-left: 1px solid #111; }
+    .seg button.is-on { background: #111; color: #f5f4f0; }
+    .view-toggle {
+      display: inline-flex; border: 1px solid #111; border-radius: 3px;
+      overflow: hidden; box-shadow: 2px 2px 0 #111; background: #fff; min-height: 36px;
+    }
+    .view-toggle button {
+      border: 0; background: transparent; color: #3f3a34; padding: 0 12px; min-height: 36px; cursor: pointer;
+      font: inherit; font-size: 12px; font-weight: 600;
+    }
+    .view-toggle button + button { border-left: 1px solid #111; }
+    .view-toggle button.is-on { background: #111; color: #f5f4f0; }
+    .audio-toggle {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1px solid #111; border-radius: 3px; min-height: 36px; padding: 0 12px;
+      background: #fff; color: #111; font: inherit; font-size: 12px; font-weight: 700;
+      cursor: pointer; box-shadow: 2px 2px 0 #111; white-space: nowrap;
+    }
+    .audio-toggle[aria-pressed="true"] { background: #111; color: #f5f4f0; }
+    .audio-toggle .audio-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #c8322c; opacity: .35;
+    }
+    .audio-toggle[aria-pressed="true"] .audio-dot {
+      opacity: 1; box-shadow: 0 0 0 3px rgba(200,50,44,.25);
+      animation: audio-pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes audio-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+    }
+
+    @media (max-width: 820px) {
+      .topbar { max-height: 42vh; overflow-x: hidden; overflow-y: auto; }
+      .topbar-inner { padding: 8px 10px; gap: 8px; }
+      .topbar-hint { display: none; }
+      .topbar-tools { margin-left: 0; gap: 6px; }
+      .chrome-toggle { display: inline-flex; align-items: center; flex: 0 0 auto; margin-right: auto; min-height: 32px; padding: 0 10px; font-size: 11px; box-shadow: none; }
+      .topbar-row:not(.controls) { flex-wrap: nowrap; gap: 6px; }
+      .topbar-title { flex: 0 1 auto; min-width: 0; max-width: 28vw; overflow: hidden; text-overflow: ellipsis; padding: 6px 8px; font-size: 11px; }
+      .chrome-lang { box-shadow: none; min-height: 32px; }
+      .chrome-lang button { min-width: 40px; min-height: 32px; padding: 0 10px; font-size: 11px; }
+      .view-toggle { min-height: 32px; box-shadow: none; }
+      .view-toggle button { min-height: 32px; padding: 0 10px; font-size: 11px; }
+      .audio-toggle { min-height: 32px; padding: 0 10px; font-size: 11px; box-shadow: none; }
+      .topbar-row.controls { display: none; width: 100%; flex-direction: column; align-items: stretch; gap: 8px; }
+      .topbar.is-controls-open .topbar-row.controls { display: flex; }
+      .topbar .field { width: 100%; }
+      .topbar-row.controls .seg { width: 100%; box-shadow: none; }
+      .topbar-row.controls .seg button { flex: 1 1 auto; min-height: 32px; font-size: 11px; justify-content: center; }
+    }
+
+    .page {
+      flex: 1 1 auto; min-height: 0; width: 100%; margin: 0 auto; padding: 16px 20px 36px;
+      overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain;
+    }
+    .preview-shell { width: 100%; max-width: 1280px; margin: 0 auto; }
+    .preview-shell.mobile { width: min(430px, 100%); border: 1px solid #2a2420; border-radius: 28px; overflow: hidden; box-shadow: 0 36px 90px rgba(0,0,0,.4); }
+
+    .direction { display: none; position: relative; overflow: hidden; }
+    .direction.is-on { display: block; }
+    .preview-shell:not(.mobile) .direction { border: 1px solid #2a2420; border-radius: 18px; }
+
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .brand img { width: 38px; height: 38px; object-fit: contain; }
+    .brand-name { display: flex; flex-direction: column; line-height: 1.05; }
+    .brand-name b { font-family: var(--font-display); font-weight: 600; font-size: 15px; letter-spacing: -.02em; }
+    .brand-name span { font-size: 9px; letter-spacing: .16em; text-transform: uppercase; opacity: .75; }
+
+    .photo { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+    .kicker { font-family: var(--font-ui); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; }
+    .display { font-family: var(--font-display); letter-spacing: -.04em; line-height: .92; font-weight: 500; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 0; cursor: pointer; font-family: var(--font-ui); font-weight: 700; font-size: 13px;
+    }
+    .btn-fill { background: #c8322c; color: #fff; border-radius: 999px; padding: 12px 20px; }
+    .btn-ghost { background: transparent; color: inherit; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; padding: 11px 18px; }
+    .btn-text { background: none; color: inherit; text-decoration: none; padding: 0; font-weight: 700; }
+
+    .menu-overlay {
+      position: absolute; inset: 0; z-index: 40; display: none; flex-direction: column;
+      padding: 28px 32px 40px; background: rgba(8,6,6,.94);
+    }
+    .direction.is-menu-open .menu-overlay { display: flex; }
+    .menu-overlay nav { display: flex; flex-direction: column; gap: 6px; margin-top: 28px; }
+    .menu-overlay a { font-family: var(--font-display); font-size: clamp(28px, 5vw, 52px); letter-spacing: -.04em; }
+    .menu-overlay .num { font-family: var(--font-ui); font-size: 13px; letter-spacing: .12em; margin-right: 14px; opacity: .55; }
+    .menu-close { align-self: flex-end; background: none; border: 0; color: #fff; cursor: pointer; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+
+    .signature { padding: 10px 20px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; opacity: .55; text-align: center; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+
+    /* ——— Tejido / Aguayo ——— */
+    .dir-tejido { background: #050505; color: #f4ebdd; --focus: #fbb140; }
+    .dir-tejido .btn-fill { background: #e11d48; border-radius: 999px; }
+    .dir-tejido .btn-text { color: #fbb140; letter-spacing: .14em; text-transform: uppercase; font-size: 12px; }
+
+    /* Slim CSS aguayo — used as borders / rails, not page wallpaper */
+    .aguayo-border {
+      --field: #e90068; --pink: #fa168b; --green: #13603b; --blue: #153b72;
+      --red: #f34246; --gold: #fbb140; --cream: #f8e2d4; --ink: #231e2c; --band: var(--blue);
+      position: relative; height: 22px; overflow: hidden; isolation: isolate; flex: 0 0 auto;
+    }
+    .aguayo-border.is-crimson { --field:#d8003f; --pink:#fa138b; --green:#117145; --blue:#095882; --red:#ff4324; --gold:#ffd03c; --cream:#f5e6c2; --ink:#14152a; --band: var(--blue); }
+    .aguayo-border.is-forest { --field:#07523b; --pink:#f00e7b; --green:#1f9953; --blue:#116c9c; --red:#e53540; --gold:#edab3d; --cream:#f4ebd6; --ink:#172b27; --band: var(--red); }
+    .aguayo-border.is-orange { --field:#ff6632; --pink:#ef287e; --green:#327439; --blue:#0b6485; --red:#dd323d; --gold:#ffb446; --cream:#f4e5d3; --ink:#302951; --band: var(--blue); }
+    .aguayo-border.is-ochre { --field:#242321; --pink:#a85128; --green:#716038; --blue:#644032; --red:#824125; --gold:#d3893c; --cream:#eaddc5; --ink:#141617; --band: var(--red); }
+    .aguayo-border.is-geometry { --field:#ee1234; --pink:#ed4190; --green:#216437; --blue:#353053; --red:#cf203a; --gold:#f0a134; --cream:#eacac0; --ink:#2b2024; --band: var(--ink); }
+    .aguayo-border.is-teal { --field:#0f766e; --pink:#fa168b; --green:#14b8a6; --blue:#115e59; --red:#e11d48; --gold:#fbb140; --cream:#f8e2d4; --ink:#042f2e; --band: var(--ink); }
+    .aguayo-border.is-gold { --field:#fbb140; --pink:#fa168b; --green:#13603b; --blue:#153b72; --red:#e11d48; --gold:#ffe08a; --cream:#fff4d6; --ink:#231e2c; --band: var(--ink); }
+    .aguayo-border .aguayo-inner {
+      position: absolute; top: 0; left: 0; width: 137.5%; height: 66px;
+      transform: scale(0.333); transform-origin: 0 0;
+      background: repeating-linear-gradient(180deg,var(--field) 0px 6px,var(--gold) 6px 8px,var(--cream) 8px 10px,var(--green) 10px 13px,var(--ink) 13px 15px,var(--pink) 15px 19px,var(--cream) 19px 21px,var(--band) 21px 47px,var(--cream) 47px 49px,var(--pink) 49px 53px,var(--ink) 53px 55px,var(--green) 55px 58px,var(--gold) 58px 60px,var(--field) 60px 66px);
+    }
+    .aguayo-border .aguayo-rail { position: absolute; top: 21px; left: 0; right: 0; height: 32px; display: flex; overflow: hidden; }
+    .aguayo-border .aguayo-unit { position: relative; flex: 0 0 96px; height: 32px; }
+    .aguayo-border .aguayo-unit::before {
+      content: ""; position: absolute; top: 2px; left: 5px; width: 2px; height: 2px;
+      box-shadow: 16px 0 0 0 var(--cream),14px 2px 0 0 var(--cream),18px 2px 0 0 var(--cream),12px 4px 0 0 var(--cream),20px 4px 0 0 var(--cream),10px 6px 0 0 var(--cream),22px 6px 0 0 var(--cream),8px 8px 0 0 var(--cream),24px 8px 0 0 var(--cream),6px 10px 0 0 var(--cream),26px 10px 0 0 var(--cream),4px 12px 0 0 var(--cream),28px 12px 0 0 var(--cream),2px 14px 0 0 var(--cream),30px 14px 0 0 var(--cream),4px 16px 0 0 var(--cream),28px 16px 0 0 var(--cream),6px 18px 0 0 var(--cream),26px 18px 0 0 var(--cream),8px 20px 0 0 var(--cream),24px 20px 0 0 var(--cream),10px 22px 0 0 var(--cream),22px 22px 0 0 var(--cream),12px 24px 0 0 var(--cream),20px 24px 0 0 var(--cream),14px 26px 0 0 var(--cream),18px 26px 0 0 var(--cream),16px 28px 0 0 var(--cream),16px 6px 0 0 var(--cream),14px 8px 0 0 var(--cream),18px 8px 0 0 var(--cream),12px 10px 0 0 var(--cream),20px 10px 0 0 var(--cream),10px 12px 0 0 var(--cream),22px 12px 0 0 var(--cream),8px 14px 0 0 var(--cream),24px 14px 0 0 var(--cream),10px 16px 0 0 var(--cream),22px 16px 0 0 var(--cream),12px 18px 0 0 var(--cream),20px 18px 0 0 var(--cream),14px 20px 0 0 var(--cream),18px 20px 0 0 var(--cream),16px 22px 0 0 var(--cream),16px 12px 0 0 var(--gold),14px 14px 0 0 var(--gold),18px 14px 0 0 var(--gold),16px 16px 0 0 var(--gold),50px 2px 0 0 var(--cream),52px 2px 0 0 var(--cream),72px 2px 0 0 var(--cream),74px 2px 0 0 var(--cream),62px 6px 0 0 var(--cream),60px 8px 0 0 var(--cream),64px 8px 0 0 var(--cream),58px 10px 0 0 var(--cream),66px 10px 0 0 var(--cream),56px 12px 0 0 var(--cream),68px 12px 0 0 var(--cream),54px 14px 0 0 var(--cream),70px 14px 0 0 var(--cream),56px 16px 0 0 var(--cream),68px 16px 0 0 var(--cream),58px 18px 0 0 var(--cream),66px 18px 0 0 var(--cream),60px 20px 0 0 var(--cream),64px 20px 0 0 var(--cream),62px 22px 0 0 var(--cream),62px 12px 0 0 var(--gold),60px 14px 0 0 var(--gold),64px 14px 0 0 var(--gold),62px 16px 0 0 var(--gold);
+    }
+    .aguayo-border::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .28; mix-blend-mode: soft-light;
+      background: repeating-linear-gradient(90deg,#ffffff20 0 .6px,#00000020 .6px 1.4px,transparent 1.4px 2.4px);
+    }
+    .aguayo-rail-v {
+      position: relative; width: 14px; flex: 0 0 14px; align-self: stretch; overflow: hidden; min-height: 100%;
+    }
+    .aguayo-rail-v.wide { width: 28px; flex-basis: 28px; }
+    .aguayo-rail-v .aguayo-border {
+      position: absolute; top: 0; left: 14px; width: 180vh; height: 14px;
+      transform: rotate(90deg); transform-origin: top left;
+    }
+    .aguayo-rail-v.wide .aguayo-border { left: 28px; height: 28px; }
+
+    .aguayo-border.is-patch {
+      height: 66px; width: 128px;
+    }
+    .aguayo-border.is-patch .aguayo-inner { transform: none; width: 100%; }
+    .aguayo-ribbon {
+      width: 196px; height: 18px; overflow: hidden; position: relative; isolation: isolate;
+    }
+    .aguayo-ribbon .aguayo-border { height: 18px; }
+    .aguayo-pinstripe {
+      height: 8px; width: 100%;
+      background: repeating-linear-gradient(90deg,
+        #e11d48 0 4px, #fbb140 4px 7px, #14b8a6 7px 11px, #fa168b 11px 14px,
+        #111 14px 16px, #ff6632 16px 20px, #fbb140 20px 23px, #0f766e 23px 27px, #153b72 27px 31px);
+    }
+
+    .tejido-shell { background: #050505; display: flex; flex-direction: column; }
+    .tejido-header {
+      display: grid; grid-template-columns: auto 1fr auto; align-items: stretch;
+      background: #050505;
+    }
+    .tejido-header .brand { padding: 12px 18px; gap: 10px; }
+    .tejido-header .brand img { width: 40px; height: 40px; border-radius: 50%; }
+    .tejido-header .brand-name b { font-family: var(--font-display); font-size: 17px; text-transform: none; letter-spacing: -.02em; }
+    .tejido-nav {
+      position: relative; display: flex; align-items: stretch; justify-content: center; gap: 0;
+      padding-top: 10px;
+    }
+    .tejido-nav .nav-ribbon {
+      position: absolute; top: 0; left: 0; right: 0; height: 10px; overflow: hidden; z-index: 2;
+    }
+    .tejido-nav .nav-ribbon .aguayo-border { height: 10px; }
+    .tejido-nav a {
+      display: flex; flex-direction: column; justify-content: center; gap: 3px;
+      min-width: 76px; padding: 12px 14px 14px; font-size: 13px; font-weight: 600; position: relative;
+    }
+    .tejido-nav a .num { font-size: 9px; letter-spacing: .14em; opacity: .55; font-weight: 700; }
+    .tejido-nav a.is-current {
+      background: #e11d48; color: #fff;
+    }
+    .tejido-nav a.is-current .num { opacity: .85; }
+    .tejido-tools { display: flex; align-items: center; gap: 8px; padding: 0 14px; }
+    .tejido-tools .locale {
+      display: inline-flex; border: 1px solid rgba(255,255,255,.28); border-radius: 3px; overflow: hidden;
+    }
+    .tejido-tools .locale button { background: none; border: 0; color: #f4ebdd; cursor: pointer; font-weight: 700; font-size: 11px; padding: 8px 12px; opacity: .55; }
+    .tejido-tools .locale button.is-active { opacity: 1; background: #f4ebdd; color: #111; }
+    .tejido-menu-btn { display: none; }
+
+    .tejido-hero {
+      display: grid; grid-template-columns: minmax(280px, 1.05fr) minmax(280px, 1.2fr) 36px;
+      min-height: min(56vh, 520px); align-items: stretch;
+    }
+    .tejido-hero-copy { padding: clamp(32px, 4.5vw, 56px) 32px; display: flex; flex-direction: column; justify-content: center; }
+    .tejido-hero h1 { font-size: clamp(42px, 5.8vw, 72px); margin: 0 0 10px; line-height: .9; }
+    .tejido-hero h1 em { color: #e11d48; font-style: normal; font-weight: 600; }
+    .tejido-side { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; opacity: .75; margin: 0 0 14px; }
+    .tejido-hero p.lead { margin: 0 0 24px; max-width: 36ch; color: #e7d8c8; font-size: 15px; line-height: 1.45; }
+    .tejido-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+    .tejido-hero-photo { position: relative; min-height: 280px; overflow: hidden; }
+    .tejido-hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 55% 20%; }
+    .tejido-hero-rail {
+      display: grid; grid-template-rows: 1fr 1.15fr .85fr; min-height: 100%;
+    }
+    .tejido-hero-rail .stripe {
+      background: repeating-linear-gradient(90deg,
+        #e11d48 0 3px, #fbb140 3px 5px, #14b8a6 5px 8px, #fa168b 8px 10px,
+        #111 10px 12px, #ff6632 12px 15px, #fbb140 15px 17px, #0f766e 17px 20px);
+    }
+    .tejido-hero-rail .block-teal {
+      position: relative; overflow: hidden; background: #0f766e;
+    }
+    .tejido-hero-rail .block-teal .aguayo-border {
+      position: absolute; top: 0; left: 36px; width: 160vh; height: 36px;
+      transform: rotate(90deg); transform-origin: top left;
+    }
+    .tejido-hero-rail .block-gold {
+      background:
+        repeating-linear-gradient(45deg, #fbb140 0 6px, #e8a030 6px 12px),
+        #fbb140;
+    }
+
+    .tejido-cards {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .tejido-card {
+      position: relative; min-height: 248px; overflow: hidden; color: #fff;
+      display: grid; grid-template-columns: 1fr 16px;
+    }
+    .tejido-card .media { position: relative; min-height: 248px; overflow: hidden; }
+    .tejido-card .media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .tejido-card .media::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,.1) 20%, rgba(0,0,0,.78) 100%);
+    }
+    .tejido-card .copy {
+      position: absolute; left: 14px; right: 22px; bottom: 14px; z-index: 2;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .tejido-card .num { font-size: 10px; letter-spacing: .14em; opacity: .7; }
+    .tejido-card strong { font-family: var(--font-display); font-size: 24px; font-weight: 500; }
+    .tejido-card p { margin: 0; font-size: 12px; color: #ddd4c8; line-height: 1.35; max-width: 18ch; }
+    .tejido-card .go { color: #fbb140; font-size: 14px; margin-top: 4px; }
+    .tejido-card:nth-child(1) .go { color: #14b8a6; }
+    .tejido-card:nth-child(2) .go { color: #fbb140; }
+    .tejido-card:nth-child(3) .go { color: #fa168b; }
+    .tejido-card:nth-child(4) .go { color: #ee1234; }
+    .tejido-card .aguayo-rail-v { width: 16px; flex-basis: 16px; }
+    .tejido-card .aguayo-rail-v .aguayo-border { left: 16px; height: 16px; }
+
+    .tejido-close {
+      display: grid; grid-template-columns: 1.15fr 1.2fr auto 1fr; min-height: 220px; align-items: stretch;
+      background: #050505;
+    }
+    .tejido-close-photo { overflow: hidden; min-height: 220px; }
+    .tejido-close-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; filter: grayscale(1) contrast(1.08); }
+    .tejido-close-title { padding: 28px 18px; display: flex; flex-direction: column; justify-content: center; }
+    .tejido-close-title h2 { font-size: clamp(34px, 5vw, 62px); margin: 0; line-height: .88; text-transform: uppercase; }
+    .tejido-close-title h2 em { color: #e11d48; font-style: italic; text-transform: none; }
+    .tejido-close-meta {
+      padding: 28px 14px; display: flex; flex-direction: column; justify-content: center;
+      border-left: 1px solid rgba(255,255,255,.12); font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+      max-width: 12ch; line-height: 1.5; opacity: .8;
+    }
+    .tejido-close-cta { padding: 28px 20px; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
+    .tejido-close-cta p { margin: 0; font-size: 14px; color: #d8d0c6; max-width: 28ch; line-height: 1.45; }
+
+    .tejido-book {
+      display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: end;
+      padding: 36px 32px 32px; background: #0a090b;
+    }
+    .tejido-book .eyebrow {
+      margin: 0 0 10px; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; opacity: .6;
+    }
+    .tejido-book h2 {
+      margin: 0; font-size: clamp(36px, 5.2vw, 64px); font-weight: 500; letter-spacing: -.04em; line-height: .92;
+    }
+    .tejido-book-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding-bottom: 8px; }
+    .tejido-book-cta .btn-text { color: #e11d48; letter-spacing: .04em; text-transform: none; font-size: 14px; }
+
+    .tejido-footer {
+      display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr auto; gap: 18px; align-items: center;
+      padding: 22px 24px 24px; background: #050505; color: #f4ebdd;
+    }
+    .tejido-footer .brand { gap: 10px; }
+    .tejido-footer .brand img { width: 36px; height: 36px; border-radius: 50%; }
+    .tejido-footer .label {
+      font-size: 10px; letter-spacing: .14em; opacity: .55; display: block; margin-bottom: 6px;
+      padding-top: 6px; border-top: 2px solid #fbb140; width: max-content;
+    }
+    .tejido-footer > div:nth-child(3) .label { border-color: #e11d48; }
+    .tejido-footer > div:nth-child(4) .label { border-color: #14b8a6; }
+    .tejido-footer strong { font-family: var(--font-display); font-size: 18px; font-weight: 500; display: block; }
+    .tejido-footer p, .tejido-footer a { margin: 4px 0 0; font-size: 13px; color: #d8d0c6; }
+    .tejido-mark {
+      display: flex; align-items: center; gap: 14px;
+      padding-left: 16px; border-left: 1px solid rgba(255,255,255,.12);
+    }
+    .tejido-unite { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; max-width: 11ch; line-height: 1.4; opacity: .8; }
+
+    .dir-tejido .menu-overlay { background: #050505; }
+    .dir-tejido .menu-overlay a { border-bottom: 3px solid transparent; padding: 8px 0; }
+    .dir-tejido .menu-overlay a:nth-child(1) { border-color: #e11d48; }
+    .dir-tejido .menu-overlay a:nth-child(2) { border-color: #14b8a6; }
+    .dir-tejido .menu-overlay a:nth-child(3) { border-color: #fbb140; }
+    .dir-tejido .menu-overlay a:nth-child(4) { border-color: #ed4190; }
+    .dir-tejido .menu-overlay a:nth-child(5) { border-color: #ff6632; }
+    .dir-tejido .menu-overlay a:nth-child(6) { border-color: #ee1234; }
+
+    .preview-shell.mobile .tejido-header { display: flex; }
+    .preview-shell.mobile .tejido-nav { display: none; }
+    .preview-shell.mobile .tejido-menu-btn { display: inline-flex; }
+    .preview-shell.mobile .tejido-hero { grid-template-columns: 1fr; }
+    .preview-shell.mobile .tejido-hero-rail { display: none; }
+    .preview-shell.mobile .tejido-cards { grid-template-columns: 1fr 1fr; }
+    .preview-shell.mobile .tejido-close { grid-template-columns: 1fr; }
+    .preview-shell.mobile .tejido-book { grid-template-columns: 1fr; }
+    .preview-shell.mobile .tejido-footer { grid-template-columns: 1fr 1fr; }
+
+    @media (max-width: 820px) {
+      .tejido-header { display: flex; }
+      .tejido-nav { display: none; }
+      .tejido-menu-btn { display: inline-flex; }
+      .tejido-hero { grid-template-columns: 1fr; }
+      .tejido-cards { grid-template-columns: 1fr 1fr; }
+      .tejido-close, .tejido-book, .tejido-footer { grid-template-columns: 1fr; }
+    }
+
+    /* ——— Entrada ——— */
+    .dir-entrada { background: #070606; color: #f7f3ee; --focus: #e7b83f; }
+    .dir-entrada .btn-fill { padding: 12px 22px; }
+    .dir-entrada .btn-text { color: #e7b83f; }
+    .entrada-hero { position: relative; min-height: min(86vh, 820px); overflow: hidden; }
+    .entrada-hero > img.photo { position: absolute; inset: 0; width: 100%; height: 100%; object-position: 58% 88%; z-index: 0; pointer-events: none; }
+    .entrada-hero::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(90deg, rgba(7,6,6,.78) 0 38%, rgba(7,6,6,.18) 68%, transparent 100%),
+        linear-gradient(180deg, rgba(7,6,6,.25), transparent 30%, rgba(7,6,6,.55) 100%);
+    }
+    .entrada-top {
+      position: relative; z-index: 3;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 32px 0; min-height: 76px;
+    }
+    .entrada-top .brand { gap: 12px; }
+    .entrada-top .brand img { width: 46px; height: 46px; border-radius: 50%; object-fit: contain; }
+    .entrada-top .brand-name b { font-size: 20px; font-weight: 500; }
+    .entrada-top .brand-name span { font-size: 8px; letter-spacing: .2em; }
+    .entrada-top .tools { display: flex; align-items: center; }
+    .entrada-top .locale {
+      display: flex; align-items: center; gap: 4px;
+      padding-right: 18px; margin-right: 18px;
+      border-right: 1px solid rgba(255,255,255,.35);
+    }
+    .entrada-top .locale button { background: none; border: 0; color: #fff; font-weight: 700; cursor: pointer; opacity: .45; padding: 8px 6px; letter-spacing: .08em; }
+    .entrada-top .locale button.is-active { opacity: 1; box-shadow: inset 0 -1px 0 #fff; }
+    .entrada-menu-btn { background: none; border: 0; color: #fff; cursor: pointer; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; padding: 8px 0; }
+    .entrada-copy { position: relative; z-index: 2; max-width: 560px; padding: 8vh 32px 48px; }
+    .entrada-copy .kicker { color: #e7b83f; margin-bottom: 14px; }
+    .entrada-copy h1 { font-size: clamp(44px, 7vw, 84px); margin: 0 0 16px; }
+    .entrada-copy h1 em { color: #c8322c; font-style: italic; }
+    .entrada-copy p { margin: 0 0 28px; color: #ddd4c8; max-width: 34ch; line-height: 1.5; }
+    .entrada-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+    .entrada-scroll { position: absolute; right: 32px; bottom: 28px; z-index: 2; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; opacity: .7; }
+    .entrada-mid {
+      display: grid; grid-template-columns: minmax(220px, .9fr) minmax(260px, 1fr) minmax(280px, 1.15fr); align-items: stretch;
+      background: #0c0b0b; min-height: 340px;
+    }
+    .entrada-mid-photo { min-height: 340px; overflow: hidden; }
+    .entrada-mid-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 12% 62%; min-height: 340px; }
+    .entrada-mid-copy { padding: 48px 36px; display: flex; flex-direction: column; justify-content: center; }
+    .entrada-mid-copy .kicker { color: #e7b83f; }
+    .entrada-mid-copy h2 { font-size: clamp(32px, 4vw, 48px); margin: 10px 0 16px; }
+    .entrada-mid-copy h2 em { color: #c8322c; font-style: italic; }
+    .entrada-mid-copy p { color: #c9c0b5; line-height: 1.6; max-width: 42ch; }
+    .entrada-thumbs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 24px 20px; align-content: center; }
+    .entrada-thumbs a { position: relative; min-height: 0; aspect-ratio: 3 / 4; overflow: hidden; display: block; }
+    .entrada-thumbs img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; }
+    .entrada-thumbs a::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,.08) 40%, rgba(0,0,0,.72) 100%);
+    }
+    .entrada-thumbs span {
+      position: absolute; left: 10px; right: 8px; bottom: 12px; z-index: 1;
+      font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 800;
+      text-shadow: 0 1px 2px rgba(0,0,0,.9), 0 6px 16px rgba(0,0,0,.55);
+    }
+    .entrada-close {
+      position: relative; min-height: 280px; overflow: hidden; display: grid; grid-template-columns: 1.2fr .8fr; align-items: center;
+    }
+    .entrada-close img { position: absolute; inset: 0; width: 100%; height: 100%; object-position: 50% 88%; }
+    .entrada-close::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 40%, rgba(7,6,6,.72)); }
+    .entrada-close-copy { position: relative; z-index: 1; padding: 40px; grid-column: 2; }
+    .entrada-flag { width: 54px; height: 3px; margin-bottom: 16px; background: linear-gradient(90deg, #c8322c 0 33%, #e7b83f 33% 66%, #2f7d4e 66%); }
+    .entrada-close h2 { font-size: clamp(36px, 5vw, 64px); margin: 0 0 18px; }
+    .entrada-close h2 em { color: #c8322c; font-style: italic; }
+    .entrada-links { display: flex; flex-direction: column; gap: 6px; font-size: 13px; opacity: .85; }
+    .entrada-close .entrada-meta { margin-top: 18px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .7; }
+
+    .preview-shell.mobile .entrada-hero { min-height: 640px; }
+    .preview-shell.mobile .entrada-hero > img.photo { object-position: 58% 80%; }
+    .preview-shell.mobile .entrada-mid, .preview-shell.mobile .entrada-close { grid-template-columns: 1fr; }
+    .preview-shell.mobile .entrada-thumbs { grid-template-columns: 1fr 1fr 1fr; padding: 12px; min-height: 0; }
+    .preview-shell.mobile .entrada-thumbs a { min-height: 140px; }
+    .preview-shell.mobile .entrada-close-copy { grid-column: 1; }
+    .preview-shell.mobile .entrada-scroll { display: none; }
+
+    @media (max-width: 820px) {
+      .entrada-mid, .entrada-close { grid-template-columns: 1fr; }
+      .entrada-thumbs { padding: 12px; }
+      .entrada-thumbs a { min-height: 140px; }
+      .entrada-close-copy { grid-column: 1; }
+    }
+
+    /* ——— Toronto ↔ Bolivia ——— */
+    .dir-toronto { background: #07101c; color: #f4efe8; --focus: #e7b83f; }
+    .toronto-hero { position: relative; min-height: min(78vh, 740px); overflow: hidden; }
+    .toronto-split { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; }
+    .toronto-split img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+    .toronto-split img:first-child { object-position: 40% 40%; }
+    .toronto-split img:last-child { object-position: 60% 20%; }
+    .toronto-hero::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(90deg, rgba(7,16,28,.28), rgba(7,16,28,.45) 46%, rgba(40,8,8,.35) 54%, rgba(40,8,8,.2));
+    }
+    .toronto-meta {
+      position: absolute; z-index: 4; top: 16px; left: 22px;
+      font-size: 10px; letter-spacing: .18em; text-transform: uppercase; opacity: .8;
+    }
+    .toronto-header {
+      position: absolute; z-index: 4; top: 20px; left: 0; right: 0;
+      display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+      width: 100%; padding: 0 28px; min-height: 76px;
+    }
+    .toronto-nav { display: flex; gap: 22px; font-size: 14px; font-weight: 500; }
+    .toronto-nav.right { justify-content: flex-start; padding-left: 52px; }
+    .toronto-nav.left { justify-content: flex-end; padding-right: 52px; }
+    .toronto-center {
+      position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+    }
+    .toronto-center img {
+      width: 76px; height: 76px; border-radius: 50%; object-fit: cover;
+      box-shadow: 0 0 0 3px rgba(255,255,255,.18);
+    }
+    .toronto-lang {
+      position: absolute; top: 12px; right: 22px; z-index: 5;
+    }
+    .toronto-lang button, .toronto-menu-btn { background: none; border: 0; color: #fff; cursor: pointer; font-weight: 700; padding: 8px 6px; opacity: .55; }
+    .toronto-lang button.is-active { opacity: 1; }
+    .toronto-menu-btn { display: none; letter-spacing: .1em; text-transform: uppercase; opacity: 1; }
+    .toronto-hero-copy { position: relative; z-index: 3; text-align: center; padding: 150px 24px 36px; }
+    .toronto-hero h1 { font-size: clamp(40px, 6.2vw, 78px); margin: 0; }
+    .toronto-hero h1 em { color: #e7b83f; font-style: italic; }
+    .toronto-hero p { margin: 14px auto 26px; max-width: 46ch; color: #e8ddd0; }
+    .toronto-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .toronto-seam {
+      position: relative; z-index: 3;
+      display: flex; align-items: center; justify-content: center; gap: 16px; padding: 6px 20px 12px;
+      font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+    }
+    .toronto-seam span.line { height: 2px; width: 90px; background: linear-gradient(90deg, #c8322c, #e7b83f, #2f7d4e); }
+    .toronto-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 28px 20px 32px; margin-top: 0; position: relative; z-index: 5; }
+    .toronto-card { position: relative; min-height: 210px; overflow: hidden; border-radius: 16px; background: #0b1522; }
+    .toronto-card img { position: absolute; inset: 0 0 0 42%; width: auto; height: 100%; object-fit: cover; }
+    .toronto-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #0b1522 0 38%, rgba(11,21,34,.2) 70%, transparent); }
+    .toronto-card div { position: relative; z-index: 1; padding: 16px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; max-width: 58%; }
+    .toronto-card .num { display: block; font-size: 12px; opacity: .7; margin-bottom: 4px; }
+    .toronto-card strong { font-family: var(--font-display); font-size: 22px; }
+    .toronto-card p { margin: 6px 0 0; font-size: 13px; color: #ddd; }
+    .toronto-close { display: grid; grid-template-columns: 1fr 1.1fr 1fr; min-height: 280px; overflow: hidden; position: relative; }
+    .toronto-close img { width: 100%; height: 100%; object-fit: cover; min-height: 280px; pointer-events: none; }
+    .toronto-close-copy { padding: 40px 28px; display: flex; flex-direction: column; justify-content: center; background: #07101c; }
+    .toronto-close h2 { font-size: clamp(30px, 4vw, 46px); margin: 8px 0 12px; }
+    .toronto-foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px 22px; font-size: 12px; background: #050b14; }
+
+    .preview-shell.mobile .toronto-header { grid-template-columns: 1fr 1fr; top: 12px; }
+    .preview-shell.mobile .toronto-nav { display: none; }
+    .preview-shell.mobile .toronto-menu-btn { display: inline-flex; }
+    .preview-shell.mobile .toronto-hero { min-height: 620px; }
+    .preview-shell.mobile .toronto-split { grid-template-columns: 1fr; }
+    .preview-shell.mobile .toronto-split img:first-child { display: none; }
+    .preview-shell.mobile .toronto-cards { grid-template-columns: 1fr 1fr; }
+    .preview-shell.mobile .toronto-close { grid-template-columns: 1fr; }
+    .preview-shell.mobile .toronto-meta { display: none; }
+
+    @media (max-width: 820px) {
+      .toronto-nav { display: none; }
+      .toronto-menu-btn { display: inline-flex; }
+      .toronto-cards { grid-template-columns: 1fr 1fr; }
+      .toronto-split { grid-template-columns: 1fr; }
+      .toronto-close { grid-template-columns: 1fr; }
+    }
+
+    /* ——— Escenario ——— */
+    .dir-escenario { background: #0a0909; color: #f6f1ea; --focus: #e7b83f; padding-bottom: 24px; overflow: visible; }
+    .dir-escenario .btn-text { color: #e7b83f; }
+    .esc-top {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 28px; position: absolute; left: 0; right: 0; z-index: 3;
+      min-height: 76px;
+    }
+    .esc-top .brand { gap: 12px; }
+    .esc-top .brand img { width: 46px; height: 46px; border-radius: 50%; }
+    .esc-top .brand-name b { font-size: 20px; font-weight: 500; }
+    .esc-top .brand-name span { font-size: 8px; letter-spacing: .2em; }
+    .esc-top .tools { display: flex; align-items: center; gap: 10px; }
+    .esc-top .locale {
+      display: inline-flex; border: 1px solid rgba(255,255,255,.28); border-radius: 999px;
+      overflow: hidden; background: rgba(10,9,9,.35);
+    }
+    .esc-top .locale button { background: none; border: 0; color: #fff; cursor: pointer; font-weight: 700; opacity: .7; padding: 8px 14px; font-size: 12px; }
+    .esc-top .locale button.is-active { opacity: 1; background: #e7b83f; color: #111; }
+    .esc-menu-btn { display: none; background: none; border: 0; color: #fff; cursor: pointer; font-weight: 800; letter-spacing: .12em; }
+    .esc-hero { position: relative; min-height: min(78vh, 740px); overflow: hidden; }
+    .esc-hero > img.photo { position: absolute; inset: 0; width: 100%; height: 100%; object-position: 30% 20%; pointer-events: none; }
+    .esc-hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(10,9,9,.82) 0 36%, rgba(10,9,9,.2) 70%, transparent); }
+    .esc-copy { position: relative; z-index: 2; max-width: 560px; padding: 110px 28px 48px; }
+    .esc-copy .kicker { margin-bottom: 12px; opacity: .8; }
+    .esc-copy h1 { font-size: clamp(44px, 6.6vw, 82px); margin: 0 0 16px; font-weight: 500; }
+    .esc-copy h1 em { color: #c8322c; font-style: italic; }
+    .esc-copy p { color: #ddd4c8; max-width: 38ch; line-height: 1.5; }
+    .esc-actions { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; margin-top: 24px; }
+    .esc-aside {
+      position: absolute; z-index: 2; right: 28px; top: 42%;
+      display: flex; flex-direction: column; gap: 8px;
+      padding-left: 14px; border-left: 1px solid #e7b83f;
+      font-size: 10px; letter-spacing: .18em; text-transform: uppercase; opacity: .75;
+    }
+    .esc-dances {
+      display: grid; grid-template-columns: minmax(220px, 1fr) 1.7fr minmax(200px, .7fr);
+      gap: 18px; padding: 28px 22px; background: #0d0c0c; align-items: stretch;
+    }
+    .esc-dances-copy { display: flex; flex-direction: column; justify-content: center; }
+    .esc-dances h2 { font-size: clamp(32px, 4vw, 48px); margin: 8px 0 12px; max-width: 10ch; }
+    .esc-dances-copy p { color: #c9c0b5; max-width: 32ch; }
+    .esc-thumbs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .esc-thumbs figure { margin: 0; position: relative; min-height: 210px; overflow: hidden; }
+    .esc-thumbs img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .esc-thumbs figcaption { position: absolute; left: 10px; bottom: 10px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 800; }
+    .esc-years {
+      display: grid; grid-template-columns: auto 1px 1fr; gap: 14px; align-items: center;
+      padding: 8px 8px 8px 12px;
+    }
+    .esc-years-num {
+      font-family: var(--font-display); font-weight: 400; line-height: .82; color: #cfc6bc;
+    }
+    .esc-years-num b { display: block; font-size: clamp(48px, 5vw, 72px); font-weight: 400; }
+    .esc-years-num i { display: block; font-size: clamp(32px, 3.4vw, 48px); font-style: italic; }
+    .esc-years-rule { width: 1px; height: 92px; background: #e7b83f; }
+    .esc-years p {
+      margin: 0; font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+      line-height: 1.55; max-width: 12ch; color: #d7d0c8;
+    }
+    .esc-event {
+      display: grid; grid-template-columns: 1fr auto; min-height: 240px; overflow: hidden; position: relative; align-items: end;
+    }
+    .esc-event img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 80% 70%; }
+    .esc-event::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,9,9,.88) 0 48%, rgba(10,9,9,.2)); }
+    .esc-event-copy { position: relative; z-index: 1; padding: 32px 24px; }
+    .esc-event .kicker { color: #e7b83f; }
+    .esc-event h2 { font-size: clamp(28px, 4vw, 44px); margin: 8px 0 12px; }
+    .esc-event h2 em { color: #c8322c; font-style: italic; }
+    .esc-event-meta { display: flex; flex-wrap: wrap; gap: 14px 22px; font-size: 12px; color: #ddd4c8; margin-top: 8px; }
+    .esc-event .note { font-size: 12px; color: #9a9188; margin-top: 10px; max-width: 46ch; }
+    .esc-event .esc-event-cta { position: relative; z-index: 1; padding: 32px 24px; align-self: end; }
+    .esc-dock {
+      position: sticky; left: auto; bottom: 16px; transform: none;
+      width: max-content; margin: 12px auto 16px;
+      display: flex; align-items: center; gap: 6px; padding: 8px 10px 8px 14px;
+      background: rgba(18,16,16,.88); border: 1px solid rgba(255,255,255,.12); border-radius: 999px;
+      z-index: 30; backdrop-filter: blur(10px);
+    }
+    .esc-dock a, .esc-dock button {
+      background: none; border: 0; color: #d7d0c8; font-size: 11px; font-weight: 700; padding: 8px 10px; cursor: pointer;
+      display: inline-flex; flex-direction: column; align-items: center; gap: 2px;
+    }
+    .esc-dock a.is-active { color: #e7b83f; }
+    .esc-dock .dock-logo { width: 42px; height: 42px; padding: 0; border-radius: 50%; overflow: hidden; border: 2px solid #c8322c; }
+    .esc-dock .dock-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .dir-escenario.is-menu-open .esc-dock { display: none; }
+
+    .preview-shell.mobile .esc-hero { min-height: 620px; }
+    .preview-shell.mobile .esc-hero > img.photo { object-position: 70% 18%; }
+    .preview-shell.mobile .esc-dances, .preview-shell.mobile .esc-event, .preview-shell.mobile .esc-thumbs { grid-template-columns: 1fr; }
+    .preview-shell.mobile .esc-aside { display: none; }
+    .preview-shell.mobile .esc-years { grid-template-columns: auto 1px 1fr; }
+    .preview-shell.mobile .esc-dock .dock-extra { display: none; }
+    .preview-shell.mobile .esc-menu-btn { display: inline-flex; }
+
+    @media (max-width: 820px) {
+      .esc-dances, .esc-event { grid-template-columns: 1fr; }
+      .esc-thumbs { grid-template-columns: 1fr 1fr 1fr; }
+      .esc-dock .dock-extra { display: none; }
+      .esc-aside { display: none; }
+      .esc-menu-btn { display: inline-flex; }
+    }
+  </style>
+</head>
+<body data-direction="tejido" data-copy="es">
+  <header class="topbar" id="toolChrome">
+    <div class="topbar-inner">
+      <div class="topbar-row">
+        <div class="topbar-title">Melodía · Directions</div>
+        <p class="topbar-hint">Compara las cuatro direcciones de arte.</p>
+        <button type="button" class="chrome-toggle" id="chromeToggle" aria-expanded="false" aria-controls="chromeControls">Controles</button>
+        <div class="topbar-tools">
+          <button type="button" class="audio-toggle" id="audioToggle" aria-pressed="false" aria-label="Reproducir música">
+            <span class="audio-dot" aria-hidden="true"></span>
+            <span data-audio-label>Música ▶</span>
+          </button>
+          <div class="seg chrome-lang" data-group="lang" role="group" aria-label="Idioma">
+            <button type="button" data-lang="es" class="is-on">ES</button>
+            <button type="button" data-lang="en">EN</button>
+          </div>
+          <div class="view-toggle" role="group" aria-label="Vista">
+            <button type="button" data-view="web" class="is-on">Web</button>
+            <button type="button" data-view="mobile">Móvil</button>
+          </div>
+        </div>
+      </div>
+      <div class="topbar-row controls" id="chromeControls">
+        <div class="field">
+          <span class="field-label">Dirección</span>
+          <div class="seg" data-group="direction" role="group" aria-label="Dirección">
+            <button type="button" data-direction="entrada">Entrada</button>
+            <button type="button" data-direction="tejido" class="is-on">Tejido</button>
+            <button type="button" data-direction="toronto">Toronto</button>
+            <button type="button" data-direction="escenario">Escenario</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <audio id="bgMusic" src="/melodia/media/audio/la-julia.mp3" loop preload="metadata" playsinline></audio>
+
+  <main class="page">
+    <div class="preview-shell" id="previewShell">
+
+      <!-- TEJIDO -->
+      <article class="direction dir-tejido is-on" id="dir-tejido">
+        <div class="tejido-shell">
+          <header class="tejido-header">
+            <a class="brand" href="#inicio">
+              <img src="/melodia/logo.png" alt="Melodía de Bolivia" />
+              <span class="brand-name"><b>Melodía</b><span>de Bolivia</span></span>
+            </a>
+            <nav class="tejido-nav" data-nav-links>
+              <div class="nav-ribbon" aria-hidden="true"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+              <a class="is-current" href="#inicio"><span class="num">01</span><span data-i18n="home">Inicio</span></a>
+              <a href="#nosotros"><span class="num">02</span><span data-i18n="about">Nosotros</span></a>
+              <a href="#danzas"><span class="num">03</span><span data-i18n="dances">Danzas</span></a>
+              <a href="#eventos"><span class="num">04</span><span data-i18n="events">Eventos</span></a>
+              <a href="#galeria"><span class="num">05</span><span data-i18n="gallery">Galería</span></a>
+              <a href="#contratanos"><span class="num">06</span><span data-i18n="contact">Contacto</span></a>
+            </nav>
+            <div class="tejido-tools">
+              <div class="locale" data-locale>
+                <button type="button" data-lang="es" class="is-active">ES</button>
+                <button type="button" data-lang="en">EN</button>
+              </div>
+              <button type="button" class="tejido-menu-btn" data-menu-toggle aria-expanded="false" data-i18n="menu">Menú</button>
+            </div>
+          </header>
+
+          <section class="tejido-hero" id="inicio">
+            <div class="tejido-hero-copy">
+              <h1 class="display"><span data-i18n="tejidoTitleA">Melodía de</span><br /><em data-i18n="tejidoTitleB">Bolivia</em></h1>
+              <p class="tejido-side" data-i18n="tejidoSide">Folklore boliviano en Toronto</p>
+              <p class="lead" data-i18n="tejidoLead">35 años compartiendo la cultura boliviana a través de la danza.</p>
+              <div class="tejido-actions">
+                <a class="btn btn-fill" href="#contratanos" data-i18n="join">Únete a la fraternidad →</a>
+                <a class="btn btn-text" href="#nosotros"><span data-i18n="meet">Conócenos</span> →</a>
+              </div>
+            </div>
+            <div class="tejido-hero-photo">
+              <img class="photo" src="/melodia/media/library/tejido-hero-dancer.jpg" alt="" data-i18n-alt="tejidoHeroAlt" />
+            </div>
+            <div class="tejido-hero-rail" aria-hidden="true">
+              <div class="stripe"></div>
+              <div class="block-teal">
+                <div class="aguayo-border is-teal"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div>
+              </div>
+              <div class="block-gold"></div>
+            </div>
+          </section>
+
+          <section class="tejido-cards" id="danzas">
+            <a class="tejido-card" href="#danzas">
+              <div class="media">
+                <img src="/melodia/media/library/danzas-skirts.jpg" alt="" />
+                <div class="copy">
+                  <span class="num">01</span>
+                  <strong data-i18n="dances">Danzas</strong>
+                  <p data-i18n="tejidoCardDances">Tradición que nos une.</p>
+                  <span class="go" aria-hidden="true">→</span>
+                </div>
+              </div>
+              <div class="aguayo-rail-v" aria-hidden="true"><div class="aguayo-border is-gold"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+            </a>
+            <a class="tejido-card" href="#eventos">
+              <div class="media">
+                <img src="/melodia/media/library/eventos-drum.jpg" alt="" />
+                <div class="copy">
+                  <span class="num">02</span>
+                  <strong data-i18n="events">Eventos</strong>
+                  <p data-i18n="tejidoCardEvents">Próximas presentaciones en Toronto.</p>
+                  <span class="go" aria-hidden="true">→</span>
+                </div>
+              </div>
+              <div class="aguayo-rail-v" aria-hidden="true"><div class="aguayo-border is-orange"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+            </a>
+            <a class="tejido-card" href="#nosotros">
+              <div class="media">
+                <img src="/melodia/media/library/nosotros-dancer.jpg" alt="" />
+                <div class="copy">
+                  <span class="num">03</span>
+                  <strong data-i18n="about">Nosotros</strong>
+                  <p data-i18n="tejidoCardAbout">Una fraternidad folklórica con 35 años de historia.</p>
+                  <span class="go" aria-hidden="true">→</span>
+                </div>
+              </div>
+              <div class="aguayo-rail-v" aria-hidden="true"><div class="aguayo-border is-teal"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+            </a>
+            <a class="tejido-card" href="#galeria">
+              <div class="media">
+                <img src="/melodia/media/library/galeria-embroidery.jpg" alt="" />
+                <div class="copy">
+                  <span class="num">04</span>
+                  <strong data-i18n="gallery">Galería</strong>
+                  <p data-i18n="tejidoCardGallery">Momentos que bailan nuestra historia.</p>
+                  <span class="go" aria-hidden="true">→</span>
+                </div>
+              </div>
+              <div class="aguayo-rail-v" aria-hidden="true"><div class="aguayo-border is-geometry"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+            </a>
+          </section>
+
+          <section class="tejido-close" id="nosotros">
+            <div class="tejido-close-photo">
+              <img src="/melodia/media/generated/silhouette.jpg" alt="" />
+            </div>
+            <div class="tejido-close-title">
+              <h2 class="display"><span data-i18n="tejido35A">35 años</span><br /><em data-i18n="tejido35B">bailando.</em></h2>
+            </div>
+            <p class="tejido-close-meta" data-i18n="tejidoSince">Cultura boliviana en Toronto desde 1990</p>
+            <div class="tejido-close-cta">
+              <p data-i18n="tejidoCloseBody">Ensayos, entradas, fiestas — para quien baila y para quien quiere contratar el grupo.</p>
+              <a class="btn btn-text" href="#contratanos" data-i18n="bookArrow">Contrátanos →</a>
+            </div>
+          </section>
+
+          <section class="tejido-book" id="contratanos">
+            <div>
+              <p class="eyebrow" data-i18n="tejidoBookEyebrow">Llevemos nuestra cultura a tu evento</p>
+              <h2 class="display" data-i18n="tejidoBookTitle">Bailamos contigo.</h2>
+            </div>
+            <div class="tejido-book-cta">
+              <a class="btn btn-text" href="#contratanos" data-i18n="bookArrow">Contrátanos ↗</a>
+              <div class="aguayo-ribbon" aria-hidden="true">
+                <div class="aguayo-border is-geometry"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div>
+              </div>
+            </div>
+          </section>
+
+          <footer class="tejido-footer">
+            <a class="brand" href="#inicio">
+              <img src="/melodia/logo.png" alt="" />
+              <span class="brand-name"><b>Melodía</b><span>de Bolivia</span><span class="tejido-meta">Toronto · Canadá</span></span>
+            </a>
+            <div>
+              <span class="label">01</span>
+              <strong data-i18n="events">Eventos</strong>
+              <p data-i18n="tejidoDates">Próximas fechas · Calendario</p>
+            </div>
+            <div>
+              <span class="label">02</span>
+              <strong data-i18n="tejidoSocial">Redes</strong>
+              <p><a href="#">Instagram ↗</a><br /><a href="#">YouTube ↗</a></p>
+            </div>
+            <div>
+              <span class="label">03</span>
+              <strong data-i18n="contact">Contacto</strong>
+              <p data-i18n="tejidoWrite">Escríbenos · © 2026</p>
+            </div>
+            <div class="tejido-mark">
+              <div class="aguayo-border is-patch is-geometry" aria-hidden="true"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div>
+              <p class="tejido-unite" data-i18n="tejidoUnite">La danza también nos une</p>
+            </div>
+          </footer>
+        </div>
+        <div class="menu-overlay" data-menu-panel>
+          <button type="button" class="menu-close" data-menu-toggle data-i18n="close">Cerrar ×</button>
+          <nav>
+            <a href="#nosotros"><span class="num">01</span><span data-i18n="about">Nosotros</span></a>
+            <a href="#danzas"><span class="num">02</span><span data-i18n="dances">Danzas</span></a>
+            <a href="#eventos"><span class="num">03</span><span data-i18n="events">Eventos</span></a>
+            <a href="#galeria"><span class="num">04</span><span data-i18n="gallery">Galería</span></a>
+            <a href="#contratanos"><span class="num">05</span><span data-i18n="book">Contrátanos</span></a>
+            <a href="#contratanos"><span class="num">06</span><span data-i18n="contact">Contacto</span></a>
+          </nav>
+        </div>
+      </article>
+
+      <!-- ENTRADA -->
+      <article class="direction dir-entrada" id="dir-entrada">
+        <section class="entrada-hero">
+          <img class="photo" src="/melodia/media/generated/entrada-hero.jpg" alt="" data-i18n-alt="entradaHeroAlt" />
+          <header class="entrada-top">
+            <a class="brand" href="#inicio">
+              <img src="/melodia/logo.png" alt="Melodía de Bolivia" />
+              <span class="brand-name"><b>Melodía</b><span>de Bolivia</span></span>
+            </a>
+            <div class="tools">
+              <div class="locale" data-locale>
+                <button type="button" data-lang="es" class="is-active">ES</button>
+                <button type="button" data-lang="en">EN</button>
+              </div>
+              <button type="button" class="entrada-menu-btn" data-menu-toggle aria-expanded="false" data-i18n="menuPlus">Menú +</button>
+            </div>
+          </header>
+          <div class="entrada-copy">
+            <h1 class="display"><span data-i18n="entradaTitleA">La entrada empieza</span> <em data-i18n="entradaTitleB">aquí.</em></h1>
+            <p data-i18n="entradaLead">Danza, cultura y comunidad boliviana en Toronto.</p>
+            <div class="entrada-actions">
+              <a class="btn btn-fill" href="#contratanos" data-i18n="join">Únete a la fraternidad →</a>
+              <a class="btn btn-text" href="#nosotros" data-i18n="meet">Conócenos</a>
+            </div>
+          </div>
+          <p class="entrada-scroll" data-i18n="scroll">Baja para explorar ↓</p>
+        </section>
+        <section class="entrada-mid" id="nosotros">
+          <div class="entrada-mid-photo">
+            <img src="/melodia/media/generated/hat.jpg" alt="" data-i18n-alt="entradaHatAlt" />
+          </div>
+          <div class="entrada-mid-copy">
+            <p class="kicker" data-i18n="essence">Nuestra esencia</p>
+            <h2 class="display"><span data-i18n="entradaMidA">Más que un baile, una</span> <em data-i18n="entradaMidB">familia.</em></h2>
+            <p data-i18n="entradaMid">Melodía de Bolivia comparte la riqueza de nuestras danzas, tradiciones y costumbres en Toronto, uniendo generaciones a través del arte.</p>
+            <p style="margin-top:18px;"><a class="btn btn-text" href="#nosotros" data-i18n="ourStory">Nuestra historia →</a></p>
+          </div>
+          <nav class="entrada-thumbs">
+            <a href="#danzas"><img src="/melodia/media/library/morenada.jpg" alt="" /><span data-i18n="dances">Danzas →</span></a>
+            <a href="#eventos"><img src="/melodia/media/generated/drums.jpg" alt="" /><span data-i18n="events">Eventos →</span></a>
+            <a href="#galeria"><img src="/melodia/media/generated/embroidery.jpg" alt="" /><span data-i18n="gallery">Galería →</span></a>
+          </nav>
+        </section>
+        <footer class="entrada-close">
+          <img src="/melodia/media/generated/silhouette.jpg" alt="" />
+          <div class="entrada-close-copy">
+            <div class="entrada-flag" aria-hidden="true"></div>
+            <h2 class="display"><span data-i18n="entradaCloseA">La danza</span> <em data-i18n="entradaCloseB">continúa.</em></h2>
+            <div class="entrada-links">
+              <a href="#nosotros" data-i18n="about">Nosotros</a>
+              <a href="#danzas" data-i18n="dances">Danzas</a>
+              <a href="#eventos" data-i18n="events">Eventos</a>
+              <a href="#galeria" data-i18n="gallery">Galería</a>
+              <a href="#contratanos" data-i18n="contact">Contacto</a>
+            </div>
+            <p class="entrada-meta">Toronto · Canadá · © 2026 Melodía de Bolivia</p>
+          </div>
+        </footer>
+        <div class="menu-overlay" data-menu-panel>
+          <button type="button" class="menu-close" data-menu-toggle data-i18n="close">Cerrar ×</button>
+          <nav>
+            <a href="#nosotros"><span class="num">01</span><span data-i18n="about">Nosotros</span></a>
+            <a href="#danzas"><span class="num">02</span><span data-i18n="dances">Danzas</span></a>
+            <a href="#eventos"><span class="num">03</span><span data-i18n="events">Eventos</span></a>
+            <a href="#galeria"><span class="num">04</span><span data-i18n="gallery">Galería</span></a>
+            <a href="#contratanos"><span class="num">05</span><span data-i18n="book">Contrátanos</span></a>
+            <a href="#contratanos"><span class="num">06</span><span data-i18n="contact">Contacto</span></a>
+          </nav>
+        </div>
+      </article>
+
+      <!-- TORONTO -->
+      <article class="direction dir-toronto" id="dir-toronto">
+        <section class="toronto-hero">
+          <div class="toronto-split" aria-hidden="true">
+            <img src="/melodia/media/library/toronto-skyline.jpg" alt="" />
+            <img src="/melodia/media/generated/toronto-dancer.jpg" alt="" />
+          </div>
+          <div class="toronto-lang locale" data-locale>
+            <button type="button" data-lang="es" class="is-active">ES</button>
+            <button type="button" data-lang="en">EN</button>
+            <button type="button" class="toronto-menu-btn" data-menu-toggle aria-expanded="false" data-i18n="menu">Menú</button>
+          </div>
+          <header class="toronto-header">
+            <nav class="toronto-nav left" data-nav-links>
+              <a href="#nosotros" data-i18n="about">Nosotros</a>
+              <a href="#danzas" data-i18n="dances">Danzas</a>
+              <a href="#eventos" data-i18n="events">Eventos</a>
+            </nav>
+            <a class="toronto-center" href="#inicio">
+              <img src="/melodia/logo.png" alt="Melodía de Bolivia" />
+            </a>
+            <nav class="toronto-nav right">
+              <a href="#galeria" data-i18n="gallery">Galería</a>
+              <a href="#nosotros" data-i18n="community">Comunidad</a>
+              <a href="#contratanos" data-i18n="contact">Contacto</a>
+            </nav>
+          </header>
+          <div class="toronto-hero-copy">
+            <h1 class="display"><span data-i18n="torontoTitleA">Dos lugares.</span><br /><em data-i18n="torontoTitleB">Una identidad.</em></h1>
+            <p data-i18n="torontoLead">35 años de folklore boliviano en Toronto. Tradición que cruza fronteras, une generaciones y mantiene viva nuestra cultura.</p>
+            <div class="toronto-actions">
+              <a class="btn btn-fill" href="#contratanos" data-i18n="join">Únete a la fraternidad →</a>
+              <a class="btn btn-ghost" href="#nosotros" data-i18n="ourStoryPlay">Conoce nuestra historia</a>
+            </div>
+          </div>
+          <p class="toronto-seam"><span>Toronto</span><span class="line"></span><span>Bolivia</span></p>
+        </section>
+        <section class="toronto-cards">
+          <a class="toronto-card" href="#nosotros">
+            <img src="/melodia/media/generated/group-harbour.jpg" alt="" />
+            <div><span class="num">01</span><strong data-i18n="about">Nosotros</strong><p data-i18n="cardAbout">Una familia que baila sin fronteras.</p></div>
+          </a>
+          <a class="toronto-card" href="#danzas">
+            <img src="/melodia/media/generated/embroidery.jpg" alt="" />
+            <div><span class="num">02</span><strong data-i18n="dances">Danzas</strong><p data-i18n="cardDances">Ritmos, colores y raíces que nos unen.</p></div>
+          </a>
+          <a class="toronto-card" href="#eventos">
+            <img src="/melodia/media/generated/drums.jpg" alt="" />
+            <div><span class="num">03</span><strong data-i18n="events">Eventos</strong><p data-i18n="cardEvents">Encuentros en Toronto y más allá.</p></div>
+          </a>
+          <a class="toronto-card" href="#galeria">
+            <img src="/melodia/media/library/caporales-street.jpg" alt="" />
+            <div><span class="num">04</span><strong data-i18n="gallery">Galería</strong><p data-i18n="cardGallery">Momentos que mantienen viva la historia.</p></div>
+          </a>
+        </section>
+        <section class="toronto-close">
+          <img src="/melodia/media/library/toronto-skyline.jpg" alt="" />
+          <div class="toronto-close-copy">
+            <p class="kicker" data-i18n="noBorders">Comunidad sin fronteras</p>
+            <h2 class="display" data-i18n="torontoClose">De Toronto a Bolivia y siempre juntos.</h2>
+            <p data-i18n="torontoCloseBody">Personas, culturas y generaciones unidas por la danza, llevando el corazón de Bolivia a cada escenario.</p>
+            <p style="margin-top:18px;"><a class="btn btn-text" href="#contratanos" data-i18n="joinCommunity">Únete a la comunidad →</a></p>
+          </div>
+          <img src="/melodia/media/library/titicaca.jpg" alt="" />
+        </section>
+        <footer class="toronto-foot">
+          <span>Melodía de Bolivia · Toronto ↔ Bolivia</span>
+          <span>35 años · cultura · comunidad · danza</span>
+          <span>© 2026 Melodía de Bolivia. Toronto, Canadá.</span>
+        </footer>
+        <div class="menu-overlay" data-menu-panel>
+          <button type="button" class="menu-close" data-menu-toggle data-i18n="close">Cerrar ×</button>
+          <nav>
+            <a href="#nosotros"><span class="num">01</span><span data-i18n="about">Nosotros</span></a>
+            <a href="#danzas"><span class="num">02</span><span data-i18n="dances">Danzas</span></a>
+            <a href="#eventos"><span class="num">03</span><span data-i18n="events">Eventos</span></a>
+            <a href="#galeria"><span class="num">04</span><span data-i18n="gallery">Galería</span></a>
+            <a href="#contratanos"><span class="num">05</span><span data-i18n="book">Contrátanos</span></a>
+            <a href="#contratanos"><span class="num">06</span><span data-i18n="contact">Contacto</span></a>
+          </nav>
+        </div>
+      </article>
+
+      <!-- ESCENARIO -->
+      <article class="direction dir-escenario" id="dir-escenario">
+        <section class="esc-hero">
+          <img class="photo" src="/melodia/media/library/caporales-stage.jpg" alt="" data-i18n-alt="escHeroAlt" />
+          <header class="esc-top">
+            <a class="brand" href="#inicio">
+              <img src="/melodia/logo.png" alt="Melodía de Bolivia" />
+              <span class="brand-name"><b>Melodía</b><span>de Bolivia</span></span>
+            </a>
+            <div class="tools">
+              <div class="locale" data-locale>
+                <button type="button" data-lang="es" class="is-active">ES</button>
+                <button type="button" data-lang="en">EN</button>
+              </div>
+              <button type="button" class="esc-menu-btn" data-menu-toggle aria-expanded="false" data-i18n="menu">Menú</button>
+            </div>
+          </header>
+          <div class="esc-copy">
+            <p class="kicker" data-i18n="pillars">Danza · Cultura · Comunidad</p>
+            <h1 class="display"><span data-i18n="escTitleA">Bolivia baila en</span><br /><em data-i18n="escTitleB">Toronto.</em></h1>
+            <p data-i18n="escLead">Ensayos, presentaciones y una comunidad que mantiene viva la cultura boliviana a través de la danza.</p>
+            <div class="esc-actions">
+              <a class="btn btn-fill" href="#contratanos" data-i18n="join">Únete a la fraternidad →</a>
+              <a class="btn btn-text" href="#nosotros" data-i18n="meet">Conócenos</a>
+            </div>
+          </div>
+          <aside class="esc-aside" aria-hidden="true">
+            <span>Folklore</span>
+            <span>Identidad</span>
+            <span>Amistad</span>
+            <span>Toronto</span>
+          </aside>
+        </section>
+        <section class="esc-dances" id="danzas">
+          <div class="esc-dances-copy">
+            <p class="kicker" data-i18n="ourDances">Nuestras danzas</p>
+            <h2 class="display" data-i18n="escDancesTitle">Raíces que nos mueven.</h2>
+            <p data-i18n="escDancesBody">Caporales, morenada, saya y más. Cada danza cuenta una historia de nuestra tierra.</p>
+            <p style="margin-top:16px;"><a class="btn btn-text" href="#danzas" data-i18n="exploreDances">Explora nuestras danzas →</a></p>
+          </div>
+          <div class="esc-thumbs">
+            <figure><img src="/melodia/media/generated/hat.jpg" alt="" /><figcaption data-i18n="tradition">Tradición</figcaption></figure>
+            <figure><img src="/melodia/media/generated/hat-silhouette.jpg" alt="" /><figcaption data-i18n="community">Comunidad</figcaption></figure>
+            <figure><img src="/melodia/media/generated/sequins.jpg" alt="" /><figcaption data-i18n="culture">Cultura</figcaption></figure>
+          </div>
+          <aside class="esc-years">
+            <div class="esc-years-num"><b>35</b><i data-i18n="yearsWord">años</i></div>
+            <span class="esc-years-rule" aria-hidden="true"></span>
+            <p data-i18n="escYearsCaption">Bailando nuestras raíces en Canadá.</p>
+          </aside>
+        </section>
+        <section class="esc-event" id="eventos">
+          <img src="/melodia/media/library/caporales-stage.jpg" alt="" />
+          <div class="esc-event-copy">
+            <p class="kicker" data-i18n="nextEvent">Próximo evento</p>
+            <h2 class="display">Gran Presentación <em>2026</em></h2>
+            <div class="esc-event-meta">
+              <span data-i18n="eventWhen">Sáb 18 Abr 2026 · 7:00 PM</span>
+              <span data-i18n="eventWhere">Toronto · John Bassett Theatre</span>
+            </div>
+            <p class="note" data-i18n="eventNote">Evento de muestra — fecha y lugar por confirmar. No es un evento confirmado del grupo.</p>
+          </div>
+          <div class="esc-event-cta">
+            <a class="btn btn-ghost" href="#eventos" data-i18n="allEvents">Ver todos los eventos →</a>
+          </div>
+        </section>
+        <nav class="esc-dock" aria-label="Navegación principal">
+          <a href="#inicio" class="is-active"><span data-i18n="home">Inicio</span></a>
+          <a class="dock-extra" href="#nosotros"><span data-i18n="about">Nosotros</span></a>
+          <a href="#danzas"><span data-i18n="dances">Danzas</span></a>
+          <span class="dock-logo"><img src="/melodia/logo.png" alt="" /></span>
+          <a href="#eventos"><span data-i18n="events">Eventos</span></a>
+          <a class="dock-extra" href="#galeria"><span data-i18n="gallery">Galería</span></a>
+          <button type="button" data-menu-toggle data-i18n="menu">Menú</button>
+        </nav>
+        <div class="menu-overlay" data-menu-panel>
+          <button type="button" class="menu-close" data-menu-toggle data-i18n="close">Cerrar ×</button>
+          <nav>
+            <a href="#nosotros"><span class="num">01</span><span data-i18n="about">Nosotros</span></a>
+            <a href="#danzas"><span class="num">02</span><span data-i18n="dances">Danzas</span></a>
+            <a href="#eventos"><span class="num">03</span><span data-i18n="events">Eventos</span></a>
+            <a href="#galeria"><span class="num">04</span><span data-i18n="gallery">Galería</span></a>
+            <a href="#contratanos"><span class="num">05</span><span data-i18n="book">Contrátanos</span></a>
+            <a href="#contratanos"><span class="num">06</span><span data-i18n="contact">Contacto</span></a>
+          </nav>
+        </div>
+      </article>
+    </div>
+    <p class="signature">Site by CZ ↗ · review prototype, not the public site</p>
+  </main>
+
+  <script>
+  (function () {
+    var copy = {
+      es: {
+        about: 'Nosotros', dances: 'Danzas', events: 'Eventos', gallery: 'Galería',
+        book: 'Contrátanos', contact: 'Contacto', home: 'Inicio', menu: 'Menú', menuPlus: 'Menú +',
+        close: 'Cerrar ×', meet: 'Conócenos', join: 'Únete a la fraternidad →',
+        community: 'Comunidad', culture: 'Cultura', tradition: 'Tradición',
+        ourDances: 'Nuestras danzas',
+        tejidoTitleA: 'Melodía de',
+        tecidoTitleB: 'Bolivia',
+        tecidoKicker: '03 · Tejido',
+        tejidoSide: 'Folklore boliviano en Toronto',
+        tejidoLead: '35 años compartiendo la cultura boliviana a través de la danza.',
+        tejidoCardDances: 'Tradición que nos une.',
+        tejidoCardEvents: 'Próximas presentaciones en Toronto.',
+        tejidoCardAbout: 'Una fraternidad folklórica con 35 años de historia.',
+        tejidoCardGallery: 'Momentos que bailan nuestra historia.',
+        tejido35A: '35 años',
+        tejido35B: 'bailando.',
+        tejidoSince: 'Cultura boliviana en Toronto desde 1990',
+        tejidoCloseBody: 'Ensayos, entradas, fiestas — para quien baila y para quien quiere contratar el grupo.',
+        bookArrow: 'Contrátanos →',
+        tejidoBookEyebrow: 'Llevemos nuestra cultura a tu evento',
+        tejidoBookTitle: 'Bailamos contigo.',
+        tejidoDates: 'Próximas fechas · Calendario',
+        tejidoSocial: 'Redes',
+        tejidoWrite: 'Escríbenos · © 2026',
+        tejidoUnite: 'La danza también nos une',
+        tejidoHeroAlt: 'Placeholder: danza boliviana con aguayo, generado para revisión.',
+        entradaTitleA: 'La entrada empieza', entradaTitleB: 'aquí.',
+        entradaMidA: 'Más que un baile, una', entradaMidB: 'familia.',
+        entradaCloseA: 'La danza', entradaCloseB: 'continúa.',
+        torontoTitleA: 'Dos lugares.', torontoTitleB: 'Una identidad.',
+        escTitleA: 'Bolivia baila en', escTitleB: 'Toronto.',
+        entradaLead: 'Danza, cultura y comunidad boliviana en Toronto.',
+        scroll: 'Baja para explorar ↓',
+        essence: 'Nuestra esencia',
+        entradaMid: 'Melodía de Bolivia comparte la riqueza de nuestras danzas, tradiciones y costumbres en Toronto, uniendo generaciones a través del arte.',
+        ourStory: 'Nuestra historia →',
+        entradaHeroAlt: 'Placeholder: performance de entrada, foto de revisión.',
+        entradaHatAlt: 'Placeholder: detalle de sombrero y traje.',
+        torontoLead: '35 años de folklore boliviano en Toronto. Tradición que cruza fronteras, une generaciones y mantiene viva nuestra cultura.',
+        ourStoryPlay: 'Conoce nuestra historia',
+        cardAbout: 'Una familia que baila sin fronteras.',
+        cardDances: 'Ritmos, colores y raíces que nos unen.',
+        cardEvents: 'Encuentros en Toronto y más allá.',
+        cardGallery: 'Momentos que mantienen viva la historia.',
+        noBorders: 'Comunidad sin fronteras',
+        torontoClose: 'De Toronto a Bolivia y siempre juntos.',
+        torontoCloseBody: 'Personas, culturas y generaciones unidas por la danza, llevando el corazón de Bolivia a cada escenario.',
+        joinCommunity: 'Únete a la comunidad →',
+        torontoHeroAlt: 'Placeholder: Toronto y traje boliviano, foto de revisión.',
+        pillars: 'Danza · Cultura · Comunidad',
+        escLead: 'Ensayos, presentaciones y una comunidad que mantiene viva la cultura boliviana a través de la danza.',
+        escDancesTitle: 'Raíces que nos mueven.',
+        escDancesBody: 'Caporales, morenada, saya y más. Cada danza cuenta una historia de nuestra tierra.',
+        exploreDances: 'Explora nuestras danzas →',
+        nextEvent: 'Próximo evento',
+        eventNote: 'Evento de muestra — fecha y lugar por confirmar. No es un evento confirmado del grupo.',
+        allEvents: 'Ver todos los eventos →',
+        yearsWord: 'años',
+        escYearsCaption: 'Bailando nuestras raíces en Canadá.',
+        eventWhen: 'Sáb 18 Abr 2026 · 7:00 PM',
+        eventWhere: 'Toronto · John Bassett Theatre',
+        escHeroAlt: 'Placeholder: escenario y traje de performance, foto de revisión.'
+      },
+      en: {
+        about: 'About', dances: 'Dances', events: 'Events', gallery: 'Gallery',
+        book: 'Book Us', contact: 'Contact', home: 'Home', menu: 'Menu', menuPlus: 'Menu +',
+        close: 'Close ×', meet: 'Meet us', join: 'Join the fraternity →',
+        community: 'Community', culture: 'Culture', tradition: 'Tradition',
+        ourDances: 'Our dances',
+        tejidoTitleA: 'Melodía de',
+        tecidoTitleB: 'Bolivia',
+        tecidoKicker: '03 · Tejido',
+        tejidoSide: 'Bolivian folklore in Toronto',
+        tejidoLead: '35 years sharing Bolivian culture through dance.',
+        tejidoCardDances: 'Tradition that joins us.',
+        tejidoCardEvents: 'Upcoming performances in Toronto.',
+        tejidoCardAbout: 'A folk fraternity with 35 years of history.',
+        tejidoCardGallery: 'Moments that dance our history.',
+        tejido35A: '35 years',
+        tejido35B: 'dancing.',
+        tejidoSince: 'Bolivian culture in Toronto since 1990',
+        tejidoCloseBody: 'Rehearsals, entradas, parties — for those who dance and those who want to book the group.',
+        bookArrow: 'Book us →',
+        tejidoBookEyebrow: 'Let’s bring our culture to your event',
+        tejidoBookTitle: 'We dance with you.',
+        tejidoDates: 'Upcoming dates · Calendar',
+        tejidoSocial: 'Social',
+        tejidoWrite: 'Write to us · © 2026',
+        tejidoUnite: 'Dance also joins us',
+        tejidoHeroAlt: 'Placeholder: Bolivian dance with aguayo, generated for review.',
+        entradaTitleA: 'The entrada begins', entradaTitleB: 'here.',
+        entradaMidA: 'More than a dance, a', entradaMidB: 'family.',
+        entradaCloseA: 'The dance', entradaCloseB: 'continues.',
+        torontoTitleA: 'Two places.', torontoTitleB: 'One identity.',
+        escTitleA: 'Bolivia dances in', escTitleB: 'Toronto.',
+        entradaLead: 'Bolivian dance, culture, and community in Toronto.',
+        scroll: 'Scroll to explore ↓',
+        essence: 'Our essence',
+        entradaMid: 'Melodía de Bolivia shares the richness of our dances, traditions, and costumes in Toronto, joining generations through art.',
+        ourStory: 'Our story →',
+        entradaHeroAlt: 'Placeholder: entrada performance, review photo.',
+        entradaHatAlt: 'Placeholder: hat and costume detail.',
+        torontoLead: '35 years of Bolivian folklore in Toronto. Tradition that crosses borders, joins generations, and keeps our culture alive.',
+        ourStoryPlay: 'Hear our story',
+        cardAbout: 'A family that dances without borders.',
+        cardDances: 'Rhythms, color, and roots that join us.',
+        cardEvents: 'Gatherings in Toronto and beyond.',
+        cardGallery: 'Moments that keep the history alive.',
+        noBorders: 'Community without borders',
+        torontoClose: 'From Toronto to Bolivia, always together.',
+        torontoCloseBody: 'People, cultures, and generations united by dance, carrying Bolivia’s heart to every stage.',
+        joinCommunity: 'Join the community →',
+        torontoHeroAlt: 'Placeholder: Toronto and Bolivian costume, review photo.',
+        pillars: 'Dance · Culture · Community',
+        escLead: 'Rehearsals, performances, and a community that keeps Bolivian culture alive through dance.',
+        escDancesTitle: 'Roots that move us.',
+        escDancesBody: 'Caporales, morenada, saya, and more. Each dance tells a story of our land.',
+        exploreDances: 'Explore our dances →',
+        nextEvent: 'Upcoming event',
+        eventNote: 'Sample event — date and venue to be confirmed. Not a confirmed group booking.',
+        allEvents: 'See all events →',
+        yearsWord: 'years',
+        escYearsCaption: 'Dancing our roots in Canada.',
+        eventWhen: 'Sat 18 Apr 2026 · 7:00 PM',
+        eventWhere: 'Toronto · John Bassett Theatre',
+        escHeroAlt: 'Placeholder: stage performance costume, review photo.'
+      }
+    };
+
+    var directions = ['entrada', 'tejido', 'toronto', 'escenario'];
+    var chrome = document.getElementById('toolChrome');
+    var shell = document.getElementById('previewShell');
+    var previewPane = document.querySelector('main.page');
+    var params = new URLSearchParams(location.search);
+    var state = {
+      direction: directions.indexOf(params.get('d')) >= 0 ? params.get('d') : 'tejido',
+      view: params.get('view') === 'mobile' ? 'mobile' : 'web',
+      lang: params.get('lang') === 'en' ? 'en' : 'es'
+    };
+
+    function applyCopy() {
+      var t = copy[state.lang];
+      document.documentElement.lang = state.lang;
+      document.body.setAttribute('data-copy', state.lang);
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+      });
+      document.querySelectorAll('[data-i18n-alt]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n-alt');
+        if (t[key]) el.setAttribute('alt', t[key]);
+      });
+      document.querySelectorAll('[data-lang]').forEach(function (btn) {
+        var on = btn.getAttribute('data-lang') === state.lang;
+        btn.classList.toggle('is-on', on);
+        btn.classList.toggle('is-active', on);
+      });
+    }
+
+    function swapPhotos() {
+      var mobile = state.view === 'mobile';
+      document.querySelectorAll('img[data-web][data-mobile]').forEach(function (img) {
+        img.src = mobile ? img.getAttribute('data-mobile') : img.getAttribute('data-web');
+      });
+    }
+
+    function closeMenus() {
+      document.querySelectorAll('.direction').forEach(function (dir) {
+        dir.classList.remove('is-menu-open');
+        dir.querySelectorAll('[data-menu-toggle]').forEach(function (btn) {
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    function showDirection() {
+      document.body.setAttribute('data-direction', state.direction);
+      document.querySelectorAll('.direction').forEach(function (dir) {
+        dir.classList.toggle('is-on', dir.id === 'dir-' + state.direction);
+      });
+      chrome.querySelectorAll('[data-direction]').forEach(function (btn) {
+        btn.classList.toggle('is-on', btn.getAttribute('data-direction') === state.direction);
+      });
+    }
+
+    function showView() {
+      shell.classList.toggle('mobile', state.view === 'mobile');
+      chrome.querySelectorAll('[data-view]').forEach(function (btn) {
+        btn.classList.toggle('is-on', btn.getAttribute('data-view') === state.view);
+      });
+      swapPhotos();
+    }
+
+    function persist() {
+      var next = new URLSearchParams();
+      next.set('d', state.direction);
+      if (state.view === 'mobile') next.set('view', 'mobile');
+      if (state.lang === 'en') next.set('lang', 'en');
+      history.replaceState(null, '', location.pathname + '?' + next.toString());
+    }
+
+    function apply() {
+      closeMenus();
+      showDirection();
+      showView();
+      applyCopy();
+      persist();
+    }
+
+    chrome.addEventListener('click', function (event) {
+      var toggle = event.target.closest('#chromeToggle');
+      if (toggle) {
+        var open = !chrome.classList.contains('is-controls-open');
+        chrome.classList.toggle('is-controls-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        toggle.textContent = open ? 'Ocultar' : 'Controles';
+        return;
+      }
+      var btn = event.target.closest('button');
+      if (!btn || !chrome.contains(btn)) return;
+      var direction = btn.getAttribute('data-direction');
+      var view = btn.getAttribute('data-view');
+      var lang = btn.getAttribute('data-lang');
+      if (lang) { state.lang = lang === 'en' ? 'en' : 'es'; apply(); return; }
+      if (direction && directions.indexOf(direction) >= 0) {
+        state.direction = direction;
+        apply();
+        if (previewPane) previewPane.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      if (view) { state.view = view === 'mobile' ? 'mobile' : 'web'; apply(); }
+    });
+
+    document.addEventListener('click', function (event) {
+      var langBtn = event.target.closest('button[data-lang]');
+      if (langBtn && !chrome.contains(langBtn)) {
+        state.lang = langBtn.getAttribute('data-lang') === 'en' ? 'en' : 'es';
+        apply();
+        return;
+      }
+      var menuBtn = event.target.closest('[data-menu-toggle]');
+      if (menuBtn) {
+        var dir = menuBtn.closest('.direction');
+        if (!dir) return;
+        var opening = !dir.classList.contains('is-menu-open');
+        closeMenus();
+        if (opening) {
+          dir.classList.add('is-menu-open');
+          dir.querySelectorAll('[data-menu-toggle]').forEach(function (btn) {
+            btn.setAttribute('aria-expanded', 'true');
+          });
+        }
+        return;
+      }
+      var link = event.target.closest('.direction a[href^="#"]');
+      if (link) {
+        event.preventDefault();
+        closeMenus();
+        var nav = link.closest('.tejido-nav');
+        if (nav) {
+          nav.querySelectorAll('a').forEach(function (item) {
+            item.classList.toggle('is-current', item === link);
+          });
+        }
+      }
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') closeMenus();
+    });
+
+    function fillAguayo() {
+      document.querySelectorAll('.aguayo-rail').forEach(function (rail) {
+        if (rail.children.length) return;
+        for (var i = 0; i < 48; i++) {
+          var unit = document.createElement('i');
+          unit.className = 'aguayo-unit';
+          rail.appendChild(unit);
+        }
+      });
+    }
+
+    var audio = document.getElementById('bgMusic');
+    var audioToggle = document.getElementById('audioToggle');
+    var audioLabel = audioToggle ? audioToggle.querySelector('[data-audio-label]') : null;
+
+    function audioCopy() {
+      return state.lang === 'en'
+        ? { play: 'Music ▶', pause: 'Mute ■', playAria: 'Play music', pauseAria: 'Mute music' }
+        : { play: 'Música ▶', pause: 'Silenciar ■', playAria: 'Reproducir música', pauseAria: 'Silenciar música' };
+    }
+
+    function syncAudioUi() {
+      if (!audio || !audioToggle || !audioLabel) return;
+      var playing = !audio.paused;
+      var t = audioCopy();
+      audioToggle.setAttribute('aria-pressed', playing ? 'true' : 'false');
+      audioToggle.setAttribute('aria-label', playing ? t.pauseAria : t.playAria);
+      audioLabel.textContent = playing ? t.pause : t.play;
+    }
+
+    function playAudio() {
+      if (!audio) return Promise.resolve();
+      audio.volume = 0.35;
+      return audio.play().then(function () {
+        syncAudioUi();
+      }).catch(function () {
+        syncAudioUi();
+      });
+    }
+
+    function pauseAudio() {
+      if (!audio) return;
+      audio.pause();
+      syncAudioUi();
+    }
+
+    if (audioToggle && audio) {
+      audioToggle.addEventListener('click', function () {
+        if (audio.paused) playAudio();
+        else pauseAudio();
+      });
+      audio.addEventListener('play', syncAudioUi);
+      audio.addEventListener('pause', syncAudioUi);
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden && !audio.paused) audio.dataset.wasPlaying = '1';
+        if (document.hidden) pauseAudio();
+        else if (audio.dataset.wasPlaying === '1') {
+          audio.dataset.wasPlaying = '';
+          playAudio();
+        }
+      });
+      // Browsers block autoplay with sound — try once, otherwise wait for the button.
+      playAudio();
+    }
+
+    var _applyCopy = applyCopy;
+    applyCopy = function () {
+      _applyCopy();
+      syncAudioUi();
+    };
+
+    apply();
+    fillAguayo();
+    syncAudioUi();
+  })();
+  </script>
+</body>
+</html>
