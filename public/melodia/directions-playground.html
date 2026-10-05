@@ -125,7 +125,7 @@
 
     .direction { display: none; position: relative; overflow: hidden; }
     .direction.is-on { display: block; }
-    .preview-shell:not(.mobile) .direction { border: 1px solid #2a2420; border-radius: 18px; }
+    .preview-shell:not(.mobile) .direction { border: 1px solid #1c1816; border-radius: 14px; }
 
     .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
     .brand img { width: 38px; height: 38px; object-fit: contain; }
@@ -214,41 +214,78 @@
 
     .tejido-shell { background: #050505; display: flex; flex-direction: column; }
     .tejido-header {
-      display: grid; grid-template-columns: auto 1fr auto; align-items: stretch;
+      display: flex; align-items: center;
+      min-height: 92px; padding: 14px 28px 12px 24px;
       background: #050505;
     }
-    .tejido-header .brand { padding: 12px 18px; gap: 10px; }
-    .tejido-header .brand img { width: 40px; height: 40px; border-radius: 50%; }
-    .tejido-header .brand-name b { font-family: var(--font-display); font-size: 17px; text-transform: none; letter-spacing: -.02em; }
+    .tejido-header .brand { padding: 0; gap: 12px; flex: 0 0 auto; margin-right: 72px; }
+    .tejido-header .brand img { width: 48px; height: 48px; border-radius: 50%; }
+    .tejido-header .brand-name b {
+      font-family: var(--font-display); font-size: 19px; font-weight: 600;
+      text-transform: none; letter-spacing: -.02em; color: #f7efe4;
+    }
+    .tejido-header .brand-name span { font-size: 9px; letter-spacing: .18em; color: #c9bfb2; opacity: .85; }
     .tejido-nav {
-      display: flex; align-items: stretch; justify-content: center; gap: 0;
+      display: flex; align-items: flex-end; justify-content: flex-start; flex-wrap: wrap;
+      gap: 4px 28px; min-width: 0; flex: 1 1 auto;
     }
     .tejido-nav a {
-      display: flex; flex-direction: column; justify-content: flex-start; gap: 4px;
-      min-width: 76px; padding: 0 0 12px; font-size: 13px; font-weight: 600; position: relative;
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end;
+      gap: 2px; min-width: 56px; padding: 0 2px 0; position: relative;
+      font-size: 13px; font-weight: 500; color: #ddd4c8; background: none;
+      transition: color .2s ease;
     }
-    .tejido-nav a .nav-aguayo {
-      display: block; height: 12px; width: 100%; overflow: hidden; flex: 0 0 12px;
-      opacity: .65;
-    }
-    .tejido-nav a .nav-aguayo .aguayo-border { height: 12px; }
-    .tejido-nav a .nav-aguayo .aguayo-inner { top: -6px; }
     .tejido-nav a .num {
-      font-size: 9px; letter-spacing: .14em; opacity: .55; font-weight: 700;
-      padding: 8px 14px 0;
+      font-size: 8px; letter-spacing: .2em; font-weight: 600; color: #6f675e;
+      padding: 0; opacity: 1; line-height: 1;
     }
-    .tejido-nav a > span:last-child { padding: 0 14px; }
-    .tejido-nav a.is-current {
-      background: #e11d48; color: #fff;
+    .tejido-nav a > span[data-i18n] { line-height: 1.2; }
+    .tejido-nav a .nav-mark {
+      display: block; position: relative; width: 100%; min-width: 48px; height: 14px;
+      margin-top: 7px; overflow: hidden;
     }
-    .tejido-nav a.is-current .nav-aguayo { opacity: 1; }
-    .tejido-nav a.is-current .num { opacity: .9; }
-    .tejido-tools { display: flex; align-items: center; gap: 8px; padding: 0 14px; }
+    .tejido-nav a .nav-line {
+      position: absolute; left: 0; right: 0; top: 6px; height: 2px;
+      background: #c43a55; opacity: .35;
+      transition: opacity .22s ease, transform .22s ease;
+    }
+    .tejido-nav a:focus-visible { outline: none; }
+    .tejido-nav a:focus-visible .nav-line { opacity: 0; }
+    .tejido-nav a:focus-visible .nav-aguayo { opacity: .9; transform: translateY(0); }
+    .tejido-nav a .nav-aguayo {
+      position: absolute; inset: 0; width: 100%; height: 14px; overflow: hidden;
+      opacity: 0; transform: translateY(5px);
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .tejido-nav a .nav-aguayo .aguayo-border { height: 14px; }
+    .tejido-nav a .nav-aguayo .aguayo-inner { top: -5px; }
+    .tejido-nav a:hover { color: #f7efe4; }
+    .tejido-nav a:hover .nav-line { opacity: 0; }
+    .tejido-nav a:hover .nav-aguayo { opacity: .85; transform: translateY(0); }
+    .tejido-nav a.is-current { color: #fffaf3; font-weight: 600; }
+    .tejido-nav a.is-current .num { color: #a89f93; }
+    .tejido-nav a.is-current .nav-line { opacity: 0; }
+    .tejido-nav a.is-current .nav-aguayo { opacity: 1; transform: translateY(0); }
+    .tejido-tools {
+      display: flex; align-items: flex-end; gap: 10px; padding: 0 0 14px;
+      align-self: stretch; flex: 0 0 auto; margin-left: 28px;
+    }
     .tejido-tools .locale {
-      display: inline-flex; border: 1px solid rgba(255,255,255,.28); border-radius: 3px; overflow: hidden;
+      display: inline-flex; align-items: center; gap: 2px;
+      border: 0; border-radius: 0; overflow: visible;
     }
-    .tejido-tools .locale button { background: none; border: 0; color: #f4ebdd; cursor: pointer; font-weight: 700; font-size: 11px; padding: 8px 12px; opacity: .55; }
-    .tejido-tools .locale button.is-active { opacity: 1; background: #f4ebdd; color: #111; }
+    .tejido-tools .locale button {
+      background: none; border: 0; color: #8a8176; cursor: pointer;
+      font-weight: 700; font-size: 11px; letter-spacing: .08em;
+      padding: 0 6px 2px; opacity: 1;
+      box-shadow: inset 0 -1px 0 transparent;
+      transition: color .2s ease, box-shadow .2s ease;
+    }
+    .tejido-tools .locale button.is-active {
+      color: #f4ebdd; background: none;
+      box-shadow: inset 0 -1px 0 rgba(244,235,221,.7);
+    }
+    .tejido-tools .locale button:hover { color: #f4ebdd; }
     .tejido-menu-btn { display: none; }
 
     .tejido-hero {
@@ -682,28 +719,52 @@
             </a>
             <nav class="tejido-nav" data-nav-links>
               <a class="is-current" href="#inicio">
-                <span class="nav-aguayo" aria-hidden="true"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
-                <span class="num">01</span><span data-i18n="home">Inicio</span>
+                <span class="num">01</span>
+                <span data-i18n="home">Inicio</span>
+                <span class="nav-mark" aria-hidden="true">
+                  <span class="nav-line"></span>
+                  <span class="nav-aguayo"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                </span>
               </a>
               <a href="#nosotros">
-                <span class="nav-aguayo" aria-hidden="true"><div class="aguayo-border is-gold"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
-                <span class="num">02</span><span data-i18n="about">Nosotros</span>
+                <span class="num">02</span>
+                <span data-i18n="about">Nosotros</span>
+                <span class="nav-mark" aria-hidden="true">
+                  <span class="nav-line"></span>
+                  <span class="nav-aguayo"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                </span>
               </a>
               <a href="#danzas">
-                <span class="nav-aguayo" aria-hidden="true"><div class="aguayo-border is-teal"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
-                <span class="num">03</span><span data-i18n="dances">Danzas</span>
+                <span class="num">03</span>
+                <span data-i18n="dances">Danzas</span>
+                <span class="nav-mark" aria-hidden="true">
+                  <span class="nav-line"></span>
+                  <span class="nav-aguayo"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                </span>
               </a>
               <a href="#eventos">
-                <span class="nav-aguayo" aria-hidden="true"><div class="aguayo-border is-orange"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
-                <span class="num">04</span><span data-i18n="events">Eventos</span>
+                <span class="num">04</span>
+                <span data-i18n="events">Eventos</span>
+                <span class="nav-mark" aria-hidden="true">
+                  <span class="nav-line"></span>
+                  <span class="nav-aguayo"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                </span>
               </a>
               <a href="#galeria">
-                <span class="nav-aguayo" aria-hidden="true"><div class="aguayo-border is-geometry"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
-                <span class="num">05</span><span data-i18n="gallery">Galería</span>
+                <span class="num">05</span>
+                <span data-i18n="gallery">Galería</span>
+                <span class="nav-mark" aria-hidden="true">
+                  <span class="nav-line"></span>
+                  <span class="nav-aguayo"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                </span>
               </a>
               <a href="#contratanos">
-                <span class="nav-aguayo" aria-hidden="true"><div class="aguayo-border is-forest"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
-                <span class="num">06</span><span data-i18n="contact">Contacto</span>
+                <span class="num">06</span>
+                <span data-i18n="contact">Contacto</span>
+                <span class="nav-mark" aria-hidden="true">
+                  <span class="nav-line"></span>
+                  <span class="nav-aguayo"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                </span>
               </a>
             </nav>
             <div class="tejido-tools">
