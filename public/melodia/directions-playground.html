@@ -178,6 +178,11 @@
     .aguayo-border.is-geometry { --field:#ee1234; --pink:#ed4190; --green:#216437; --blue:#353053; --red:#cf203a; --gold:#f0a134; --cream:#eacac0; --ink:#2b2024; --band: var(--ink); }
     .aguayo-border.is-teal { --field:#0f766e; --pink:#fa168b; --green:#14b8a6; --blue:#115e59; --red:#e11d48; --gold:#fbb140; --cream:#f8e2d4; --ink:#042f2e; --band: var(--ink); }
     .aguayo-border.is-gold { --field:#fbb140; --pink:#fa168b; --green:#13603b; --blue:#153b72; --red:#e11d48; --gold:#ffe08a; --cream:#fff4d6; --ink:#231e2c; --band: var(--ink); }
+    /* Footer patch only — Bolivia flag colors */
+    .aguayo-border.is-bolivia {
+      --field:#da291c; --pink:#f0b429; --green:#007a33; --blue:#0a5c2e;
+      --red:#b91c14; --gold:#f7e017; --cream:#fff4c4; --ink:#141414; --band: var(--green);
+    }
     .aguayo-border .aguayo-inner {
       position: absolute; top: 0; left: 0; width: 137.5%; height: 66px;
       transform: scale(0.333); transform-origin: 0 0;
@@ -197,6 +202,9 @@
       position: relative; width: 14px; flex: 0 0 14px; align-self: stretch; overflow: hidden; min-height: 100%;
     }
     .aguayo-rail-v.wide { width: 28px; flex-basis: 28px; }
+    .aguayo-rail-v.is-short {
+      align-self: end; min-height: 0; height: 42%; max-height: 140px;
+    }
     .aguayo-rail-v .aguayo-border {
       position: absolute; top: 0; left: 14px; width: 180vh; height: 14px;
       transform: rotate(90deg); transform-origin: top left;
@@ -204,11 +212,11 @@
     .aguayo-rail-v.wide .aguayo-border { left: 28px; height: 28px; }
 
     .aguayo-border.is-patch {
-      height: 66px; width: 128px;
+      height: 72px; width: 140px;
     }
     .aguayo-border.is-patch .aguayo-inner { transform: none; width: 100%; }
     .aguayo-ribbon {
-      width: 220px; height: 22px; overflow: hidden; position: relative; isolation: isolate; margin-top: 14px;
+      width: 100%; max-width: 240px; height: 22px; overflow: hidden; position: relative; isolation: isolate; margin-top: 14px;
     }
     .aguayo-ribbon .aguayo-border { height: 22px; }
 
@@ -227,43 +235,44 @@
     .tejido-header .brand-name span { font-size: 9px; letter-spacing: .18em; color: #c9bfb2; opacity: .85; }
     .tejido-nav {
       display: flex; align-items: flex-end; justify-content: flex-start; flex-wrap: wrap;
-      gap: 4px 28px; min-width: 0; flex: 1 1 auto;
+      gap: 4px 22px; min-width: 0; flex: 1 1 auto;
     }
     .tejido-nav a {
-      display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end;
-      gap: 2px; min-width: 56px; padding: 0 2px 0; position: relative;
+      display: flex; flex-direction: column; align-items: stretch; justify-content: flex-end;
+      gap: 0; flex: 1 1 0; min-width: 70px; max-width: 110px; padding: 0;
       font-size: 13px; font-weight: 500; color: #ddd4c8; background: none;
       transition: color .2s ease;
     }
-    .tejido-nav a .num {
-      font-size: 8px; letter-spacing: .2em; font-weight: 600; color: #6f675e;
-      padding: 0; opacity: 1; line-height: 1;
-    }
-    .tejido-nav a > span[data-i18n] { line-height: 1.2; }
+    .tejido-nav a .num { display: none; }
+    .tejido-nav a > span[data-i18n] { line-height: 1.2; display: block; width: 100%; }
     .tejido-nav a .nav-mark {
-      display: block; position: relative; width: 100%; min-width: 48px; height: 14px;
-      margin-top: 7px; overflow: hidden;
+      display: block; position: relative; width: 100%; height: 16px;
+      margin-top: 8px; overflow: hidden;
     }
     .tejido-nav a .nav-line {
-      position: absolute; left: 0; right: 0; top: 6px; height: 2px;
-      background: #c43a55; opacity: .35;
+      position: absolute; left: 0; right: 0; top: 7px; height: 2px;
+      background: #d8003f; opacity: .35;
       transition: opacity .22s ease, transform .22s ease;
     }
+    .tejido-nav a:nth-child(2) .nav-line { background: #fbb140; }
+    .tejido-nav a:nth-child(3) .nav-line { background: #14b8a6; }
+    .tejido-nav a:nth-child(4) .nav-line { background: #ff6632; }
+    .tejido-nav a:nth-child(5) .nav-line { background: #ee1234; }
+    .tejido-nav a:nth-child(6) .nav-line { background: #07523b; }
     .tejido-nav a:focus-visible { outline: none; }
     .tejido-nav a:focus-visible .nav-line { opacity: 0; }
     .tejido-nav a:focus-visible .nav-aguayo { opacity: .9; transform: translateY(0); }
     .tejido-nav a .nav-aguayo {
-      position: absolute; inset: 0; width: 100%; height: 14px; overflow: hidden;
+      position: absolute; inset: 0; width: 100%; height: 16px; overflow: hidden;
       opacity: 0; transform: translateY(5px);
       transition: opacity .25s ease, transform .25s ease;
     }
-    .tejido-nav a .nav-aguayo .aguayo-border { height: 14px; }
-    .tejido-nav a .nav-aguayo .aguayo-inner { top: -5px; }
+    .tejido-nav a .nav-aguayo .aguayo-border { height: 16px; width: 100%; }
+    .tejido-nav a .nav-aguayo .aguayo-inner { top: -4px; }
     .tejido-nav a:hover { color: #f7efe4; }
     .tejido-nav a:hover .nav-line { opacity: 0; }
-    .tejido-nav a:hover .nav-aguayo { opacity: .85; transform: translateY(0); }
+    .tejido-nav a:hover .nav-aguayo { opacity: .9; transform: translateY(0); }
     .tejido-nav a.is-current { color: #fffaf3; font-weight: 600; }
-    .tejido-nav a.is-current .num { color: #a89f93; }
     .tejido-nav a.is-current .nav-line { opacity: 0; }
     .tejido-nav a.is-current .nav-aguayo { opacity: 1; transform: translateY(0); }
     .tejido-tools {
@@ -286,11 +295,15 @@
       box-shadow: inset 0 -1px 0 rgba(244,235,221,.7);
     }
     .tejido-tools .locale button:hover { color: #f4ebdd; }
-    .tejido-menu-btn { display: none; }
+    .tejido-menu-btn {
+      display: none; align-items: center; justify-content: center;
+      border: 0; border-radius: 999px; background: #2a2623; color: #f4ebdd;
+      padding: 8px 14px; font-size: 12px; font-weight: 700; cursor: pointer;
+    }
 
     .tejido-hero {
-      display: grid; grid-template-columns: minmax(280px, 1.05fr) minmax(280px, 1.2fr) 16px;
-      min-height: min(56vh, 520px); align-items: stretch;
+      display: grid; grid-template-columns: minmax(280px, 1.05fr) minmax(280px, 1.2fr);
+      min-height: min(56vh, 520px); align-items: stretch; position: relative;
     }
     .tejido-hero-copy { padding: clamp(32px, 4.5vw, 56px) 32px; display: flex; flex-direction: column; justify-content: center; }
     .tejido-hero h1 { font-size: clamp(42px, 5.8vw, 72px); margin: 0 0 10px; line-height: .9; }
@@ -300,19 +313,26 @@
     .tejido-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
     .tejido-hero-photo { position: relative; min-height: 280px; overflow: hidden; }
     .tejido-hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 55% 20%; }
-    .tejido-hero-rail {
-      display: grid; grid-template-rows: 1fr 1fr 1fr; min-height: 100%; width: 16px;
+    .tejido-hero-photo .hero-photo-band {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 18px; z-index: 2; overflow: hidden;
     }
-    .tejido-hero-rail .aguayo-rail-v { width: 16px; flex-basis: 16px; min-height: 0; }
-    .tejido-hero-rail .aguayo-rail-v .aguayo-border { left: 16px; height: 16px; }
+    .tejido-hero-photo .hero-photo-band .aguayo-border { height: 18px; }
+    .tejido-hero-corners {
+      position: absolute; right: 0; bottom: 0; z-index: 3;
+      display: flex; gap: 0; height: 38%; max-height: 160px; pointer-events: none;
+    }
+    .tejido-hero-corners .aguayo-rail-v { width: 14px; flex-basis: 14px; height: 100%; min-height: 100%; align-self: stretch; }
 
     .tejido-cards {
-      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      display: grid; grid-template-columns: 14px repeat(4, minmax(0, 1fr));
     }
+    .tejido-cards > .corner-rail { min-height: 248px; display: flex; align-items: flex-end; }
+    .tejido-cards > .corner-rail .aguayo-rail-v { height: 48%; min-height: 110px; }
     .tejido-card {
       position: relative; min-height: 248px; overflow: hidden; color: #fff;
-      display: grid; grid-template-columns: 1fr 16px;
+      display: grid; grid-template-columns: 1fr 14px;
     }
+    .tejido-card:last-child { grid-template-columns: 1fr; }
     .tejido-card .media { position: relative; min-height: 248px; overflow: hidden; }
     .tejido-card .media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .tejido-card .media::after {
@@ -327,12 +347,12 @@
     .tejido-card strong { font-family: var(--font-display); font-size: 24px; font-weight: 500; }
     .tejido-card p { margin: 0; font-size: 12px; color: #ddd4c8; line-height: 1.35; max-width: 18ch; }
     .tejido-card .go { color: #fbb140; font-size: 14px; margin-top: 4px; }
-    .tejido-card:nth-child(1) .go { color: #14b8a6; }
-    .tejido-card:nth-child(2) .go { color: #fbb140; }
-    .tejido-card:nth-child(3) .go { color: #fa168b; }
-    .tejido-card:nth-child(4) .go { color: #ee1234; }
-    .tejido-card .aguayo-rail-v { width: 16px; flex-basis: 16px; }
-    .tejido-card .aguayo-rail-v .aguayo-border { left: 16px; height: 16px; }
+    .tejido-card:nth-child(2) .go { color: #14b8a6; }
+    .tejido-card:nth-child(3) .go { color: #fbb140; }
+    .tejido-card:nth-child(4) .go { color: #fa168b; }
+    .tejido-card:nth-child(5) .go { color: #ee1234; }
+    .tejido-card .aguayo-rail-v { width: 14px; flex-basis: 14px; }
+    .tejido-card .aguayo-rail-v .aguayo-border { left: 14px; height: 14px; }
 
     .tejido-close {
       display: grid; grid-template-columns: 1.15fr 1.2fr auto 1fr; min-height: 220px; align-items: stretch;
@@ -353,24 +373,33 @@
     .tejido-close-cta .btn-text { align-self: flex-start; }
 
     .tejido-footer {
-      display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr auto; gap: 18px; align-items: center;
-      padding: 22px 24px 24px; background: #050505; color: #f4ebdd;
+      display: grid; grid-template-columns: 1.2fr 1.6fr auto; gap: 36px; align-items: start;
+      padding: 40px 32px 44px; background: #050505; color: #f4ebdd;
     }
-    .tejido-footer .brand { gap: 10px; }
-    .tejido-footer .brand img { width: 36px; height: 36px; border-radius: 50%; }
+    .tejido-footer .brand { gap: 12px; align-items: flex-start; }
+    .tejido-footer .brand img { width: 44px; height: 44px; border-radius: 50%; }
+    .tejido-footer .brand-name b { font-size: 20px; }
+    .tejido-footer .tejido-meta { display: block; margin-top: 4px; }
+    .tejido-footer-cols {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; align-items: start;
+    }
+    .tejido-footer-cols > div {
+      display: flex; flex-direction: column; gap: 8px; min-height: 100%;
+    }
     .tejido-footer .label {
-      font-size: 10px; letter-spacing: .14em; opacity: .55; display: block; margin-bottom: 6px;
-      padding-top: 6px; border-top: 2px solid #fbb140; width: max-content;
+      font-size: 0; letter-spacing: 0; opacity: 1; display: block; margin: 0;
+      padding: 0; border: 0; width: 36px; height: 2px; background: #fbb140;
     }
-    .tejido-footer > div:nth-child(3) .label { border-color: #e11d48; }
-    .tejido-footer > div:nth-child(4) .label { border-color: #14b8a6; }
-    .tejido-footer strong { font-family: var(--font-display); font-size: 18px; font-weight: 500; display: block; }
-    .tejido-footer p, .tejido-footer a { margin: 4px 0 0; font-size: 13px; color: #d8d0c6; }
+    .tejido-footer-cols > div:nth-child(2) .label { background: #e11d48; }
+    .tejido-footer-cols > div:nth-child(3) .label { background: #14b8a6; }
+    .tejido-footer strong { font-family: var(--font-display); font-size: 22px; font-weight: 500; display: block; margin-top: 2px; }
+    .tejido-footer p, .tejido-footer a { margin: 0; font-size: 14px; color: #d8d0c6; line-height: 1.45; }
     .tejido-mark {
-      display: flex; align-items: center; gap: 14px;
-      padding-left: 16px; border-left: 1px solid rgba(255,255,255,.12);
+      display: flex; align-items: center; gap: 16px;
+      padding: 8px 0 8px 24px; border-left: 1px solid rgba(255,255,255,.14);
+      align-self: center;
     }
-    .tejido-unite { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; max-width: 11ch; line-height: 1.4; opacity: .8; }
+    .tejido-unite { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; max-width: 12ch; line-height: 1.45; opacity: .85; }
 
     .dir-tejido .menu-overlay { background: #050505; }
     .dir-tejido .menu-overlay a { border-bottom: 3px solid transparent; padding: 8px 0; }
@@ -381,22 +410,43 @@
     .dir-tejido .menu-overlay a:nth-child(5) { border-color: #ff6632; }
     .dir-tejido .menu-overlay a:nth-child(6) { border-color: #ee1234; }
 
-    .preview-shell.mobile .tejido-header { display: flex; }
+    .preview-shell.mobile .tejido-header {
+      display: flex; align-items: center; min-height: 64px;
+      padding: 10px 14px; gap: 10px;
+    }
+    .preview-shell.mobile .tejido-header .brand { margin-right: auto; gap: 8px; }
+    .preview-shell.mobile .tejido-header .brand img { width: 36px; height: 36px; }
+    .preview-shell.mobile .tejido-header .brand-name b { font-size: 16px; }
     .preview-shell.mobile .tejido-nav { display: none; }
+    .preview-shell.mobile .tejido-tools {
+      margin-left: 0; padding: 0; align-items: center; align-self: center; gap: 8px;
+    }
     .preview-shell.mobile .tejido-menu-btn { display: inline-flex; }
     .preview-shell.mobile .tejido-hero { grid-template-columns: 1fr; }
-    .preview-shell.mobile .tejido-hero-rail { display: none; }
+    .preview-shell.mobile .tejido-hero-corners { display: none; }
     .preview-shell.mobile .tejido-cards { grid-template-columns: 1fr 1fr; }
+    .preview-shell.mobile .tejido-cards > .corner-rail { display: none; }
+    .preview-shell.mobile .tejido-card { grid-template-columns: 1fr; }
+    .preview-shell.mobile .tejido-card .aguayo-rail-v { display: none; }
     .preview-shell.mobile .tejido-close { grid-template-columns: 1fr; }
-    .preview-shell.mobile .tejido-footer { grid-template-columns: 1fr 1fr; }
+    .preview-shell.mobile .tejido-footer { grid-template-columns: 1fr; gap: 28px; padding: 28px 18px 32px; }
+    .preview-shell.mobile .tejido-footer-cols { grid-template-columns: 1fr; gap: 22px; }
+    .preview-shell.mobile .tejido-mark { padding-left: 0; border-left: 0; padding-top: 8px; }
 
     @media (max-width: 820px) {
-      .tejido-header { display: flex; }
+      .tejido-header { min-height: 64px; padding: 10px 14px; }
+      .tejido-header .brand { margin-right: auto; }
       .tejido-nav { display: none; }
+      .tejido-tools { margin-left: 0; padding: 0; align-items: center; }
       .tejido-menu-btn { display: inline-flex; }
       .tejido-hero { grid-template-columns: 1fr; }
+      .tejido-hero-corners { display: none; }
       .tejido-cards { grid-template-columns: 1fr 1fr; }
+      .tejido-cards > .corner-rail { display: none; }
+      .tejido-card { grid-template-columns: 1fr; }
       .tejido-close, .tejido-footer { grid-template-columns: 1fr; }
+      .tejido-footer { padding: 28px 18px 32px; }
+      .tejido-footer-cols { grid-template-columns: 1fr; }
     }
 
     /* ——— Entrada ——— */
@@ -719,7 +769,6 @@
             </a>
             <nav class="tejido-nav" data-nav-links>
               <a class="is-current" href="#inicio">
-                <span class="num">01</span>
                 <span data-i18n="home">Inicio</span>
                 <span class="nav-mark" aria-hidden="true">
                   <span class="nav-line"></span>
@@ -727,43 +776,38 @@
                 </span>
               </a>
               <a href="#nosotros">
-                <span class="num">02</span>
                 <span data-i18n="about">Nosotros</span>
                 <span class="nav-mark" aria-hidden="true">
                   <span class="nav-line"></span>
-                  <span class="nav-aguayo"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                  <span class="nav-aguayo"><div class="aguayo-border is-gold"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
                 </span>
               </a>
               <a href="#danzas">
-                <span class="num">03</span>
                 <span data-i18n="dances">Danzas</span>
                 <span class="nav-mark" aria-hidden="true">
                   <span class="nav-line"></span>
-                  <span class="nav-aguayo"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                  <span class="nav-aguayo"><div class="aguayo-border is-teal"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
                 </span>
               </a>
               <a href="#eventos">
-                <span class="num">04</span>
                 <span data-i18n="events">Eventos</span>
                 <span class="nav-mark" aria-hidden="true">
                   <span class="nav-line"></span>
-                  <span class="nav-aguayo"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                  <span class="nav-aguayo"><div class="aguayo-border is-orange"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
                 </span>
               </a>
               <a href="#galeria">
-                <span class="num">05</span>
                 <span data-i18n="gallery">Galería</span>
                 <span class="nav-mark" aria-hidden="true">
                   <span class="nav-line"></span>
-                  <span class="nav-aguayo"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                  <span class="nav-aguayo"><div class="aguayo-border is-geometry"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
                 </span>
               </a>
               <a href="#contratanos">
-                <span class="num">06</span>
                 <span data-i18n="contact">Contacto</span>
                 <span class="nav-mark" aria-hidden="true">
                   <span class="nav-line"></span>
-                  <span class="nav-aguayo"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                  <span class="nav-aguayo"><div class="aguayo-border is-forest"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
                 </span>
               </a>
             </nav>
@@ -788,15 +832,20 @@
             </div>
             <div class="tejido-hero-photo">
               <img class="photo" src="/melodia/media/library/tejido-hero-dancer.jpg" alt="" data-i18n-alt="tejidoHeroAlt" />
+              <div class="hero-photo-band" aria-hidden="true">
+                <div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div>
+              </div>
             </div>
-            <div class="tejido-hero-rail" aria-hidden="true">
-              <div class="aguayo-rail-v"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
-              <div class="aguayo-rail-v"><div class="aguayo-border is-teal"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+            <div class="tejido-hero-corners" aria-hidden="true">
               <div class="aguayo-rail-v"><div class="aguayo-border is-gold"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+              <div class="aguayo-rail-v"><div class="aguayo-border is-teal"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
             </div>
           </section>
 
           <section class="tejido-cards" id="danzas">
+            <div class="corner-rail" aria-hidden="true">
+              <div class="aguayo-rail-v"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
+            </div>
             <a class="tejido-card" href="#danzas">
               <div class="media">
                 <img src="/melodia/media/library/danzas-skirts.jpg" alt="" />
@@ -843,7 +892,6 @@
                   <span class="go" aria-hidden="true">→</span>
                 </div>
               </div>
-              <div class="aguayo-rail-v" aria-hidden="true"><div class="aguayo-border is-geometry"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></div>
             </a>
           </section>
 
@@ -869,23 +917,25 @@
               <img src="/melodia/logo.png" alt="" />
               <span class="brand-name"><b>Melodía</b><span>de Bolivia</span><span class="tejido-meta">Toronto · Canadá</span></span>
             </a>
-            <div>
-              <span class="label">01</span>
-              <strong data-i18n="events">Eventos</strong>
-              <p data-i18n="tejidoDates">Próximas fechas · Calendario</p>
-            </div>
-            <div>
-              <span class="label">02</span>
-              <strong data-i18n="tejidoSocial">Redes</strong>
-              <p><a href="#">Instagram ↗</a><br /><a href="#">YouTube ↗</a></p>
-            </div>
-            <div>
-              <span class="label">03</span>
-              <strong data-i18n="contact">Contacto</strong>
-              <p data-i18n="tejidoWrite">Escríbenos · © 2026</p>
+            <div class="tejido-footer-cols">
+              <div>
+                <span class="label" aria-hidden="true"></span>
+                <strong data-i18n="events">Eventos</strong>
+                <p data-i18n="tejidoDates">Próximas fechas · Calendario</p>
+              </div>
+              <div>
+                <span class="label" aria-hidden="true"></span>
+                <strong data-i18n="tejidoSocial">Redes</strong>
+                <p><a href="#">Instagram ↗</a><br /><a href="#">YouTube ↗</a></p>
+              </div>
+              <div>
+                <span class="label" aria-hidden="true"></span>
+                <strong data-i18n="contact">Contacto</strong>
+                <p data-i18n="tejidoWrite">Escríbenos · © 2026</p>
+              </div>
             </div>
             <div class="tejido-mark">
-              <div class="aguayo-border is-patch is-geometry" aria-hidden="true"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div>
+              <div class="aguayo-border is-patch is-bolivia" aria-hidden="true"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div>
               <p class="tejido-unite" data-i18n="tejidoUnite">La danza también nos une</p>
             </div>
           </footer>
