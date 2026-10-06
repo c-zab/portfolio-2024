@@ -68,7 +68,7 @@ const loadingLabel = locale === "es" ? "Cargando…" : "Loading…";
 
 <script>
   const pageLink = document.querySelector("[data-melodia-nav-loading]");
-  const status = document.querySelector("[data-melodia-nav-status]");
+  const status = document.querySelector<HTMLElement>("[data-melodia-nav-status]");
 
   function clearNavigating() {
     pageLink?.classList.remove("is-navigating");
@@ -76,7 +76,7 @@ const loadingLabel = locale === "es" ? "Cargando…" : "Loading…";
     if (status) status.hidden = true;
   }
 
-  pageLink?.addEventListener("click", (event) => {
+  pageLink?.addEventListener("click", (event: MouseEvent) => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     if (event.button !== 0) return;
     pageLink.classList.add("is-navigating");

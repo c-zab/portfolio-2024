@@ -93,7 +93,7 @@ const copy =
   </div>
 </Layout>
 
-<script define:vars={{ expandLabel: copy.expand, exitLabel: copy.exit }}>
+<script is:inline define:vars={{ expandLabel: copy.expand, exitLabel: copy.exit }}>
   const page = document.querySelector(".melodia-page");
   const frame = document.querySelector("[data-melodia-preview]");
   const expandBtn = document.querySelector("[data-melodia-expand]");
