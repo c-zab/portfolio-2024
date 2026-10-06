@@ -15,9 +15,9 @@ Voters compare **complete art directions**, not mix-and-match chrome. Each direc
 
 | Layer | Options | Role |
 | --- | --- | --- |
-| **Dirección** | Entrada · Tejido · Toronto · Escenario | Full homepage composition |
+| **Propuesta** | Entrada · Tejido · Toronto · Escenario | Full homepage composition |
 | **Idioma** | ES · EN | Rewrites visible copy |
-| **Vista** | Web · Móvil | Preview frame (~430px phone) |
+| **Vista** | Web · Móvil | **Web** = desktop layout (scaled to fit on phone portrait). **Móvil** = ~430px phone frame |
 
 Default: **Tejido** (latest Aguayo woven mock). Shareable URL: `?d=tejido|entrada|toronto|escenario` plus optional `&lang=en` and `&view=mobile`.
 
@@ -45,7 +45,7 @@ Shared IA: Inicio, Nosotros, Danzas, Eventos, Galería, Contrátanos, Contacto. 
 
 ## 4. Reviewer chrome vs product UI
 
-The light mono top bar (Dirección / ES-EN / Web-Móvil) is **tool chrome**, not Melodía product UI. On small screens it collapses behind **Controles**, same pattern as the archive mixer.
+The light mono top bar (Propuesta / ES-EN / Web-Móvil) is **tool chrome**, not Melodía product UI. Proposal chips stay visible on small screens.
 
 Product ES / EN controls inside each shell also switch copy.
 

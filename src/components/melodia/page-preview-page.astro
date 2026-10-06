@@ -83,7 +83,7 @@ const copy =
         </div>
         <iframe
           title="Melodía de Bolivia — page preview"
-          src="/melodia/directions-playground.html?d=tejido&v=fix5"
+          src="/melodia/directions-playground.html?d=tejido&v=20261006"
           class="melodia-page__iframe block w-full border-0"
           loading="eager"
           data-melodia-iframe
@@ -101,6 +101,7 @@ const copy =
   const exitBar = document.querySelector("[data-melodia-exitbar]");
   const label = document.querySelector("[data-melodia-expand-label]");
   const iframe = document.querySelector("[data-melodia-iframe]");
+  let lastContentHeight = 0;
 
   function clearLoading() {
     if (!frame) return;
@@ -120,6 +121,35 @@ const copy =
     return frame?.classList.contains("is-expanded") ?? false;
   }
 
+  function defaultIframeHeight() {
+    const mobile = window.matchMedia("(max-width: 767px)").matches;
+    if (mobile) return Math.round(window.innerHeight - 9.5 * 16);
+    return Math.min(900, Math.round(window.innerHeight - 10 * 16));
+  }
+
+  function applyIframeHeight(contentHeight) {
+    if (!iframe || !frame) return;
+    lastContentHeight = contentHeight;
+    const next = Math.max(280, Math.ceil(contentHeight));
+
+    if (isExpanded()) {
+      const vh = window.innerHeight;
+      // Avoid a tall black void under short web previews in fullscreen
+      if (next + 56 < vh) {
+        frame.classList.add("is-hug");
+        iframe.style.height = `${next}px`;
+      } else {
+        frame.classList.remove("is-hug");
+        iframe.style.height = "";
+      }
+      return;
+    }
+
+    frame.classList.remove("is-hug");
+    const maxH = Math.max(defaultIframeHeight(), 520);
+    iframe.style.height = `${Math.min(next, maxH)}px`;
+  }
+
   function setExpanded(on) {
     if (!frame) return;
     frame.classList.toggle("is-expanded", on);
@@ -128,6 +158,11 @@ const copy =
     if (label) label.textContent = on ? exitLabel : expandLabel;
     expandBtn?.setAttribute("aria-pressed", on ? "true" : "false");
     if (exitBar) exitBar.hidden = !on;
+    if (lastContentHeight) applyIframeHeight(lastContentHeight);
+    else if (on) {
+      frame.classList.remove("is-hug");
+      if (iframe) iframe.style.height = "";
+    }
   }
 
   expandBtn?.addEventListener("click", () => setExpanded(!isExpanded()));
@@ -135,6 +170,13 @@ const copy =
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && isExpanded()) setExpanded(false);
+  });
+
+  window.addEventListener("message", (event) => {
+    if (event.origin !== window.location.origin) return;
+    const data = event.data;
+    if (!data || data.type !== "melodia-preview-height" || typeof data.height !== "number") return;
+    applyIframeHeight(data.height);
   });
 </script>
 
@@ -254,6 +296,14 @@ const copy =
     flex: 1 1 auto;
     min-height: 0;
     height: auto;
+  }
+
+  .melodia-page__frame.is-expanded.is-hug {
+    justify-content: flex-start;
+  }
+
+  .melodia-page__frame.is-expanded.is-hug .melodia-page__iframe {
+    flex: 0 0 auto;
   }
 
   :global(body.melodia-preview-locked) {
