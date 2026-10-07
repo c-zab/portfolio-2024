@@ -257,9 +257,15 @@
     .tejido-header {
       display: grid; grid-template-columns: 1fr auto 1fr;
       align-items: center; column-gap: 18px;
-      min-height: 62px; padding: 10px 24px;
-      background: #050505;
+      min-height: 62px; padding: 10px 24px 12px;
+      background: #050505; position: relative;
     }
+    .tejido-header-band {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 9px;
+      overflow: hidden; pointer-events: none;
+    }
+    .tejido-header-band .aguayo-border { height: 9px; width: 100%; }
+    .tejido-header-band .aguayo-inner { top: -8px; }
     .tejido-header .brand {
       padding: 0; gap: 8px; margin: 0; justify-self: start;
       display: flex; align-items: center;
@@ -286,58 +292,56 @@
       font-size: 12px; letter-spacing: .02em;
     }
     .tejido-nav a .nav-mark {
-      display: block; position: relative; width: 100%; min-width: 2.4em; height: 15px;
+      display: block; position: relative; width: 100%; min-width: 2.4em; height: 8px;
       margin-top: 5px; overflow: hidden;
     }
-    .tejido-nav a .nav-line {
-      position: absolute; left: 0; right: 0; top: 7px; height: 2px;
-      background: #d8003f; opacity: .35;
-      transition: opacity .22s ease, transform .22s ease;
-    }
-    .tejido-nav a:nth-child(2) .nav-line { background: #fbb140; }
-    .tejido-nav a:nth-child(3) .nav-line { background: #14b8a6; }
-    .tejido-nav a:nth-child(4) .nav-line { background: #ff6632; }
-    .tejido-nav a:nth-child(5) .nav-line { background: #ee1234; }
-    .tejido-nav a:nth-child(6) .nav-line { background: #07523b; }
+    .tejido-nav a .nav-line { display: none; }
     .tejido-nav a:focus-visible { outline: none; }
-    .tejido-nav a:focus-visible .nav-line { opacity: 0; }
-    .tejido-nav a:focus-visible .nav-aguayo { opacity: .9; transform: translateY(0); }
     .tejido-nav a .nav-aguayo {
-      position: absolute; inset: 0; width: 100%; height: 15px; overflow: hidden;
-      opacity: 0; transform: translateY(3px);
-      transition: opacity .25s ease, transform .25s ease;
+      position: absolute; inset: 0; width: 100%; height: 8px; overflow: hidden;
+      opacity: .55;
+      transition: opacity .25s ease;
     }
-    .tejido-nav a .nav-aguayo .aguayo-border { height: 15px; width: 100%; }
-    .tejido-nav a .nav-aguayo .aguayo-inner { top: 0; }
+    .tejido-nav a .nav-aguayo .aguayo-border { height: 8px; width: 100%; }
+    .tejido-nav a .nav-aguayo .aguayo-inner { top: -8px; }
     .tejido-nav a:hover { color: #f7efe4; }
-    .tejido-nav a:hover .nav-line { opacity: 0; }
-    .tejido-nav a:hover .nav-aguayo { opacity: .9; transform: translateY(0); }
+    .tejido-nav a:hover .nav-aguayo,
+    .tejido-nav a:focus-visible .nav-aguayo { opacity: .9; }
     .tejido-nav a.is-current { color: #fffaf3; font-weight: 600; }
-    .tejido-nav a.is-current .nav-line { opacity: 0; }
-    .tejido-nav a.is-current .nav-aguayo { opacity: 1; transform: translateY(0); }
+    .tejido-nav a.is-current .nav-aguayo { opacity: 1; }
     .tejido-tools {
-      display: flex; align-items: center; justify-content: flex-end; gap: 6px; padding: 0;
+      display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 0;
       justify-self: end; align-self: center; margin: 0;
     }
     .tejido-tools .locale {
-      display: inline-flex; align-items: center; justify-content: center; gap: 2px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
       border: 0; border-radius: 0; overflow: visible; height: auto;
     }
     .tejido-tools .locale button {
+      position: relative;
       background: none; border: 0; color: #8a8176; cursor: pointer;
       font-weight: 600; font-size: 11px; letter-spacing: .08em;
-      padding: 0 4px; line-height: 1; height: auto; opacity: 1;
-      box-shadow: inset 0 -1px 0 transparent;
-      transition: color .2s ease, box-shadow .2s ease;
+      padding: 0 2px 8px; line-height: 1; height: auto; opacity: 1;
+      transition: color .2s ease;
     }
     .tejido-tools .locale button.is-active {
       color: #f4ebdd; background: none; font-weight: 700;
-      box-shadow: inset 0 -1px 0 rgba(244,235,221,.7);
     }
     .tejido-tools .locale button:hover { color: #f4ebdd; }
+    .tejido-locale-aguayo {
+      position: absolute; left: 50%; bottom: 0;
+      width: 16px; height: 6px;
+      transform: translateX(-50%);
+      overflow: hidden; pointer-events: none;
+      opacity: 0;
+    }
+    .tejido-tools .locale button.is-active .tejido-locale-aguayo { opacity: 1; }
+    .tejido-locale-aguayo .aguayo-border { height: 6px; width: 100%; }
+    .tejido-locale-aguayo .aguayo-inner { top: -8px; }
     .tejido-menu-btn {
       display: none; align-items: center; justify-content: center;
-      border: 0; border-radius: 999px; background: #2a2623; color: #f4ebdd;
+      border: 1px solid rgba(244,235,221,.22); border-radius: 999px;
+      background: rgba(42,38,35,.55); color: #f4ebdd;
       padding: 8px 14px; font-size: 12px; font-weight: 700; cursor: pointer;
     }
 
@@ -537,7 +541,7 @@
 
     .preview-shell.mobile .tejido-header {
       display: flex; align-items: center; min-height: 64px;
-      padding: 10px 14px; gap: 10px;
+      padding: 10px 14px 12px; gap: 10px;
     }
     .preview-shell.mobile .tejido-header .brand { margin-right: auto; gap: 8px; }
     .preview-shell.mobile .tejido-header .brand img { width: 36px; height: 36px; }
@@ -549,19 +553,40 @@
     .preview-shell.mobile .tejido-menu-btn { display: inline-flex; }
     .preview-shell.mobile .tejido-hero { grid-template-columns: 1fr; min-height: 0; }
     .preview-shell.mobile .tejido-hero-copy {
-      position: relative; width: auto; padding: 32px 22px 28px;
+      position: relative; width: auto; padding: 44px 28px 40px;
     }
-    .preview-shell.mobile .tejido-hero h1 { font-size: clamp(40px, 11vw, 64px); max-width: none; }
-    .preview-shell.mobile .tejido-hero-photo { width: 100%; min-height: 280px; justify-self: stretch; }
-    .preview-shell.mobile .tejido-hero-photo::after { width: 100%; bottom: 0; background: linear-gradient(180deg, transparent 40%, #050505 100%); }
+    .preview-shell.mobile .tejido-hero h1 {
+      font-size: clamp(42px, 11vw, 64px); max-width: none; line-height: .96; margin-bottom: 22px;
+    }
+    .preview-shell.mobile .tejido-side { margin: 0 0 20px; letter-spacing: .2em; }
+    .preview-shell.mobile .tejido-hero p.lead {
+      max-width: none; font-size: 16px; line-height: 1.6; margin: 0 0 32px;
+    }
+    .preview-shell.mobile .tejido-actions { gap: 18px; }
+    .preview-shell.mobile .tejido-hero-photo { width: 100%; min-height: 320px; justify-self: stretch; }
+    .preview-shell.mobile .tejido-hero-photo::after {
+      left: 0; right: 0; top: 0; bottom: auto; width: 100%; height: 58%;
+      background: linear-gradient(180deg, #050505 0%, rgba(5,5,5,.7) 32%, rgba(5,5,5,.18) 68%, transparent 100%);
+    }
     .preview-shell.mobile .tejido-hero-photo .tejido-hero-corners { display: none; }
     .preview-shell.mobile .tejido-cards { grid-template-columns: 1fr 1fr; }
     .preview-shell.mobile .tejido-cards > .corner-rail { display: none; }
     .preview-shell.mobile .tejido-card { grid-template-columns: 1fr; }
     .preview-shell.mobile .tejido-card .aguayo-rail-v { display: none; }
     .preview-shell.mobile .tejido-close { grid-template-columns: 1fr; }
+    .preview-shell.mobile .tejido-close-photo.is-left::after {
+      background: linear-gradient(180deg, transparent 38%, rgba(5,5,5,.32) 72%, #050505 100%);
+    }
+    .preview-shell.mobile .tejido-close-photo.is-right::after {
+      background: linear-gradient(180deg, #050505 0%, rgba(5,5,5,.4) 28%, transparent 68%);
+    }
+    .preview-shell.mobile .tejido-close-copy {
+      padding: 40px 28px 36px;
+    }
+    .preview-shell.mobile .tejido-close-copy h2 { margin: 0 0 18px; line-height: .94; }
+    .preview-shell.mobile .tejido-close-copy p { max-width: none; font-size: 15px; line-height: 1.6; margin: 0 0 22px; }
     .preview-shell.mobile .tejido-footer {
-      flex-direction: column; align-items: flex-start; gap: 20px; padding: 28px 18px 32px;
+      flex-direction: column; align-items: flex-start; gap: 22px; padding: 36px 28px 40px;
     }
     .preview-shell.mobile .tejido-mark { margin-left: 0; }
 
@@ -695,6 +720,30 @@
 
     .preview-shell.mobile .entrada-hero { min-height: 640px; }
     .preview-shell.mobile .entrada-hero > img.photo { object-position: 58% 80%; }
+    .preview-shell.mobile .entrada-top {
+      padding: 12px 14px 0; min-height: 58px; gap: 8px;
+    }
+    .preview-shell.mobile .entrada-top .brand {
+      min-width: 0; flex: 1 1 auto; gap: 8px; overflow: hidden;
+    }
+    .preview-shell.mobile .entrada-top .brand img {
+      width: 36px; height: 36px; flex: 0 0 auto;
+    }
+    .preview-shell.mobile .entrada-top .brand-name { min-width: 0; }
+    .preview-shell.mobile .entrada-top .brand-name b {
+      font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .preview-shell.mobile .entrada-top .brand-name span { font-size: 7px; }
+    .preview-shell.mobile .entrada-top .tools {
+      gap: 6px; flex: 0 0 auto; margin-left: 4px;
+    }
+    .preview-shell.mobile .entrada-top .locale button {
+      padding: 5px 8px; min-width: 30px; font-size: 10px;
+    }
+    .preview-shell.mobile .entrada-menu-btn {
+      padding: 6px 0 6px 10px; font-size: 11px; letter-spacing: .1em;
+      white-space: nowrap; line-height: 1.2;
+    }
     .preview-shell.mobile .entrada-mid, .preview-shell.mobile .entrada-close { grid-template-columns: 1fr; }
     .preview-shell.mobile .entrada-thumbs { grid-template-columns: 1fr 1fr 1fr; padding: 12px; min-height: 0; }
     .preview-shell.mobile .entrada-thumbs a { min-height: 140px; }
@@ -1054,16 +1103,39 @@
 
     .preview-shell.mobile .esc-hero { min-height: 620px; }
     .preview-shell.mobile .esc-hero > img.photo { object-position: 70% 18%; }
+    .preview-shell.mobile .esc-top {
+      padding: 12px 14px; min-height: 58px; gap: 8px;
+    }
+    .preview-shell.mobile .esc-top .brand {
+      min-width: 0; flex: 1 1 auto; gap: 8px; overflow: hidden;
+    }
+    .preview-shell.mobile .esc-top .brand img {
+      width: 36px; height: 36px; flex: 0 0 auto;
+    }
+    .preview-shell.mobile .esc-top .brand-name { min-width: 0; }
+    .preview-shell.mobile .esc-top .brand-name b {
+      font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .preview-shell.mobile .esc-top .brand-name span { font-size: 7px; }
+    .preview-shell.mobile .esc-top .tools {
+      gap: 6px; flex: 0 0 auto; margin-left: 4px;
+    }
+    .preview-shell.mobile .esc-top .locale button {
+      padding: 5px 8px; min-width: 30px; font-size: 10px;
+    }
+    .preview-shell.mobile .esc-menu-btn {
+      display: inline-flex; padding: 6px 0; font-size: 11px; letter-spacing: .1em;
+      white-space: nowrap; line-height: 1.2;
+    }
     .preview-shell.mobile .esc-dances, .preview-shell.mobile .esc-event, .preview-shell.mobile .esc-thumbs { grid-template-columns: 1fr; }
     .preview-shell.mobile .esc-aside { display: none; }
     .preview-shell.mobile .esc-years { grid-template-columns: auto 1px 1fr; }
     .preview-shell.mobile .esc-dock .dock-extra { display: none; }
-    .preview-shell.mobile .esc-menu-btn { display: inline-flex; }
     .preview-shell.mobile .esc-thumbs figure:nth-child(2) { margin-top: 0; min-height: 200px; }
     .preview-shell.mobile .esc-event-quote { position: relative; right: auto; bottom: auto; padding: 0 18px 18px; text-align: left; }
   </style>
 </head>
-<body data-direction="tejido" data-copy="es">
+<body data-direction="entrada" data-copy="es">
   <header class="topbar" id="toolChrome">
     <div class="topbar-inner">
       <div class="topbar-row">
@@ -1089,8 +1161,8 @@
         <div class="field">
           <span class="field-label" data-i18n="proposalLabel">Propuesta</span>
           <div class="seg" data-group="direction" role="group" data-i18n-aria="proposalLabel" aria-label="Propuesta">
-            <button type="button" data-direction="entrada">Entrada</button>
-            <button type="button" data-direction="tejido" class="is-on">Tejido</button>
+            <button type="button" data-direction="entrada" class="is-on">Entrada</button>
+            <button type="button" data-direction="tejido">Tejido</button>
             <button type="button" data-direction="toronto">Toronto</button>
             <button type="button" data-direction="escenario">Escenario</button>
           </div>
@@ -1105,7 +1177,7 @@
     <div class="preview-shell" id="previewShell">
 
       <!-- TEJIDO -->
-      <article class="direction dir-tejido is-on" id="dir-tejido">
+      <article class="direction dir-tejido" id="dir-tejido">
         <div class="tejido-shell">
           <header class="tejido-header">
             <a class="brand" href="#inicio">
@@ -1116,52 +1188,55 @@
               <a class="is-current" href="#inicio">
                 <span data-i18n="home">Inicio</span>
                 <span class="nav-mark" aria-hidden="true">
-                  <span class="nav-line"></span>
                   <span class="nav-aguayo"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
                 </span>
               </a>
               <a href="#nosotros">
                 <span data-i18n="about">Nosotros</span>
                 <span class="nav-mark" aria-hidden="true">
-                  <span class="nav-line"></span>
                   <span class="nav-aguayo"><div class="aguayo-border is-gold"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
                 </span>
               </a>
               <a href="#danzas">
                 <span data-i18n="dances">Danzas</span>
                 <span class="nav-mark" aria-hidden="true">
-                  <span class="nav-line"></span>
                   <span class="nav-aguayo"><div class="aguayo-border is-teal"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
                 </span>
               </a>
               <a href="#eventos">
                 <span data-i18n="events">Eventos</span>
                 <span class="nav-mark" aria-hidden="true">
-                  <span class="nav-line"></span>
                   <span class="nav-aguayo"><div class="aguayo-border is-orange"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
                 </span>
               </a>
               <a href="#galeria">
                 <span data-i18n="gallery">Galería</span>
                 <span class="nav-mark" aria-hidden="true">
-                  <span class="nav-line"></span>
                   <span class="nav-aguayo"><div class="aguayo-border is-geometry"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
                 </span>
               </a>
               <a href="#contratanos">
                 <span data-i18n="contact">Contacto</span>
                 <span class="nav-mark" aria-hidden="true">
-                  <span class="nav-line"></span>
                   <span class="nav-aguayo"><div class="aguayo-border is-forest"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
                 </span>
               </a>
             </nav>
             <div class="tejido-tools">
               <div class="locale" data-locale>
-                <button type="button" data-lang="es" class="is-active">ES</button>
-                <button type="button" data-lang="en">EN</button>
+                <button type="button" data-lang="es" class="is-active">
+                  ES
+                  <span class="tejido-locale-aguayo" aria-hidden="true"><div class="aguayo-border is-crimson"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                </button>
+                <button type="button" data-lang="en">
+                  EN
+                  <span class="tejido-locale-aguayo" aria-hidden="true"><div class="aguayo-border is-gold"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div></span>
+                </button>
               </div>
               <button type="button" class="tejido-menu-btn" data-menu-toggle aria-expanded="false" data-i18n="menu">Menú</button>
+            </div>
+            <div class="tejido-header-band" aria-hidden="true">
+              <div class="aguayo-border is-geometry"><div class="aguayo-inner"><div class="aguayo-rail"></div></div></div>
             </div>
           </header>
 
@@ -1303,7 +1378,7 @@
       </article>
 
       <!-- ENTRADA -->
-      <article class="direction dir-entrada" id="dir-entrada">
+      <article class="direction dir-entrada is-on" id="dir-entrada">
         <section class="entrada-hero">
           <img class="photo" src="/melodia/media/generated/entrada-hero.jpg" alt="" data-i18n-alt="entradaHeroAlt" />
           <header class="entrada-top">
@@ -1849,7 +1924,7 @@
     var previewPane = document.querySelector('main.page');
     var params = new URLSearchParams(location.search);
     var state = {
-      direction: directions.indexOf(params.get('d')) >= 0 ? params.get('d') : 'tejido',
+      direction: directions.indexOf(params.get('d')) >= 0 ? params.get('d') : 'entrada',
       view: params.get('view') === 'mobile' ? 'mobile' : 'web',
       lang: params.get('lang') === 'en' ? 'en' : 'es'
     };

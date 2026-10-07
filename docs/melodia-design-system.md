@@ -19,7 +19,7 @@ Voters compare **complete art directions**, not mix-and-match chrome. Each direc
 | **Idioma** | ES · EN | Rewrites visible copy |
 | **Vista** | Web · Móvil | **Web** = desktop layout (scaled to fit on phone portrait). **Móvil** = ~430px phone frame |
 
-Default: **Tejido** (latest Aguayo woven mock). Shareable URL: `?d=tejido|entrada|toronto|escenario` plus optional `&lang=en` and `&view=mobile`.
+Default: **Entrada**. Shareable URL: `?d=entrada|tejido|toronto|escenario` plus optional `&lang=en` and `&view=mobile`.
 
 ---
 

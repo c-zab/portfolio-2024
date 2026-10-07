@@ -1,0 +1,12 @@
+---
+description: Never commit or push unless the user explicitly asks
+alwaysApply: true
+---
+
+# No commits unless asked
+
+- **Never** create a git commit unless the user explicitly asks in that message (e.g. "commit", "haz commit", "commit this").
+- **Never** push to remote unless the user explicitly asks.
+- Do **not** treat "when done", "prefer commit", prior chat habits, or task completion as permission to commit.
+- If unclear whether to commit: **ask first**. Default is no commit.
+- Keep working with local uncommitted changes. That is fine and expected.
