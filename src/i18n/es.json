@@ -33,8 +33,19 @@
   },
   "services": {
     "kicker": "|Code with CZ|",
-    "title": "Trabaja con Carlos Zabaleta",
-    "tagline": "Soluciones digitales que resuelven |problemas reales|",
+    "company": {
+      "name": "Code with CZ Inc.",
+      "incorporated": "Empresa incorporada en Ontario, Canadá",
+      "location": "Con base en Toronto",
+      "languages": "Español e inglés",
+      "firstCall": "La primera llamada es gratis",
+      "founder": "Fundada por Carlos Zabaleta"
+    },
+    "title": "Un desarrollador, no una agencia",
+    "tagline": "Sitios web, herramientas internas y el código que |conecta tus apps|.",
+    "heroLine": "Tomo pocos proyectos a la vez, así que trabajas directamente conmigo.",
+    "heroPrimary": "Agenda una llamada gratis",
+    "heroSecondary": "Ver paquetes",
     "intro": "Sitios web, herramientas internas y productos digitales que la gente usa a diario. Tomo pocos proyectos a la vez — cada uno recibe |atención real|, no tiempo en cola.",
     "introFocus": "No trabajo con decenas de proyectos a la vez. Prefiero dedicar |atención real| a cada uno para que el resultado sea sólido, útil y alineado con lo que necesitas.",
     "introChoice": "Empieza con una conversación, lanza algo concreto o sigue trabajando conmigo. |Tú eliges el ritmo.|",
@@ -43,10 +54,11 @@
     "homeLink": "¿Buscas un sitio o una herramienta pequeña?",
     "note": "No tengo un deck de ventas. Si esto suena a lo que necesitas, mándame una nota corta de en qué estás atascado.",
     "seoTitle": "Trabaja con Carlos Zabaleta",
-    "seoDescription": "Sitios web, herramientas internas y productos digitales. Una conversación, un lanzamiento o trabajo continuo — tú eliges cómo trabajamos.",
+    "seoDescription": "Sitios web, herramientas internas y productos digitales. Empieza con una llamada gratis, un proyecto cerrado o ayuda continua.",
     "help": {
-      "title": "Archivos, herramientas y APIs",
-      "lead": "Excel, PDFs, QuickBooks, sistemas de envío, Google — y el código que los conecta. Trabajo con lo que tu negocio ya usa.",
+      "title": "Lo que construyo",
+      "lead": "Casi todos los proyectos se conectan con herramientas que ya usas, como Excel, QuickBooks o Google Workspace.",
+      "hint": "Pasa el cursor o toca una tarjeta para ver más.",
       "tools": [
         "Excel y Google Sheets",
         "Archivos PDF",
@@ -60,39 +72,35 @@
         "MySQL",
         "Docker"
       ],
-      "outro": "Te digo claro qué construiría, qué dejaría fuera y cuánto debería costar. Sin jerga, a menos que quieras los detalles.",
       "items": {
         "websites": {
           "title": "Sitios web y landing pages",
-          "body": "Cargan rápido, se ven bien en móvil y convierten visitantes en clientes."
+          "body": "Sitios rápidos que funcionan bien en el teléfono."
         },
         "internal": {
           "title": "Herramientas internas",
-          "body": "Dashboards, paneles de administración y formularios avanzados para automatizar procesos y reducir trabajo manual."
+          "body": "Paneles, administradores y formularios que reducen el trabajo manual."
         },
         "ideas": {
           "title": "Ideas que quieres llevar a la realidad",
-          "body": "Desde un prototipo funcional hasta un producto mínimo viable (MVP)."
+          "body": "De un prototipo funcional a una primera versión real."
         },
         "integrations": {
           "title": "Integraciones y APIs",
-          "body": "Conectar servicios entre sí: formularios a un CRM, bases de datos a paneles, pagos, notificaciones y más."
+          "body": "Formularios a un CRM, pagos, notificaciones y más."
         },
         "automations": {
           "title": "Automatizaciones",
-          "body": "Flujos repetitivos que te quitan tiempo cada semana."
+          "body": "Las tareas repetitivas que te quitan la semana."
         },
         "maintenance": {
           "title": "Mantenimiento y mejoras",
-          "body": "Cuando algo se rompe, necesita actualizarse o quieres añadir una función nueva sin empezar de cero."
-        },
-        "code": {
-          "title": "Código limpio y entregable",
-          "body": "Lo que construyo es tuyo. Sin dependencias escondidas ni cuotas eternas."
+          "body": "Arreglos, actualizaciones y funciones nuevas sobre lo que ya tienes."
         }
       }
     },
     "packagesTitle": "Tres formas de trabajar juntos",
+    "featured": "El más común",
     "packages": {
       "discovery": {
         "name": "Discovery Call",
@@ -110,7 +118,7 @@
       "launch": {
         "name": "Launch",
         "timing": "Proyecto fijo",
-        "lead": "Para cuando ya quieres construir. Incluye la Discovery Call, definimos alcance y entrego algo listo para usar — tuyo, sin cuota mensual después.",
+        "lead": "Para cuando ya quieres construir. Empezamos con la Discovery Call, dejamos el alcance por escrito y te entrego algo listo para usar. Es tuyo, sin cuota mensual después.",
         "cta": "Preguntar por un Launch",
         "includesTitle": "Incluye Discovery Call +",
         "chips": {
@@ -129,7 +137,7 @@
       "retain": {
         "name": "Retain",
         "timing": "Continuo",
-        "lead": "Lo más completo: todo lo de Launch, más apoyo mes a mes. Para seguir evolucionando sin contratar a alguien full-time.",
+        "lead": "Todo lo de Launch, más ayuda cada mes. Para tener a alguien disponible sin contratar a tiempo completo.",
         "cta": "Preguntar por Retain",
         "includesTitle": "Todo lo de Launch, y además",
         "chips": {
@@ -140,18 +148,19 @@
           "Todo lo incluido en Launch",
           "Mejoras y nuevas funciones mes a mes",
           "Hosting y cuando algo se rompe",
-          "Prioridad — alguien que ya conoce tu proyecto",
+          "Prioridad, con alguien que ya conoce tu proyecto",
           "Evolución: más fases, integraciones e IA"
         ]
       },
       "custom": {
-        "name": "No lo tengo claro — hablemos"
+        "name": "Aún no lo sé",
+        "timing": "Hablemos"
       }
     },
     "process": {
       "title": "Cómo trabajamos",
-      "lead": "Sin manual de procesos. Hablamos, dejamos el alcance por escrito, construimos en partes pequeñas y ves algo funcionando cada par de semanas.",
-      "outro": "Cada parte es algo que puedes probar y comentar. Ajustamos y seguimos — sin desaparecer un mes entero.",
+      "lead": "Sin manual de procesos. Hablamos, dejamos el alcance por escrito y construimos en partes pequeñas.",
+      "outro": "Cada par de semanas tienes algo que puedes probar y comentar. Nada de desaparecer un mes entero.",
       "steps": {
         "discovery": {
           "title": "Discovery",
@@ -173,18 +182,18 @@
     },
     "why": {
       "title": "Por qué trabajar conmigo",
-      "lead": "Soy un desarrollador, no una agencia. Me tienes a mí — quien escribe el código y responde tus mensajes.",
+      "lead": "La persona que te responde es la misma que escribe el código.",
       "photoAlt": "Carlos Zabaleta",
       "photoPlaceholder": "Foto próximamente",
       "points": [
-        "Hablas conmigo directamente — sin account manager de por medio",
+        "Hablas conmigo directamente. Sin intermediarios",
         "Pocos proyectos a la vez, el tuyo no se queda en cola",
         "Empiezo por lo que te ahorra tiempo o genera ingresos, no por modas",
-        "Código limpio que es tuyo — se lo puedes pasar a otro dev después",
-        "APIs, automatizaciones, herramientas internas — lo he entregado a clientes reales"
+        "Código limpio que es tuyo, para pasárselo a otro dev si quieres",
+        "He entregado APIs, automatizaciones y herramientas internas a clientes reales"
       ],
-      "cta": "¿Listo para dar el siguiente paso?",
-      "ctaSub": "Elige la opción que mejor se adapte a tu momento y hablamos."
+      "cta": "¿Tienes algo en mente?",
+      "ctaSub": "Mándame una nota corta sobre lo que necesitas."
     },
     "contact": {
       "title": "Hablemos",
