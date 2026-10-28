@@ -5,6 +5,7 @@
     "location": "Toronto, Canadá"
   },
   "header": {
+    "servicesCta": "Ver servicios",
     "description": "Construyo experiencias digitales |perfectas|, atractivas y accesibles utilizando tecnologías web modernas. Especializado en |desarrollo full-stack| en Toronto, Canadá."
   },
   "comingSoon": {
@@ -22,6 +23,7 @@
   "navigation": {
     "home": "Inicio",
     "blog": "Blog",
+    "soon": "Pronto",
     "about": "Acerca de",
     "experience": "Experiencia",
     "projects": "Proyectos",
@@ -58,7 +60,6 @@
     "help": {
       "title": "Lo que construyo",
       "lead": "Casi todos los proyectos se conectan con herramientas que ya usas, como Excel, QuickBooks o Google Workspace.",
-      "hint": "Pasa el cursor o toca una tarjeta para ver más.",
       "tools": [
         "Excel y Google Sheets",
         "Archivos PDF",
@@ -214,7 +215,7 @@
       "submit": "Enviar mensaje",
       "sending": "Enviando…",
       "privacy": "Tu información está segura y no se comparte.",
-      "success": "Listo. Por ahora esto es una prueba: no se envió nada.",
+      "success": "Gracias, recibí tu mensaje. Te respondo en un día hábil.",
       "error": "No se pudo enviar. Prueba otra vez.",
       "contactRequired": "Pon un email o un teléfono.",
       "humanError": "Esa no era. Prueba otra vez.",

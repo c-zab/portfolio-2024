@@ -13,8 +13,8 @@ interface Props {
 const {
   title = "Carlos Zabaleta - Software Engineer | Toronto, Canada",
   description = "Carlos Zabaleta is a skilled Software Engineer based in Toronto, Canada...",
-  image = "https://carloszabaleta.dev/og-image.jpg",
-  url = "https://carloszabaleta.dev/",
+  image = "https://czab.dev/og-image.jpg",
+  url = new URL(Astro.url.pathname, Astro.site).href,
   variant = "default",
   i18nPage,
   ambientSubtle,
@@ -116,8 +116,8 @@ const lockDark = forceDark || isMelodia;
         "name": "Carlos Zabaleta",
         "jobTitle": "Software Engineer",
         "description": "Skilled Software Engineer specializing in full-stack development and modern web technologies",
-        "url": "https://czabalet.com",
-        "image": "https://czabalet.com/favicon.ico",
+        "url": "https://czab.dev",
+        "image": "https://czab.dev/favicon.ico",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Toronto",
@@ -156,6 +156,7 @@ const lockDark = forceDark || isMelodia;
         }
       }
     </script>
+    <noscript><style>.typed__text { opacity: 1 !important; }</style></noscript>
   </head>
   <body
     data-page={variant}

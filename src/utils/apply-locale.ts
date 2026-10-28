@@ -59,7 +59,7 @@ export function applyLocale(locale: Locale, { updateHistory = true } = {}) {
   localStorage.setItem("preferred-language", locale);
 
   document.querySelectorAll<HTMLElement>("[data-i18n]").forEach((el) => {
-    if (el.closest(".ml11")) return;
+    if (el.closest(".typed")) return;
     const key = el.dataset.i18n;
     if (key) el.textContent = t(key);
   });
@@ -122,6 +122,8 @@ export function applyLocale(locale: Locale, { updateHistory = true } = {}) {
       history.pushState({ locale }, "", nextPath);
     }
   }
+
+  document.dispatchEvent(new CustomEvent("localechange", { detail: { locale } }));
 
   document.querySelector('link[rel="canonical"]')?.setAttribute("href", window.location.href);
   document.querySelector('meta[property="og:url"]')?.setAttribute("content", window.location.href);
