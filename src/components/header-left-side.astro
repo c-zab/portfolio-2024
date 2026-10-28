@@ -10,14 +10,12 @@ const t = (key: string) => getTranslation(locale, key);
 <header class="flex w-full max-w-full flex-col items-center px-1">
   <div class="flex w-full max-w-full flex-col items-center">
     <h1
-      class="ml11 text-[clamp(1.7rem,7.2vw,3rem)] font-bold tracking-tight"
+      class="typed text-[clamp(1.7rem,7.2vw,3rem)] font-bold tracking-tight"
       style="color: var(--text-primary);"
       aria-label={t("common.name")}
+      data-hero-name
     >
-      <span class="text-wrapper" aria-hidden="true">
-        <span class="line line1"></span>
-        <span class="letters">{t("common.name")}</span>
-      </span>
+      <span class="typed__text" aria-hidden="true">{t("common.name")}</span>
     </h1>
     <h2
       data-hero-title
@@ -62,9 +60,10 @@ const t = (key: string) => getTranslation(locale, key);
 
 <script>
   import anime from "animejs";
+  import { createTypewriter } from "../utils/typewriter";
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const textWrapper = document.querySelector(".ml11 .letters");
+  const nameEl = document.querySelector<HTMLElement>("[data-hero-name]");
   const enterEls = document.querySelectorAll<HTMLElement>(".hero-enter");
 
   function showHeroSettled() {
@@ -72,93 +71,45 @@ const t = (key: string) => getTranslation(locale, key);
       el.style.opacity = "1";
       el.style.transform = "none";
     });
-    document.querySelectorAll<HTMLElement>(".ml11 .letter").forEach((el) => {
-      el.style.opacity = "1";
-    });
-    textWrapper?.classList.add("is-split");
     document.documentElement.classList.add("hero-ready");
   }
 
-  if (reducedMotion) {
+  if (reducedMotion || !nameEl) {
+    if (nameEl) createTypewriter(nameEl);
     showHeroSettled();
   } else {
     enterEls.forEach((el) => {
       el.style.opacity = "0";
     });
 
-    if (textWrapper) {
-      textWrapper.innerHTML = (textWrapper.textContent ?? "")
-        .split(/(\s+)/)
-        .map((token) => {
-          if (/^\s+$/.test(token)) return " ";
-          return `<span class="word">${token.replace(/([^\x00-\x80]|\w)/g, "<span class='letter'>$&</span>")}</span>`;
-        })
-        .join("");
+    const typewriter = createTypewriter(nameEl, { startDelay: 500 });
 
-      // Reveal the name container only after letters exist (CSS keeps raw text hidden pre-JS).
-      textWrapper.classList.add("is-split");
+    // Timers and anime can stall (hidden tab, competing tweens). Match SiteNav: always reveal.
+    const heroFallback = window.setTimeout(() => {
+      typewriter.finish();
+      showHeroSettled();
+    }, 4500);
 
-      // Anime can stall (hidden tab, competing tweens). Match SiteNav: always reveal.
-      const heroFallback = window.setTimeout(() => {
-        showHeroSettled();
-      }, 2800);
-
-      const startLinePulse = () => {
-        anime({
-          targets: ".ml11 .line",
-          opacity: [0, 1],
-          easing: "linear",
-          loop: true,
-          duration: 1000,
-        });
-      };
-
+    typewriter.done.then(() => {
       anime
         .timeline({
           easing: "easeOutExpo",
-          duration: 500,
+          duration: 400,
           complete: () => {
             window.clearTimeout(heroFallback);
             showHeroSettled();
-            startLinePulse();
           },
         })
         .add({
-          targets: ".ml11 .line",
-          scaleY: [0, 1],
-          opacity: [0.5, 1],
-          delay: 180,
+          targets: "[data-hero-title]",
+          opacity: [0, 1],
+          translateY: [12, 0],
         })
-        .add({
-          targets: ".ml11 .line",
-          translateX: [0, textWrapper.getBoundingClientRect().width + 10],
-          duration: 1000,
-        })
-        .add(
-          {
-            targets: ".ml11 .letter",
-            opacity: [0, 1],
-            duration: 600,
-            offset: "-=775",
-            delay: (_el: unknown, i: number) => 40 * (i + 1),
-          },
-          "-=900"
-        )
-        .add(
-          {
-            targets: "[data-hero-title]",
-            opacity: [0, 1],
-            translateY: [12, 0],
-            duration: 400,
-          },
-          "-=200"
-        )
         .add(
           {
             targets: "[data-hero-bio]",
             opacity: [0, 1],
             translateY: [12, 0],
-            duration: 400,
           },
           "-=200"
         )
@@ -166,7 +117,6 @@ const t = (key: string) => getTranslation(locale, key);
           {
             targets: "[data-hero-chrome]",
             opacity: [0, 1],
-            duration: 400,
           },
           "-=150"
         )
@@ -178,62 +128,11 @@ const t = (key: string) => getTranslation(locale, key);
           },
           "-=100"
         );
-    } else {
-      showHeroSettled();
-    }
+    });
   }
 </script>
 
 <style>
-  .ml11 .text-wrapper {
-    position: relative;
-    display: inline-block;
-    max-width: 100%;
-    padding-top: 0.1em;
-    padding-right: 0.05em;
-    padding-bottom: 0.15em;
-  }
-
-  .ml11 :global(.word) {
-    display: inline-block;
-    white-space: nowrap;
-  }
-
-  .ml11 .line {
-    opacity: 0;
-    position: absolute;
-    left: 0;
-    height: 100%;
-    width: 3px;
-    background-color: var(--primary);
-    transform-origin: 0 50%;
-    transition: background-color 0.3s ease;
-  }
-
-  .dark .ml11 .line {
-    background-color: var(--text-secondary);
-  }
-
-  .ml11 .line1 {
-    top: 0;
-    left: 0;
-  }
-
-  /* Hide the full name until JS splits it — prevents a flash of static text on slow loads. */
-  .ml11 .letters {
-    opacity: 0;
-  }
-
-  .ml11 .letters.is-split {
-    opacity: 1;
-  }
-
-  .ml11 :global(.letter) {
-    display: inline-block;
-    line-height: 1em;
-    opacity: 0;
-  }
-
   .hero-enter {
     opacity: 0;
   }
@@ -242,23 +141,15 @@ const t = (key: string) => getTranslation(locale, key);
     transform: translateX(2px);
   }
 
-  :global(html.hero-ready) .hero-enter,
-  :global(html.hero-ready) .ml11 .letters,
-  :global(html.hero-ready) .ml11 :global(.letter) {
+  :global(html.hero-ready) .hero-enter {
     opacity: 1;
     transform: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ml11 .letters,
-    .ml11 :global(.letter),
     .hero-enter {
       opacity: 1;
       transform: none;
-    }
-
-    .ml11 .line {
-      display: none;
     }
   }
 </style>

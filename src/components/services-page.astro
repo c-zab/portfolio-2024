@@ -118,12 +118,13 @@ const profilePhoto = "/images/carlos.jpg";
       >
         <div class="max-w-2xl">
         <h1
-          class="services-hero__title text-4xl font-bold tracking-tight sm:text-5xl lg:text-[3.35rem] lg:leading-[1.08]"
+          class="services-hero__title typed text-4xl font-bold tracking-tight sm:text-5xl lg:text-[3.35rem] lg:leading-[1.08]"
           style="color: var(--text-primary);"
-          data-reveal-item
-          data-i18n="services.title"
+          aria-label={t("services.title")}
+          data-i18n-aria="services.title"
+          data-services-title
         >
-          {t("services.title")}
+          <span class="typed__text" aria-hidden="true" data-i18n="services.title">{t("services.title")}</span>
         </h1>
         <p
           class="services-hero__tagline mt-5 max-w-2xl text-lg leading-snug sm:text-xl lg:text-[1.4rem] lg:leading-snug"
@@ -499,7 +500,22 @@ const profilePhoto = "/images/carlos.jpg";
 </Layout>
 
 <script>
+  import { getTranslation, type Locale } from "../utils/i18n";
+  import { createTypewriter } from "../utils/typewriter";
+
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // The hero title types itself out like the name on the home page, and retypes
+  // in the other language when the visitor switches.
+  const heroTitle = document.querySelector<HTMLElement>("[data-services-title]");
+
+  if (heroTitle) {
+    const typewriter = createTypewriter(heroTitle, { startDelay: 450 });
+    document.addEventListener("localechange", (event) => {
+      const { locale } = (event as CustomEvent<{ locale: Locale }>).detail;
+      typewriter.retype(getTranslation(locale, "services.title"));
+    });
+  }
 
   // Profile photo falls back to initials until a real photo exists.
   const photo = document.querySelector<HTMLImageElement>("[data-profile-photo]");
