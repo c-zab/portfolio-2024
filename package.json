@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=24.0.0"
   },
   "private": true,
   "packageManager": "yarn@1.22.19",
@@ -19,14 +19,14 @@
     "postinstall": "npx update-browserslist-db@latest"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/tailwind": "^5.1.0",
-    "@astrojs/vercel": "^8.2.7",
+    "@astrojs/check": "0.9.12",
+    "@astrojs/tailwind": "6.0.2",
+    "@astrojs/vercel": "11.0.16",
     "@fontsource-variable/inter": "^5.0.17",
     "@fontsource/inter": "^5.0.17",
     "@supabase/supabase-js": "^2.116.0",
     "animejs": "^3.2.2",
-    "astro": "^5.13.5",
+    "astro": "7.4.2",
     "baseline-browser-mapping": "^2.11.24",
     "caniuse-lite": "^1.0.30001810",
     "simple-icons": "^16.28.0",
