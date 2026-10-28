@@ -1,12 +1,12 @@
 export type HumanShape = "star" | "circle" | "square" | "triangle" | "heart" | "diamond";
 
 export const HUMAN_SHAPE_COLORS: Record<HumanShape, string> = {
-  circle: "#64748b",
-  square: "#64748b",
-  triangle: "#64748b",
-  star: "#64748b",
-  heart: "#64748b",
-  diamond: "#64748b",
+  circle: "#10b981",
+  square: "#3b82f6",
+  triangle: "#f59e0b",
+  star: "#eab308",
+  heart: "#f43f5e",
+  diamond: "#8b5cf6",
 };
 
 export type HumanOption = {

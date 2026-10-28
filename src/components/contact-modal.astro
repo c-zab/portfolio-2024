@@ -13,7 +13,7 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
       role="dialog"
       aria-modal="true"
       aria-labelledby="contact-title"
-      class="contact-modal__panel relative w-full max-w-[420px] rounded-2xl p-6 shadow-2xl"
+      class="contact-modal__panel relative w-full max-w-[420px] rounded-2xl p-5 shadow-2xl sm:p-6"
     >
       <div class="flex items-start justify-between gap-4">
         <div>
@@ -42,7 +42,7 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
         </button>
       </div>
 
-      <form id="contact-form" class="relative mt-5 space-y-4" novalidate>
+      <form id="contact-form" class="relative mt-4 space-y-3.5" novalidate>
         <div class="pointer-events-none absolute h-0 w-0 overflow-hidden opacity-0" aria-hidden="true">
           <label>
             Website
@@ -69,30 +69,29 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
         </div>
 
         <div>
-          <p class="contact-label" data-i18n="services.contact.contactMethod">{t("services.contact.contactMethod")}</p>
-          <div class="contact-toggle mt-1.5" role="group" aria-label={t("services.contact.contactMethod")}>
-            <button type="button" class="contact-toggle__btn is-active" data-contact-mode="email" aria-pressed="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-4 w-4" aria-hidden="true">
+          <div class="flex items-center justify-between gap-3">
+            <p class="contact-label">
+              <span data-i18n="services.contact.contactMethod">{t("services.contact.contactMethod")}</span>
+              <span class="contact-required" aria-hidden="true">*</span>
+            </p>
+            <div class="contact-toggle" role="group" data-i18n-aria="services.contact.contactMethod" aria-label={t("services.contact.contactMethod")}>
+              <button type="button" class="contact-toggle__btn is-active" data-contact-mode="email" aria-pressed="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-3.5 w-3.5" aria-hidden="true">
                 <rect x="2" y="4" width="20" height="16" rx="2"></rect>
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
               </svg>
-              <span data-i18n="services.contact.email">{t("services.contact.email")}</span>
-            </button>
-            <button type="button" class="contact-toggle__btn" data-contact-mode="phone" aria-pressed="false">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-4 w-4" aria-hidden="true">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-              </svg>
-              <span data-i18n="services.contact.phone">{t("services.contact.phone")}</span>
-            </button>
+                <span data-i18n="services.contact.email">{t("services.contact.email")}</span>
+              </button>
+              <button type="button" class="contact-toggle__btn" data-contact-mode="phone" aria-pressed="false">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-3.5 w-3.5" aria-hidden="true">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+                <span data-i18n="services.contact.phone">{t("services.contact.phone")}</span>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div data-contact-field="email">
-          <label class="contact-label" for="contact-email">
-            <span data-i18n="services.contact.email">{t("services.contact.email")}</span>
-            <span class="contact-required" aria-hidden="true">*</span>
-          </label>
-          <div class="contact-input-wrap mt-1.5">
+          <div data-contact-field="email" class="contact-input-wrap mt-1.5">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="contact-input-icon h-4 w-4" aria-hidden="true">
               <rect x="2" y="4" width="20" height="16" rx="2"></rect>
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
@@ -103,18 +102,14 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
               type="email"
               autocomplete="email"
               class="contact-input contact-input--icon"
+              data-i18n-aria="services.contact.email"
+              aria-label={t("services.contact.email")}
               data-i18n-placeholder="services.contact.emailPlaceholder"
               placeholder={t("services.contact.emailPlaceholder")}
             />
           </div>
-        </div>
 
-        <div data-contact-field="phone" class="hidden">
-          <label class="contact-label" for="contact-phone">
-            <span data-i18n="services.contact.phone">{t("services.contact.phone")}</span>
-            <span class="contact-required" aria-hidden="true">*</span>
-          </label>
-          <div class="contact-input-wrap mt-1.5">
+          <div data-contact-field="phone" class="contact-input-wrap mt-1.5 hidden">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="contact-input-icon h-4 w-4" aria-hidden="true">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
             </svg>
@@ -124,33 +119,32 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
               type="tel"
               autocomplete="tel"
               class="contact-input contact-input--icon"
+              data-i18n-aria="services.contact.phone"
+              aria-label={t("services.contact.phone")}
               data-i18n-placeholder="services.contact.phonePlaceholder"
               placeholder={t("services.contact.phonePlaceholder")}
             />
           </div>
         </div>
 
-        <div>
-          <label class="contact-label" for="contact-package">
+        <fieldset class="contact-packages">
+          <legend class="contact-label">
             <span data-i18n="services.contact.package">{t("services.contact.package")}</span>
             <span class="contact-required" aria-hidden="true">*</span>
-          </label>
-          <div class="contact-select-wrap mt-1.5">
-            <select id="contact-package" name="package" required class="contact-input contact-input--select">
-              <option value="" data-i18n="services.contact.packagePlaceholder">{t("services.contact.packagePlaceholder")}</option>
-              {
-                packageIds.map((id) => (
-                  <option value={id} data-i18n={`services.packages.${id}.name`}>
+          </legend>
+          <div class="contact-packages__grid mt-1.5">
+            {
+              packageIds.map((id) => (
+                <label class="contact-package">
+                  <input type="radio" name="package" value={id} required class="sr-only" />
+                  <span class="contact-package__name" data-i18n={`services.packages.${id}.name`}>
                     {t(`services.packages.${id}.name`)}
-                  </option>
-                ))
-              }
-            </select>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="contact-select-chevron h-4 w-4" aria-hidden="true">
-              <path d="m6 9 6 6 6-6"></path>
-            </svg>
+                  </span>
+                </label>
+              ))
+            }
           </div>
-        </div>
+        </fieldset>
 
         <div>
           <label class="contact-label" for="contact-message" data-i18n="services.contact.message">
@@ -170,7 +164,7 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
 
         <fieldset class="contact-check">
           <legend class="contact-check__legend">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-4 w-4 text-sky-600" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="contact-check__icon h-4 w-4" aria-hidden="true">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
               <path d="m9 12 2 2 4-4"></path>
             </svg>
@@ -222,7 +216,7 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
   const submitLabel = submitBtn?.querySelector("span");
   const promptEl = document.querySelector<HTMLElement>("[data-human-prompt]");
   const optionsEl = document.querySelector<HTMLElement>("[data-human-options]");
-  const packageSelect = document.getElementById("contact-package") as HTMLSelectElement | null;
+  const packageInputs = document.querySelectorAll<HTMLInputElement>('#contact-form input[name="package"]');
   const messageEl = document.getElementById("contact-message") as HTMLTextAreaElement | null;
   const emailField = document.querySelector<HTMLElement>('[data-contact-field="email"]');
   const phoneField = document.querySelector<HTMLElement>('[data-contact-field="phone"]');
@@ -233,7 +227,7 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
   if (
     modal &&
     form &&
-    packageSelect &&
+    packageInputs.length &&
     messageEl &&
     promptEl &&
     optionsEl &&
@@ -457,12 +451,10 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
       form!.classList.remove("hidden");
       setError();
       refreshHuman();
-      if (packageId && PACKAGES.includes(packageId as (typeof PACKAGES)[number])) {
-        packageSelect!.value = packageId;
-        fillTemplate(packageId);
-      } else {
-        packageSelect!.value = "";
-      }
+      packageInputs.forEach((input) => {
+        input.checked = input.value === packageId;
+      });
+      if (packageId) fillTemplate(packageId);
       modal!.classList.remove("hidden");
       modal!.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
@@ -515,8 +507,10 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
       });
     });
 
-    packageSelect.addEventListener("change", () => {
-      fillTemplate(packageSelect.value);
+    packageInputs.forEach((input) => {
+      input.addEventListener("change", () => {
+        if (input.checked) fillTemplate(input.value);
+      });
     });
 
     form.addEventListener("submit", async (event) => {
@@ -646,21 +640,31 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
     }
   }
 
+  /* Panel palette: one place for light/dark surfaces used across the form */
   .contact-modal__panel {
+    --panel-bg: #fff;
+    --panel-border: rgba(226, 232, 240, 0.9);
+    --field-bg: #fff;
+    --field-border: #e2e8f0;
+    --well-bg: #f1f5f9;
+
     pointer-events: auto;
     width: 100%;
-    max-width: 420px;
+    max-width: 440px;
     max-height: calc(100dvh - 2rem);
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-    background: #fff;
-    border: 1px solid rgba(226, 232, 240, 0.9);
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
   }
 
   :global(html.dark) .contact-modal__panel {
-    background: rgb(30 41 59);
-    border-color: rgba(51, 65, 85, 0.8);
+    --panel-bg: #111b2e;
+    --panel-border: rgba(71, 93, 117, 0.45);
+    --field-bg: var(--canvas-depth);
+    --field-border: rgba(71, 93, 117, 0.55);
+    --well-bg: #0c1526;
   }
 
   .contact-modal__close {
@@ -676,6 +680,7 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
     display: inline-flex;
     align-items: center;
     gap: 0.2rem;
+    padding: 0;
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--text-primary);
@@ -690,8 +695,8 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
     display: block;
     width: 100%;
     border-radius: 0.75rem;
-    border: 1px solid #e2e8f0;
-    background-color: #fff;
+    border: 1px solid var(--field-border);
+    background-color: var(--field-bg);
     padding: 0.625rem 0.875rem;
     font-size: 16px;
     color: var(--text-primary);
@@ -704,22 +709,14 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
       background-color 150ms ease;
   }
 
-  :global(html.dark) .contact-input {
-    background-color: rgb(15 23 42);
-    border-color: rgb(51 65 85);
+  .contact-input::placeholder {
+    color: color-mix(in srgb, var(--text-muted) 80%, transparent);
   }
 
   .contact-input:-webkit-autofill,
   .contact-input:-webkit-autofill:hover,
   .contact-input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0 1000px #fff inset;
-    -webkit-text-fill-color: var(--text-primary);
-  }
-
-  :global(html.dark) .contact-input:-webkit-autofill,
-  :global(html.dark) .contact-input:-webkit-autofill:hover,
-  :global(html.dark) .contact-input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0 1000px rgb(15 23 42) inset;
+    -webkit-box-shadow: 0 0 0 1000px var(--field-bg) inset;
     -webkit-text-fill-color: var(--text-primary);
   }
 
@@ -746,50 +743,25 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
   }
 
   .contact-input--textarea {
-    min-height: 6.5rem;
-  }
-
-  .contact-select-wrap {
-    position: relative;
-  }
-
-  .contact-input--select {
-    appearance: none;
-    padding-right: 2.25rem;
-    cursor: pointer;
-  }
-
-  .contact-select-chevron {
-    position: absolute;
-    right: 0.875rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted);
-    pointer-events: none;
+    min-height: 4.75rem;
   }
 
   .contact-toggle {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-    padding: 0.25rem;
-    border-radius: 0.75rem;
-    background: #f1f5f9;
-  }
-
-  :global(html.dark) .contact-toggle {
-    background: rgb(15 23 42);
+    display: inline-flex;
+    gap: 0.15rem;
+    padding: 0.15rem;
+    border-radius: 999px;
+    background: var(--well-bg);
   }
 
   .contact-toggle__btn {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.375rem;
-    border-radius: 0.625rem;
+    gap: 0.3rem;
+    border-radius: 999px;
     border: 1px solid transparent;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
     font-weight: 500;
     color: var(--text-muted);
     transition:
@@ -798,30 +770,81 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
       color 150ms ease;
   }
 
-  .contact-toggle__btn.is-active {
-    background: #fff;
+  .contact-toggle__btn:hover {
     color: var(--text-primary);
   }
 
-  :global(html.dark) .contact-toggle__btn.is-active {
-    background: rgb(30 41 59);
+  .contact-toggle__btn.is-active {
+    background: var(--panel-bg);
+    border-color: var(--field-border);
+    color: var(--primary);
   }
 
+  /* Package picker */
+  .contact-packages {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-inline-size: 0;
+  }
+
+  .contact-packages__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .contact-package {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid var(--field-border);
+    background: var(--field-bg);
+    padding: 0.4rem 0.85rem;
+    cursor: pointer;
+    transition:
+      border-color 150ms ease,
+      background 150ms ease,
+      box-shadow 150ms ease;
+  }
+
+  .contact-package:hover {
+    border-color: color-mix(in srgb, var(--primary) 45%, var(--field-border));
+  }
+
+  .contact-package:has(input:checked) {
+    border-color: var(--primary);
+    background: var(--primary-surface);
+  }
+
+  .contact-package:has(input:focus-visible) {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 30%, transparent);
+  }
+
+  .contact-package__name {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .contact-package:has(input:checked) .contact-package__name {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  /* Human check */
   .contact-check {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.5rem;
     margin: 0;
     min-inline-size: 0;
-    padding: 0.75rem;
+    padding: 0.875rem;
     overflow: visible;
     border: 0;
     border-radius: 0.875rem;
-    background: #f8fafc;
-  }
-
-  :global(html.dark) .contact-check {
-    background: rgb(15 23 42);
+    background: var(--well-bg);
   }
 
   .contact-check__legend {
@@ -835,6 +858,10 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--text-primary);
+  }
+
+  .contact-check__icon {
+    color: var(--primary);
   }
 
   .contact-check__prompt {
@@ -861,49 +888,36 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
     font-weight: 600;
   }
 
-  :global(html.dark .contact-check__emph) {
-    color: var(--primary);
-  }
-
   :global(.contact-check__tile) {
     position: relative;
     display: flex;
     cursor: pointer;
     overflow: visible;
-    border-radius: 0.625rem;
-    border: 0;
-    padding: 0.5rem;
-    background: #fff;
+    border-radius: 0.75rem;
+    border: 1px solid var(--field-border);
+    padding: 0.35rem;
+    background: var(--field-bg);
     transition:
-      background 150ms ease,
+      border-color 150ms ease,
+      box-shadow 150ms ease,
       transform 150ms ease;
   }
 
   :global(.contact-check__tile:hover) {
-    background: color-mix(in srgb, var(--primary) 8%, #fff);
-  }
-
-  :global(html.dark .contact-check__tile) {
-    background: rgb(30 41 59);
-  }
-
-  :global(html.dark .contact-check__tile:hover) {
-    background: color-mix(in srgb, var(--primary) 14%, rgb(30 41 59));
+    border-color: color-mix(in srgb, var(--primary) 45%, var(--field-border));
+    transform: translateY(-2px);
   }
 
   :global(.contact-check__tile.is-selected) {
-    background: var(--primary-surface);
-    transform: scale(1.04);
-  }
-
-  :global(html.dark .contact-check__tile.is-selected) {
-    background: var(--primary-surface);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px var(--primary);
+    transform: translateY(-2px);
   }
 
   :global(.contact-check__check) {
     position: absolute;
-    top: -0.4rem;
-    right: -0.4rem;
+    top: -0.45rem;
+    right: -0.45rem;
     z-index: 1;
     display: flex;
     align-items: center;
@@ -925,11 +939,6 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
     height: 0.65rem;
   }
 
-  :global(html.dark .contact-check__check) {
-    background: var(--primary);
-    color: var(--primary-on);
-  }
-
   :global(.contact-check__swatch) {
     display: flex;
     align-items: center;
@@ -942,16 +951,19 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
 
   :global(.contact-check__swatch--shape) {
     border-radius: 0.5rem;
-    background: #fff;
-  }
-
-  :global(html.dark .contact-check__swatch--shape) {
-    background: rgb(15 23 42);
+    background: transparent;
   }
 
   :global(.contact-check__shape) {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.18));
+    transition: transform 180ms ease;
+  }
+
+  :global(.contact-check__tile:hover .contact-check__shape),
+  :global(.contact-check__tile.is-selected .contact-check__shape) {
+    transform: scale(1.12);
   }
 
   .contact-submit {

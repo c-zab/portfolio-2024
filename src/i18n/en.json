@@ -33,8 +33,19 @@
   },
   "services": {
     "kicker": "|Code with CZ|",
-    "title": "Work with Carlos Zabaleta",
-    "tagline": "Digital solutions that solve |real problems|",
+    "company": {
+      "name": "Code with CZ Inc.",
+      "incorporated": "Incorporated in Ontario, Canada",
+      "location": "Based in Toronto",
+      "languages": "English and Spanish",
+      "firstCall": "The first call is free",
+      "founder": "Founded by Carlos Zabaleta"
+    },
+    "title": "One developer, not an agency",
+    "tagline": "Websites, internal tools, and the code that |connects your apps|.",
+    "heroLine": "I only take a few projects at a time, so you work with me directly.",
+    "heroPrimary": "Book a free call",
+    "heroSecondary": "See packages",
     "intro": "Websites, internal tools, and digital products people use every day. I take on a few projects at a time — each one gets |real attention|, not queue time.",
     "introFocus": "I don't juggle dozens of projects at once. I'd rather give each one |real attention| so the result is solid, useful, and aligned with what you actually need.",
     "introChoice": "Start with a conversation, launch something concrete, or keep working together. |You choose the pace.|",
@@ -43,10 +54,11 @@
     "homeLink": "Looking for a site or a small tool?",
     "note": "I don't have a sales deck. If this sounds like what you need, send a short note about what you're stuck on.",
     "seoTitle": "Work with Carlos Zabaleta",
-    "seoDescription": "Websites, internal tools, and digital products. A conversation, a launch, or ongoing work — you choose how we work.",
+    "seoDescription": "Websites, internal tools, and digital products. Start with a free call, a fixed project, or ongoing help.",
     "help": {
-      "title": "Files, tools, and APIs",
-      "lead": "Excel, PDFs, QuickBooks, shipping systems, Google — and the code that connects them. I work with what your business already runs on.",
+      "title": "What I build",
+      "lead": "Most projects connect to tools you already use, like Excel, QuickBooks, or Google Workspace.",
+      "hint": "Hover or tap a card for details.",
       "tools": [
         "Excel & Google Sheets",
         "PDF files",
@@ -60,39 +72,35 @@
         "MySQL",
         "Docker"
       ],
-      "outro": "I'll tell you straight what I'd build, what I'd skip, and what it should cost. No jargon unless you want the details.",
       "items": {
         "websites": {
           "title": "Websites and landing pages",
-          "body": "They load fast, look good on mobile, and turn visitors into clients."
+          "body": "Fast sites that work well on phones."
         },
         "internal": {
           "title": "Internal tools",
-          "body": "Dashboards, admin panels, and advanced forms to automate processes and cut manual work."
+          "body": "Dashboards, admin panels, and forms that cut manual work."
         },
         "ideas": {
           "title": "Ideas you want to make real",
-          "body": "From a working prototype to a minimum viable product (MVP)."
+          "body": "From a working prototype to a first real version."
         },
         "integrations": {
           "title": "Integrations and APIs",
-          "body": "Connecting services to each other: forms to a CRM, databases to dashboards, payments, notifications, and more."
+          "body": "Forms to a CRM, payments, notifications, and more."
         },
         "automations": {
           "title": "Automations",
-          "body": "The repetitive flows that eat your time every week."
+          "body": "The repetitive tasks that eat up your week."
         },
         "maintenance": {
           "title": "Maintenance and improvements",
-          "body": "When something breaks, needs an update, or you want a new feature without starting from scratch."
-        },
-        "code": {
-          "title": "Clean, deliverable code",
-          "body": "What I build is yours. No hidden lock-in, no forever fees."
+          "body": "Fixes, updates, and new features on what you have."
         }
       }
     },
     "packagesTitle": "Three ways to work together",
+    "featured": "Most common",
     "packages": {
       "discovery": {
         "name": "Discovery Call",
@@ -110,7 +118,7 @@
       "launch": {
         "name": "Launch",
         "timing": "Fixed project",
-        "lead": "For when you're ready to build. Includes the Discovery Call, we define scope, and I deliver something ready to use — yours, no monthly fee after.",
+        "lead": "For when you're ready to build. We start with the Discovery Call, agree on scope in writing, and I hand you something you can use. It's yours, with no monthly fee after.",
         "cta": "Ask about a Launch",
         "includesTitle": "Includes Discovery Call +",
         "chips": {
@@ -129,7 +137,7 @@
       "retain": {
         "name": "Retain",
         "timing": "Ongoing",
-        "lead": "The full package: everything in Launch, plus month-to-month support. For keeping things moving without hiring full-time.",
+        "lead": "Everything in Launch, plus help every month. Good if you want someone on call without hiring full-time.",
         "cta": "Ask about Retain",
         "includesTitle": "Everything in Launch, plus",
         "chips": {
@@ -140,18 +148,19 @@
           "Everything included in Launch",
           "Improvements and new features month to month",
           "Hosting help when something breaks",
-          "Priority — someone who already knows your project",
+          "Priority, from someone who already knows your project",
           "Evolution: new phases, integrations, and AI"
         ]
       },
       "custom": {
-        "name": "Not sure yet — let's talk"
+        "name": "Not sure yet",
+        "timing": "Let's talk"
       }
     },
     "process": {
       "title": "How we work",
-      "lead": "No big process deck. We talk, write down scope, build in small chunks, and you see something working every couple of weeks.",
-      "outro": "Each chunk is something you can click through and react to. We adjust and keep going — no disappearing for a month.",
+      "lead": "No big process deck. We talk, write down the scope, and build in small pieces.",
+      "outro": "Every couple of weeks you get something you can click through and react to. No going quiet for a month.",
       "steps": {
         "discovery": {
           "title": "Discovery",
@@ -173,18 +182,18 @@
     },
     "why": {
       "title": "Why work with me",
-      "lead": "I'm one developer, not an agency. You get me — the person who writes the code and answers your messages.",
+      "lead": "The person answering your messages is the one writing the code.",
       "photoAlt": "Carlos Zabaleta",
       "photoPlaceholder": "Photo coming soon",
       "points": [
-        "You talk to me directly — no account manager in the middle",
+        "You talk to me directly. No account manager in the middle",
         "A few projects at a time, so yours isn't stuck in a queue",
         "I start with what saves you time or makes money, not what's trendy",
-        "Clean code you own — hand it to another dev later if you want",
-        "APIs, automations, internal tools — I've shipped these for real clients"
+        "Clean code you own, so you can hand it to another dev later",
+        "I've shipped APIs, automations, and internal tools for real clients"
       ],
-      "cta": "Ready for the next step?",
-      "ctaSub": "Pick the option that fits where you are, and let's talk."
+      "cta": "Got something in mind?",
+      "ctaSub": "Send me a short note about what you're stuck on."
     },
     "contact": {
       "title": "Let's talk",
