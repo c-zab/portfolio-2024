@@ -1,6 +1,6 @@
 ---
 import Navbar from "../components/navbar.astro";
-import { getLocaleFromPath, getTranslation } from "../utils/i18n";
+import { getLocaleFromPath, getLocalizedPath, getTranslation } from "../utils/i18n";
 import { accentize } from "../utils/accent-text";
 
 const locale = getLocaleFromPath(Astro.url.pathname);
@@ -34,7 +34,27 @@ const t = (key: string) => getTranslation(locale, key);
       style="color: var(--text-secondary);"
       set:html={accentize(t("header.description"))}
     />
-    <div data-hero-chrome class="hero-enter mt-8">
+    <div data-hero-chrome class="hero-enter mt-8 flex flex-col items-center gap-7">
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <button type="button" data-contact-open="discovery" class="btn-cta" data-i18n="services.heroPrimary">
+          {t("services.heroPrimary")}
+        </button>
+        <a href={getLocalizedPath("/services", locale)} data-localized-href="/services" class="btn-ghost">
+          <span data-i18n="header.servicesCta">{t("header.servicesCta")}</span>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="btn-ghost__arrow h-4 w-4"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
       <Navbar />
     </div>
   </div>
@@ -216,6 +236,10 @@ const t = (key: string) => getTranslation(locale, key);
 
   .hero-enter {
     opacity: 0;
+  }
+
+  .btn-ghost:hover .btn-ghost__arrow {
+    transform: translateX(2px);
   }
 
   :global(html.hero-ready) .hero-enter,

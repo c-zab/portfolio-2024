@@ -156,6 +156,32 @@ html.dark {
   filter: brightness(0.98);
 }
 
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  padding: 0.625rem 1.15rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.btn-ghost:hover {
+  border-color: color-mix(in srgb, var(--primary) 60%, transparent);
+  color: var(--primary);
+}
+
+.btn-ghost__arrow {
+  transition: transform 200ms ease;
+}
+
 html.dark .btn-cta {
   color: var(--primary-on);
   background: linear-gradient(

@@ -4,7 +4,7 @@ import vercel from "@astrojs/vercel";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://czabalet.com",
+  site: "https://czab.dev",
   integrations: [tailwind()],
   output: "server",
   adapter: vercel(),

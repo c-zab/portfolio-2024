@@ -109,17 +109,6 @@ const isServices = pathWithoutLocale.startsWith("/services");
         >
           <span data-i18n="navigation.services">{t("navigation.services")}</span>
         </a>
-        <button
-          type="button"
-          class="nav-link is-disabled nav-link--blog"
-          data-nav="blog"
-          disabled
-          aria-disabled="true"
-          title={t("navigation.comingSoon")}
-          data-i18n-title="navigation.comingSoon"
-        >
-          <span data-i18n="navigation.blog">{t("navigation.blog")}</span>
-        </button>
       </nav>
     </div>
   </div>
@@ -311,10 +300,6 @@ const isServices = pathWithoutLocale.startsWith("/services");
   .site-nav.is-intro-done .nav-link:disabled {
     opacity: 0.45;
     transform: none;
-  }
-
-  .nav-link--blog {
-    display: inline-flex;
   }
 
   .site-nav__links {
@@ -579,10 +564,6 @@ const isServices = pathWithoutLocale.startsWith("/services");
     .nav-theme__icon {
       width: 20px;
       height: 20px;
-    }
-
-    .nav-link--blog {
-      display: none;
     }
 
     .site-nav__end {
