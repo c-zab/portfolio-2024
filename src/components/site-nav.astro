@@ -109,6 +109,18 @@ const isServices = pathWithoutLocale.startsWith("/services");
         >
           <span data-i18n="navigation.services">{t("navigation.services")}</span>
         </a>
+        <button
+          type="button"
+          class="nav-link is-disabled"
+          data-nav="blog"
+          disabled
+          aria-disabled="true"
+          title={t("navigation.comingSoon")}
+          data-i18n-title="navigation.comingSoon"
+        >
+          <span data-i18n="navigation.blog">{t("navigation.blog")}</span>
+          <span class="nav-soon" data-i18n="navigation.soon">{t("navigation.soon")}</span>
+        </button>
       </nav>
     </div>
   </div>
@@ -170,7 +182,7 @@ const isServices = pathWithoutLocale.startsWith("/services");
 
       anime({
         targets: items,
-        opacity: (el: HTMLElement) => (el.matches(".is-disabled, :disabled") ? 0.45 : 1),
+        opacity: 1,
         translateY: 0,
         delay: anime.stagger(70, { start: 60 }),
         duration: 560,
@@ -298,7 +310,7 @@ const isServices = pathWithoutLocale.startsWith("/services");
 
   .site-nav.is-intro-done .nav-link.is-disabled,
   .site-nav.is-intro-done .nav-link:disabled {
-    opacity: 0.45;
+    opacity: 1;
     transform: none;
   }
 
@@ -440,14 +452,26 @@ const isServices = pathWithoutLocale.startsWith("/services");
   }
 
   .nav-link.is-disabled,
-  .nav-link:disabled {
-    cursor: not-allowed;
-    opacity: 0.45;
+  .nav-link:disabled,
+  .nav-link.is-disabled:hover,
+  .nav-link:disabled:hover,
+  :global(html.dark) .nav-link:disabled,
+  :global(html.dark) .nav-link:disabled:hover {
+    color: var(--text-muted);
+    background: transparent;
+    cursor: default;
   }
 
-  .nav-link.is-disabled:hover,
-  .nav-link:disabled:hover {
-    color: var(--text-muted);
+  .nav-soon {
+    margin-left: 7px;
+    padding: 3px 7px;
+    border-radius: 999px;
+    background: var(--primary-surface);
+    color: var(--primary);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1;
   }
 
   .nav-lang {
@@ -602,35 +626,21 @@ const isServices = pathWithoutLocale.startsWith("/services");
 
     .site-nav__links {
       flex-direction: column;
-      align-items: stretch;
+      align-items: center;
       gap: 2px;
       width: 100%;
+      padding: 4px 0;
     }
 
     .nav-link {
-      justify-content: flex-start;
-      min-height: 42px;
-      padding: 0 14px;
-      font-size: 15px;
-      border-radius: 10px;
-    }
-
-    .nav-link:hover {
-      background: var(--surface-quiet);
-    }
-
-    .nav-link.is-active {
-      background: var(--primary-surface);
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 16px;
+      font-size: 16px;
     }
 
     .nav-link::after {
-      top: 12px;
-      right: auto;
-      bottom: 12px;
-      left: 0;
-      width: 2px;
-      height: auto;
-      transform: scaleY(0.4);
+      bottom: 8px;
     }
   }
 
@@ -644,7 +654,7 @@ const isServices = pathWithoutLocale.startsWith("/services");
 
     .site-nav .nav-link.is-disabled,
     .site-nav .nav-link:disabled {
-      opacity: 0.45;
+      opacity: 1;
       transform: none;
     }
   }
