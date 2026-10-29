@@ -5,6 +5,7 @@
     "location": "Toronto, Canada"
   },
   "header": {
+    "servicesCta": "See services",
     "description": "I build |pixel-perfect|, engaging, and accessible digital experiences using modern web technologies. Specializing in |full-stack development| in Toronto, Canada."
   },
   "comingSoon": {
@@ -22,6 +23,7 @@
   "navigation": {
     "home": "Home",
     "blog": "Blog",
+    "soon": "Soon",
     "about": "About",
     "experience": "Experience",
     "projects": "Projects",
@@ -58,7 +60,6 @@
     "help": {
       "title": "What I build",
       "lead": "Most projects connect to tools you already use, like Excel, QuickBooks, or Google Workspace.",
-      "hint": "Hover or tap a card for details.",
       "tools": [
         "Excel & Google Sheets",
         "PDF files",
@@ -214,7 +215,7 @@
       "submit": "Send message",
       "sending": "Sending…",
       "privacy": "Your information is safe and never shared.",
-      "success": "Done, I got your message. I'll get back to you soon.",
+      "success": "Thanks, I got your message. I'll reply within one business day.",
       "human": {
         "pickColor": {
           "prefix": "Pick the",

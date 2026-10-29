@@ -156,6 +156,32 @@ html.dark {
   filter: brightness(0.98);
 }
 
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  padding: 0.625rem 1.15rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.btn-ghost:hover {
+  border-color: color-mix(in srgb, var(--primary) 60%, transparent);
+  color: var(--primary);
+}
+
+.btn-ghost__arrow {
+  transition: transform 200ms ease;
+}
+
 html.dark .btn-cta {
   color: var(--primary-on);
   background: linear-gradient(
@@ -174,4 +200,62 @@ html.dark .btn-cta:hover {
     0 2px 4px rgba(0, 0, 0, 0.26),
     0 14px 32px color-mix(in srgb, var(--primary) 34%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+/* Typed headings (see utils/typewriter.ts). Text stays hidden until the script splits
+   it into letters, so it never flashes in full before typing starts. */
+.typed {
+  position: relative;
+}
+
+.typed:not(.is-split) .typed__text {
+  opacity: 0;
+}
+
+.typed__word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.typed.is-split:not(.is-static) .typed__char {
+  visibility: hidden;
+}
+
+.typed.is-split .typed__char.is-typed {
+  visibility: visible;
+}
+
+.typed__caret {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: max(2px, 0.055em);
+  border-radius: 1px;
+  background: var(--primary);
+  pointer-events: none;
+  /* On and off like a text cursor, with a short fade so it doesn't flicker. */
+  animation: typed-blink 1.1s linear infinite;
+}
+
+html.dark .typed__caret {
+  background: var(--text-secondary);
+}
+
+.typed.is-typing .typed__caret {
+  animation: none;
+  opacity: 1;
+}
+
+@keyframes typed-blink {
+  0%,
+  44% {
+    opacity: 1;
+  }
+  50%,
+  94% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
