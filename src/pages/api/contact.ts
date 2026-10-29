@@ -1,17 +1,15 @@
 import type { APIRoute } from "astro";
-import { supabase } from "../../db/supabase.js";
+import { validateContact } from "../../utils/contact-validation";
 import { isHumanAnswer } from "../../utils/human-check";
+import { VISITOR_TOKEN_COOKIE, verifyVisitorToken } from "../../utils/visitor-token";
 
 export const prerender = false;
-
-const PACKAGES = new Set(["discovery", "launch", "retain", "custom"]);
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function asString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, cookies }) => {
   let body: Record<string, unknown>;
   try {
     body = await request.json();
@@ -24,52 +22,58 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: true });
   }
 
-  const name = asString(body.name);
-  const email = asString(body.email).toLowerCase();
-  const phone = asString(body.phone);
-  const pkg = asString(body.package);
-  const message = asString(body.message);
-  const questionId = asString(body.humanQuestion);
-  const human = asString(body.human);
+  const input = {
+    name: asString(body.name),
+    email: asString(body.email).toLowerCase(),
+    phone: asString(body.phone),
+    package: asString(body.package),
+    message: asString(body.message),
+  };
 
-  if (name.length < 2 || name.length > 80) {
-    return json({ ok: false, error: "name" }, 400);
+  const invalid = validateContact(input);
+  if (invalid) {
+    return json({ ok: false, error: invalid }, 400);
   }
-  if (!PACKAGES.has(pkg)) {
-    return json({ ok: false, error: "package" }, 400);
-  }
-  if (message.length < 8 || message.length > 2000) {
-    return json({ ok: false, error: "message" }, 400);
-  }
-  if (email && !EMAIL_RE.test(email)) {
-    return json({ ok: false, error: "email" }, 400);
-  }
-  if (!email && !phone) {
-    return json({ ok: false, error: "contact" }, 400);
-  }
-  if (!isHumanAnswer(questionId, human)) {
+  if (!isHumanAnswer(asString(body.humanQuestion), asString(body.human))) {
     return json({ ok: false, error: "human" }, 400);
   }
 
-  const { error } = await supabase.from("contact_messages").insert({
-    name,
-    email: email || null,
-    phone: phone || null,
-    package: pkg,
-    message,
-  });
+  // Missing env vars (secret, Supabase keys) throw here; answer with JSON instead of a blank 500.
+  try {
+    const token = verifyVisitorToken(cookies.get(VISITOR_TOKEN_COOKIE)?.value);
+    if (!token) {
+      return json({ ok: false, error: "token" }, 401);
+    }
 
-  if (error) {
-    console.error("[contact] supabase insert failed:", error.message);
+    const { supabase } = await import("../../db/supabase.js");
+    const { error } = await supabase.from("contact_messages").insert({
+      name: input.name,
+      email: input.email || null,
+      phone: input.phone || null,
+      package: input.package,
+      message: input.message,
+      token_id: token.id,
+    });
+
+    if (error) {
+      console.error("[contact] supabase insert failed:", error.message);
+      return json({ ok: false, error: "server" }, 500);
+    }
+  } catch (err) {
+    console.error("[contact] failed:", err instanceof Error ? err.message : err);
     return json({ ok: false, error: "server" }, 500);
   }
 
   return json({ ok: true });
 };
 
-function json(data: unknown, status = 200) {
+// Any other method (e.g. opening the URL in a browser) gets a JSON hint instead of Astro's 404 page.
+export const ALL: APIRoute = () =>
+  json({ ok: false, error: "method", hint: "Use POST with a JSON body." }, 405, { Allow: "POST" });
+
+function json(data: unknown, status = 200, headers: Record<string, string> = {}) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...headers },
   });
 }

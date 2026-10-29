@@ -214,11 +214,7 @@
       "submit": "Enviar mensaje",
       "sending": "Enviando…",
       "privacy": "Tu información está segura y no se comparte.",
-      "success": "Listo. Por ahora esto es una prueba: no se envió nada.",
-      "error": "No se pudo enviar. Prueba otra vez.",
-      "contactRequired": "Pon un email o un teléfono.",
-      "humanError": "Esa no era. Prueba otra vez.",
-      "humanRequired": "Completa la verificación rápida primero.",
+      "success": "Listo, recibí tu mensaje. Te respondo pronto.",
       "human": {
         "pickColor": {
           "prefix": "Elige el",
@@ -272,6 +268,19 @@
         "launch": "Hola Carlos, quiero lanzar algo concreto (un sitio, una herramienta o una tienda).",
         "retain": "Hola Carlos, ya tengo un proyecto en marcha y me vendría bien apoyo continuo.",
         "custom": "Hola Carlos, no estoy seguro cuál opción encaja mejor — esto es lo que quiero hacer:"
+      },
+      "errors": {
+        "name": "Escribe tu nombre (entre 2 y 80 caracteres).",
+        "contact": "Pon un email o un teléfono para poder responderte.",
+        "email": "Ese email no parece válido. Debe verse como tu@email.com.",
+        "phone": "Ese teléfono no parece válido. Usa entre 7 y 15 dígitos; puedes empezar con +.",
+        "package": "Elige cómo quieres trabajar.",
+        "message": "Escribe un mensaje de entre 8 y 2000 caracteres.",
+        "humanRequired": "Completa la verificación rápida primero.",
+        "human": "Esa no era. Prueba otra vez.",
+        "token": "Tu sesión expiró. Recarga la página e inténtalo otra vez.",
+        "network": "No hay conexión con el servidor. Revisa tu internet e inténtalo otra vez.",
+        "server": "Algo falló de mi lado y el mensaje no se guardó. Inténtalo en unos minutos."
       }
     }
   },

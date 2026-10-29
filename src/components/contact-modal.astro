@@ -175,7 +175,7 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
           <input type="hidden" name="humanQuestion" />
         </fieldset>
 
-        <p data-contact-error class="hidden text-sm text-red-600 dark:text-red-400"></p>
+        <p data-contact-error role="alert" class="hidden text-sm text-red-600 dark:text-red-400"></p>
 
         <button type="submit" data-contact-submit class="btn-cta contact-submit w-full">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
@@ -204,9 +204,23 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
 <script>
   import { createHumanChallenge, HUMAN_SHAPE_COLORS, isHumanAnswer, type HumanChallengeType } from "../utils/human-check";
   import { getLocaleFromPath, getTranslation } from "../utils/i18n";
+  import { CONTACT_PACKAGES as PACKAGES, validateContact } from "../utils/contact-validation";
 
-  const PACKAGES = ["discovery", "launch", "retain", "custom"] as const;
-  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Keys under services.contact.errors; the API answers with the same codes.
+  const ERROR_CODES = [
+    "name",
+    "contact",
+    "email",
+    "phone",
+    "package",
+    "message",
+    "humanRequired",
+    "human",
+    "token",
+    "network",
+    "server",
+  ] as const;
+  type ErrorCode = (typeof ERROR_CODES)[number];
   const modal = document.getElementById("contact-modal");
   const form = document.getElementById("contact-form") as HTMLFormElement | null;
   const errorEl = document.querySelector<HTMLElement>("[data-contact-error]");
@@ -252,6 +266,33 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
       if (!errorEl) return;
       errorEl.textContent = message;
       errorEl.classList.toggle("hidden", !message);
+      if (!message) {
+        form!.querySelectorAll("[aria-invalid]").forEach((el) => el.removeAttribute("aria-invalid"));
+      }
+    }
+
+    function isErrorCode(code: string): code is ErrorCode {
+      return (ERROR_CODES as readonly string[]).includes(code);
+    }
+
+    // Field to highlight and focus for each error; codes without one only show the message.
+    function fieldFor(code: ErrorCode): HTMLElement | null {
+      if (code === "name") return document.getElementById("contact-name");
+      if (code === "email") return emailInput;
+      if (code === "phone") return phoneInput;
+      if (code === "contact") return contactMode === "email" ? emailInput : phoneInput;
+      if (code === "message") return messageEl;
+      if (code === "package") return form!.querySelector(".contact-packages");
+      return null;
+    }
+
+    function showError(code: ErrorCode) {
+      setError(t(`services.contact.errors.${code}`));
+      const field = fieldFor(code);
+      if (!field) return;
+      field.setAttribute("aria-invalid", "true");
+      const focusTarget = code === "package" ? packageInputs[0] : field;
+      focusTarget?.focus();
     }
 
     function setContactMode(mode: "email" | "phone") {
@@ -431,6 +472,24 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
       clearHumanSelection();
     }
 
+    // The server sets a signed visitor token cookie; /api/contact rejects messages without one.
+    let tokenRequest: Promise<boolean> | null = null;
+
+    function requestToken() {
+      tokenRequest = fetch("/api/token", { method: "POST" })
+        .then((response) => response.ok)
+        .catch(() => false);
+      return tokenRequest;
+    }
+
+    function sendMessage(body: Record<string, string>) {
+      return fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+    }
+
     function fillTemplate(packageId: string) {
       if (!PACKAGES.includes(packageId as (typeof PACKAGES)[number])) return;
       const next = templates()[packageId as (typeof PACKAGES)[number]];
@@ -451,6 +510,7 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
       form!.classList.remove("hidden");
       setError();
       refreshHuman();
+      void requestToken();
       packageInputs.forEach((input) => {
         input.checked = input.value === packageId;
       });
@@ -513,6 +573,12 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
       });
     });
 
+    // Once the visitor edits the highlighted field, drop the highlight and its message.
+    form.addEventListener("input", (event) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest("[aria-invalid]")) setError();
+    });
+
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       setError();
@@ -533,28 +599,17 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
       const questionId = String(data.get("humanQuestion") ?? "");
       const human = String(data.get("human") ?? "");
 
-      if (name.length < 2) {
-        setError(t("services.contact.error"));
-        return;
-      }
-      if (!PACKAGES.includes(pkg as (typeof PACKAGES)[number]) || message.length < 8) {
-        setError(t("services.contact.error"));
-        return;
-      }
-      if (contactMode === "email" && (!email || !EMAIL_RE.test(email))) {
-        setError(t("services.contact.contactRequired"));
-        return;
-      }
-      if (contactMode === "phone" && !phone) {
-        setError(t("services.contact.contactRequired"));
+      const invalid = validateContact({ name, email, phone, package: pkg, message });
+      if (invalid) {
+        showError(invalid);
         return;
       }
       if (!human) {
-        setError(t("services.contact.humanRequired"));
+        showError("humanRequired");
         return;
       }
       if (!isHumanAnswer(questionId, human)) {
-        setError(t("services.contact.humanError"));
+        showError("human");
         refreshHuman();
         return;
       }
@@ -566,32 +621,40 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
       }
 
       try {
-        const response = await fetch("/api/contact", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name,
-            email,
-            phone,
-            package: pkg,
-            message,
-            humanQuestion: questionId,
-            human,
-            website: String(data.get("website") ?? ""),
-          }),
-        });
+        const body = {
+          name,
+          email,
+          phone,
+          package: pkg,
+          message,
+          humanQuestion: questionId,
+          human,
+          website: String(data.get("website") ?? ""),
+        };
 
-        const result = (await response.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
+        // Without a token the message would only bounce back as "token", so fail early as a server problem.
+        if (!(await (tokenRequest ?? requestToken())) && !(await requestToken())) {
+          showError("server");
+          return;
+        }
+
+        let response = await sendMessage(body);
+        let result = (await response.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
+
+        // Token missing or expired (e.g. cookie cleared while the modal was open): get a new one, retry once.
+        if (result?.error === "token") {
+          if (!(await requestToken())) {
+            showError("server");
+            return;
+          }
+          response = await sendMessage(body);
+          result = (await response.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
+        }
 
         if (!response.ok || !result?.ok) {
-          if (result?.error === "human") {
-            setError(t("services.contact.humanError"));
-            refreshHuman();
-          } else if (result?.error === "contact") {
-            setError(t("services.contact.contactRequired"));
-          } else {
-            setError(t("services.contact.error"));
-          }
+          const code = result?.error ?? "";
+          showError(isErrorCode(code) ? code : "server");
+          if (code === "human") refreshHuman();
           return;
         }
 
@@ -599,7 +662,7 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
         privacyEl?.classList.add("hidden");
         successEl?.classList.remove("hidden");
       } catch {
-        setError(t("services.contact.error"));
+        showError("network");
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
@@ -723,6 +786,15 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
   .contact-input:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+  }
+
+  .contact-input[aria-invalid="true"],
+  .contact-packages[aria-invalid="true"] .contact-package {
+    border-color: #ef4444;
+  }
+
+  .contact-input[aria-invalid="true"]:focus {
+    box-shadow: 0 0 0 3px color-mix(in srgb, #ef4444 22%, transparent);
   }
 
   .contact-input-wrap {
