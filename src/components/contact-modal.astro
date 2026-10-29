@@ -585,9 +585,11 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
 
     // Tidy a valid number into the country's usual format, e.g. "4165550199" → "(416) 555-0199".
     phoneInput.addEventListener("blur", () => {
-      const parsed = parsePhoneNumberFromString(phoneInput!.value, countrySelect!.value as CountryCode);
-      if (!parsed?.isValid()) return;
-      phoneInput!.value = parsed.country === countrySelect!.value ? parsed.formatNational() : parsed.formatInternational();
+      const normalized = normalizePhone(phoneInput!.value, countrySelect!.value);
+      const parsed = normalized ? parsePhoneNumberFromString(normalized) : undefined;
+      if (!parsed) return;
+      const sameCode = parsed.countryCallingCode === getCountryCallingCode(countrySelect!.value as CountryCode);
+      phoneInput!.value = sameCode ? parsed.formatNational() : parsed.formatInternational();
     });
 
     function openModal(packageId?: string) {
