@@ -109,19 +109,28 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
             />
           </div>
 
-          <div data-contact-field="phone" class="contact-input-wrap mt-1.5 hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="contact-input-icon h-4 w-4" aria-hidden="true">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-            </svg>
+          <div data-contact-field="phone" class="contact-phone mt-1.5 hidden">
+            <!-- The native select sits invisibly over a short "🇨🇦 +1" label so the full country list stays accessible. -->
+            <div class="contact-phone__country">
+              <span data-phone-country-label class="contact-input contact-phone__country-label" aria-hidden="true"></span>
+              <select
+                id="contact-phone-country"
+                name="phoneCountry"
+                class="contact-phone__country-select"
+                data-i18n-aria="services.contact.phoneCountry"
+                aria-label={t("services.contact.phoneCountry")}
+              ></select>
+            </div>
             <input
               id="contact-phone"
               name="phone"
               type="tel"
-              autocomplete="tel"
-              class="contact-input contact-input--icon"
+              inputmode="tel"
+              autocomplete="tel-national"
+              maxlength="24"
+              class="contact-input contact-phone__number"
               data-i18n-aria="services.contact.phone"
               aria-label={t("services.contact.phone")}
-              data-i18n-placeholder="services.contact.phonePlaceholder"
               placeholder={t("services.contact.phonePlaceholder")}
             />
           </div>
@@ -204,7 +213,16 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
 <script>
   import { createHumanChallenge, HUMAN_SHAPE_COLORS, isHumanAnswer, type HumanChallengeType } from "../utils/human-check";
   import { getLocaleFromPath, getTranslation } from "../utils/i18n";
-  import { CONTACT_PACKAGES as PACKAGES, validateContact } from "../utils/contact-validation";
+  import { CONTACT_PACKAGES as PACKAGES, normalizePhone, validateContact } from "../utils/contact-validation";
+  import {
+    AsYouType,
+    getCountries,
+    getCountryCallingCode,
+    getExampleNumber,
+    parsePhoneNumberFromString,
+    type CountryCode,
+  } from "libphonenumber-js/max";
+  import phoneExamples from "libphonenumber-js/mobile/examples";
 
   // Keys under services.contact.errors; the API answers with the same codes.
   const ERROR_CODES = [
@@ -236,6 +254,8 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
   const phoneField = document.querySelector<HTMLElement>('[data-contact-field="phone"]');
   const emailInput = document.getElementById("contact-email") as HTMLInputElement | null;
   const phoneInput = document.getElementById("contact-phone") as HTMLInputElement | null;
+  const countrySelect = document.getElementById("contact-phone-country") as HTMLSelectElement | null;
+  const countryLabel = document.querySelector<HTMLElement>("[data-phone-country-label]");
   const modeButtons = document.querySelectorAll<HTMLButtonElement>("[data-contact-mode]");
 
   if (
@@ -248,7 +268,9 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
     emailField &&
     phoneField &&
     emailInput &&
-    phoneInput
+    phoneInput &&
+    countrySelect &&
+    countryLabel
   ) {
     let lastOpener: HTMLElement | null = null;
     let lastTemplate = "";
@@ -500,9 +522,78 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
       }
     }
 
+    const COUNTRIES = getCountries();
+
+    const flagOf = (code: string) =>
+      String.fromCodePoint(...[...code].map((letter) => 0x1f1e6 + letter.charCodeAt(0) - 65));
+
+    // Region from the browser language (es-MX → MX), else a sensible default per site locale.
+    function guessCountry(): CountryCode {
+      for (const tag of navigator.languages ?? [navigator.language]) {
+        const region = tag.split("-")[1]?.toUpperCase();
+        if (region && COUNTRIES.includes(region as CountryCode)) return region as CountryCode;
+      }
+      return getLocaleFromPath(window.location.pathname) === "es" ? "MX" : "CA";
+    }
+
+    function syncPhoneCountry() {
+      const code = countrySelect!.value as CountryCode;
+      countryLabel!.textContent = `${flagOf(code)} +${getCountryCallingCode(code)}`;
+      const example = getExampleNumber(code, phoneExamples);
+      phoneInput!.placeholder = example ? example.formatNational() : t("services.contact.phonePlaceholder");
+    }
+
+    // Country names come from the browser (Intl), so they follow the page language.
+    function renderCountries() {
+      const locale = getLocaleFromPath(window.location.pathname);
+      const names = new Intl.DisplayNames([locale], { type: "region" });
+      const current = countrySelect!.value || guessCountry();
+      const fallback = guessCountry();
+      const options = COUNTRIES.map((code) => ({ code, name: names.of(code) ?? code }))
+        .sort((a, b) => a.name.localeCompare(b.name, locale))
+        .map(({ code, name }) => {
+          const option = new Option(`${flagOf(code)} ${name} (+${getCountryCallingCode(code)})`, code);
+          option.defaultSelected = code === fallback;
+          return option;
+        });
+      countrySelect!.replaceChildren(...options);
+      countrySelect!.value = current;
+      syncPhoneCountry();
+    }
+
+    renderCountries();
+
+    countrySelect.addEventListener("change", () => {
+      syncPhoneCountry();
+      phoneInput!.removeAttribute("aria-invalid");
+      phoneInput!.focus();
+    });
+
+    // Keep only phone characters; a pasted "+52 …" switches the picker to that country.
+    phoneInput.addEventListener("input", () => {
+      const cleaned = phoneInput!.value.replace(/[^\d+\s().-]/g, "");
+      if (cleaned !== phoneInput!.value) phoneInput!.value = cleaned;
+      if (!cleaned.startsWith("+")) return;
+      const typer = new AsYouType();
+      typer.input(cleaned);
+      const country = typer.getCountry();
+      if (country && country !== countrySelect!.value) {
+        countrySelect!.value = country;
+        syncPhoneCountry();
+      }
+    });
+
+    // Tidy a valid number into the country's usual format, e.g. "4165550199" → "(416) 555-0199".
+    phoneInput.addEventListener("blur", () => {
+      const parsed = parsePhoneNumberFromString(phoneInput!.value, countrySelect!.value as CountryCode);
+      if (!parsed?.isValid()) return;
+      phoneInput!.value = parsed.country === countrySelect!.value ? parsed.formatNational() : parsed.formatInternational();
+    });
+
     function openModal(packageId?: string) {
       lastOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       form!.reset();
+      syncPhoneCountry();
       lastTemplate = "";
       setContactMode("email");
       successEl?.classList.add("hidden");
@@ -563,6 +654,7 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
           if (type && targetKey && !modal!.classList.contains("hidden")) {
             renderHumanPrompt(type, targetKey);
           }
+          renderCountries();
         }, 0);
       });
     });
@@ -599,7 +691,9 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
       const questionId = String(data.get("humanQuestion") ?? "");
       const human = String(data.get("human") ?? "");
 
-      const invalid = validateContact({ name, email, phone, package: pkg, message });
+      const phoneCountry = countrySelect.value;
+
+      const invalid = validateContact({ name, email, phone, package: pkg, message, phoneCountry });
       if (invalid) {
         showError(invalid);
         return;
@@ -624,7 +718,8 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
         const body = {
           name,
           email,
-          phone,
+          phone: phone ? (normalizePhone(phone, phoneCountry) ?? phone) : "",
+          phoneCountry: phone ? phoneCountry : "",
           package: pkg,
           message,
           humanQuestion: questionId,
@@ -816,6 +911,60 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
 
   .contact-input--textarea {
     min-height: 4.75rem;
+  }
+
+  .contact-phone {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .contact-phone.hidden {
+    display: none;
+  }
+
+  .contact-phone__country {
+    position: relative;
+    flex: none;
+  }
+
+  .contact-phone__country-label {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    height: 100%;
+    white-space: nowrap;
+    padding-right: 1.75rem;
+  }
+
+  .contact-phone__country-label::after {
+    content: "";
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-right: 1.5px solid var(--text-muted);
+    border-bottom: 1.5px solid var(--text-muted);
+    transform: translateY(-70%) rotate(45deg);
+  }
+
+  .contact-phone__country-select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .contact-phone__country:focus-within .contact-phone__country-label {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+  }
+
+  .contact-phone__number {
+    flex: 1;
+    min-width: 0;
   }
 
   .contact-toggle {
