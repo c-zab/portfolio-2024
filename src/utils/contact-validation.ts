@@ -50,7 +50,14 @@ export function normalizePhone(value: string, country?: string) {
   const defaultCountry = country && isSupportedCountry(country) ? (country as CountryCode) : undefined;
   if (!raw.startsWith("+") && !defaultCountry) return null;
   const parsed = parsePhoneNumberFromString(raw, defaultCountry);
-  return parsed?.isValid() ? parsed.number : null;
+  if (!parsed) return null;
+  if (parsed.isValid()) return parsed.number;
+
+  // Strict rules lag behind real numbering plans (e.g. Toronto's 647-197-…), so also accept a number
+  // with a plausible full length for its country, unless it's one digit repeated (4444444444).
+  const national = parsed.nationalNumber;
+  const looksReal = parsed.isPossible() && national.length >= 8 && !/^(\d)\1+$/.test(national);
+  return looksReal ? parsed.number : null;
 }
 
 export function isValidPhone(value: string, country?: string) {
