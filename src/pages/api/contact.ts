@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { validateContact } from "../../utils/contact-validation";
+import { normalizePhone, validateContact } from "../../utils/contact-validation";
 import { isHumanAnswer } from "../../utils/human-check";
 import { VISITOR_TOKEN_COOKIE, verifyVisitorToken } from "../../utils/visitor-token";
 
@@ -28,6 +28,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     phone: asString(body.phone),
     package: asString(body.package),
     message: asString(body.message),
+    phoneCountry: asString(body.phoneCountry).toUpperCase(),
   };
 
   const invalid = validateContact(input);
@@ -49,7 +50,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const { error } = await supabase.from("contact_messages").insert({
       name: input.name,
       email: input.email || null,
-      phone: input.phone || null,
+      phone: normalizePhone(input.phone, input.phoneCountry),
       package: input.package,
       message: input.message,
       token_id: token.id,
