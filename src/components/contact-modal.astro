@@ -1,5 +1,6 @@
 ---
 import { getLocaleFromPath, getTranslation } from "../utils/i18n";
+import { CONTACT_EMAIL } from "../utils/site";
 
 const locale = getLocaleFromPath(Astro.url.pathname);
 const t = (key: string) => getTranslation(locale, key);
@@ -205,6 +206,11 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
 
       <p data-contact-success class="mt-5 hidden text-sm leading-relaxed" style="color: var(--text-secondary);" data-i18n="services.contact.success">
         {t("services.contact.success")}
+      </p>
+
+      <p class="contact-email mt-4 border-t pt-4 text-center text-sm" style="color: var(--text-muted); border-color: var(--border-subtle);">
+        <span data-i18n="services.contact.emailAlt">{t("services.contact.emailAlt")}</span>{" "}
+        <a href={`mailto:${CONTACT_EMAIL}`} class="email-link">{CONTACT_EMAIL}</a>
       </p>
     </div>
   </div>

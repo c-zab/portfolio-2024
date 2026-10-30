@@ -1,0 +1,262 @@
+---
+/**
+ * Layout preview for a future "Recent work" case study. Rendered only in `astro dev`
+ * (see services-page.astro): the project below is an illustration, not a real client,
+ * so it must never reach production. When a real project is ready, move its copy into
+ * the i18n files and drop the DEV guard.
+ */
+import Icon from "./icon.astro";
+
+const copy = {
+  en: {
+    title: "Recent work",
+    kicker: "Distribution company · Move to QuickBooks Online",
+    headline: "Every order now lands in QuickBooks Online as an invoice, automatically",
+    metrics: [
+      { value: "~10 h", label: "saved per month on order admin", before: "Before: 2–3 h every week exporting and fixing Excel" },
+      { value: "~1 h", label: "for the accountant to check invoices at month-end", before: "Before: most of a day matching QuickBooks against Excel" },
+    ],
+    columns: [
+      {
+        icon: "search",
+        label: "The problem",
+        text: "The admin team kept orders in Microsoft Access, linked to QuickBooks through an outdated plugin. They wanted to move to QuickBooks Online, and the plugin didn't support it.",
+      },
+      {
+        icon: "target",
+        label: "The decision",
+        text: "We compared a newer paid plugin, a free open-source tool, and a custom integration. The first two still relied on Excel for part of the work. The QuickBooks Online API was already in their plan, so we built on it.",
+      },
+      {
+        icon: "wrench",
+        label: "The solution",
+        text: "Orders moved from Access to MySQL, and a Node.js microservice was added to their dashboard. It validates each order, creates the invoice through the API, and never creates one twice. Failures go to a review queue.",
+      },
+      {
+        icon: "rocket",
+        label: "The result",
+        text: "They moved to QuickBooks Online with no plugins or spreadsheets. At month-end the accountant only reviews exceptions.",
+      },
+    ],
+    stack: ["Node.js", "TypeScript", "MySQL", "QuickBooks API", "Docker"],
+  },
+  es: {
+    title: "Trabajo reciente",
+    kicker: "Empresa de distribución · Migración a QuickBooks Online",
+    headline: "Cada pedido llega a QuickBooks Online como factura, sin tocar nada",
+    metrics: [
+      { value: "~10 h", label: "ahorradas al mes en administrar pedidos", before: "Antes: 2–3 h cada semana exportando y corrigiendo Excel" },
+      { value: "~1 h", label: "del contador para revisar facturas al cierre", before: "Antes: casi un día comparando QuickBooks con Excel" },
+    ],
+    columns: [
+      {
+        icon: "search",
+        label: "El problema",
+        text: "El área administrativa llevaba los pedidos en Microsoft Access, conectado a QuickBooks con un plugin desactualizado. Querían pasar a QuickBooks Online, y el plugin no lo soportaba.",
+      },
+      {
+        icon: "target",
+        label: "La decisión",
+        text: "Comparamos un plugin de pago más nuevo, una herramienta gratis de código abierto y una integración propia. Las dos primeras seguían dependiendo de Excel para parte del trabajo. La API de QuickBooks Online ya venía en su plan, así que construimos sobre ella.",
+      },
+      {
+        icon: "wrench",
+        label: "La solución",
+        text: "Los pedidos pasaron de Access a MySQL, y se sumó a su dashboard un microservicio en Node.js. Valida cada pedido, crea la factura por la API y nunca la duplica. Lo que falla queda en una cola de revisión.",
+      },
+      {
+        icon: "rocket",
+        label: "El resultado",
+        text: "Pasaron a QuickBooks Online sin plugins ni hojas de Excel. Al cierre de mes, el contador solo revisa las excepciones.",
+      },
+    ],
+    stack: ["Node.js", "TypeScript", "MySQL", "QuickBooks API", "Docker"],
+  },
+} as const;
+
+// Both languages render, and CSS shows the one matching <html lang>. The site's language
+// switch updates that attribute in place, so this follows it without living in the i18n
+// files (which ship to the browser).
+const versions = (["en", "es"] as const).map((lang) => ({ lang, c: copy[lang] }));
+---
+
+{
+  versions.map(({ lang, c }) => (
+    <section
+      class="case-study mt-20"
+      data-case-lang={lang}
+      aria-labelledby={`services-case-study-${lang}`}
+      data-reveal
+    >
+      <h2
+        id={`services-case-study-${lang}`}
+        class="text-xl font-semibold tracking-tight"
+        style="color: var(--text-primary);"
+        data-reveal-item
+      >
+        {c.title}
+      </h2>
+
+      <article class="case-study__card surface-interactive mt-6 rounded-2xl" data-reveal-item>
+        <div class="case-study__head">
+          <p class="case-study__kicker">{c.kicker}</p>
+          <h3 class="case-study__headline">{c.headline}</h3>
+          <ul class="case-study__metrics">
+            {c.metrics.map((metric) => (
+              <li class="case-study__stat">
+                <span class="case-study__stat-value">{metric.value}</span>
+                <span class="case-study__stat-label">{metric.label}</span>
+                <span class="case-study__stat-before">{metric.before}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <ul class="case-study__columns">
+          {c.columns.map((column) => (
+            <li>
+              <span class="case-study__column-label">
+                <Icon name={column.icon} class="h-4 w-4" />
+                {column.label}
+              </span>
+              <p>{column.text}</p>
+            </li>
+          ))}
+        </ul>
+
+        <ul class="case-study__stack" aria-label="Stack">
+          {c.stack.map((tech) => <li>{tech}</li>)}
+        </ul>
+      </article>
+    </section>
+  ))
+}
+
+<style>
+  :global(html[lang="es"]) [data-case-lang="en"],
+  :global(html:not([lang="es"])) [data-case-lang="es"] {
+    display: none;
+  }
+
+  .case-study__card {
+    padding: 1.5rem;
+  }
+
+  .case-study__head {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .case-study__kicker {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+
+  .case-study__headline {
+    margin-top: 0.5rem;
+    max-width: 40ch;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text-primary);
+    text-wrap: balance;
+  }
+
+  /* Results as tiles: the new number leads, the "before" sits quietly underneath. */
+  .case-study__metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .case-study__stat {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    padding: 1rem 1.1rem;
+    background: var(--primary-surface);
+  }
+
+  .case-study__stat-value {
+    font-family: var(--font-heading);
+    font-size: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--primary);
+  }
+
+  .case-study__stat-label {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--text-primary);
+  }
+
+  .case-study__stat-before {
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .case-study__columns {
+    display: grid;
+    gap: 1.25rem;
+    padding-top: 1.5rem;
+  }
+
+  .case-study__columns p {
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .case-study__column-label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .case-study__column-label :global(svg) {
+    color: var(--primary);
+  }
+
+  .case-study__stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  /* Same look as the tool chips in "What I can help with". */
+  .case-study__stack li {
+    border-radius: 999px;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    color: var(--primary);
+    background: var(--primary-surface);
+  }
+
+  @media (min-width: 768px) {
+    .case-study__card {
+      padding: 2rem;
+    }
+
+    .case-study__columns {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.75rem 2.5rem;
+    }
+  }
+</style>
