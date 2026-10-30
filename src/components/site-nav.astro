@@ -16,6 +16,15 @@ const isServices = pathWithoutLocale.startsWith("/services");
 
 <header class="site-nav-wrap">
   <div class="site-nav">
+    <a
+      href={getLocalizedPath("/", currentLocale)}
+      data-localized-href="/"
+      class="nav-brand"
+      aria-label="czab.dev, home"
+    >
+      czab<span class="nav-brand__tld">.dev</span>
+    </a>
+
     <div data-nav-utils class="nav-utils">
       <div data-language-switcher class="nav-lang">
         <a
@@ -27,7 +36,7 @@ const isServices = pathWithoutLocale.startsWith("/services");
         >
           EN
         </a>
-        <span class="nav-lang__slash">/</span>
+        <span class="nav-lang__slash" aria-hidden="true">/</span>
         <a
           href={getLocalizedPath(pathWithoutLocale, "es")}
           data-locale="es"
@@ -38,6 +47,8 @@ const isServices = pathWithoutLocale.startsWith("/services");
           ES
         </a>
       </div>
+
+      {!lockDark && <span class="nav-utils__divider" aria-hidden="true" />}
 
       {!lockDark && (
         <button
@@ -155,20 +166,31 @@ const isServices = pathWithoutLocale.startsWith("/services");
 
   function settleNavIntro() {
     if (!nav || nav.classList.contains("is-intro-done")) return;
-    nav.querySelectorAll<HTMLElement>(".nav-toggle, .nav-link, .nav-utils").forEach((el) => {
+    nav.querySelectorAll<HTMLElement>(".nav-brand, .nav-toggle, .nav-link, .nav-utils").forEach((el) => {
       el.style.removeProperty("opacity");
       el.style.removeProperty("transform");
     });
     nav.classList.add("is-intro-done");
   }
 
+  // Coming from another page of the site, the nav is already on screen (it stays
+  // put through the page transition), so only play its intro on the first visit.
+  const cameFromSite = (() => {
+    try {
+      return document.referrer !== "" && new URL(document.referrer).origin === window.location.origin;
+    } catch {
+      return false;
+    }
+  })();
+
   if (nav) {
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || cameFromSite) {
       settleNavIntro();
     } else {
+      const brand = nav.querySelector(".nav-brand");
       const introItems = compactQuery.matches
-        ? [toggle, nav.querySelector(".nav-utils")]
-        : [...nav.querySelectorAll(".nav-link"), nav.querySelector(".nav-utils")];
+        ? [brand, nav.querySelector(".nav-utils"), toggle]
+        : [brand, ...nav.querySelectorAll(".nav-link"), nav.querySelector(".nav-utils")];
 
       const items = introItems.filter((el): el is HTMLElement => el instanceof HTMLElement);
 
@@ -243,6 +265,7 @@ const isServices = pathWithoutLocale.startsWith("/services");
     justify-content: center;
     padding: 14px 16px 20px;
     pointer-events: none;
+    view-transition-name: site-nav;
   }
 
   /* Solid canvas behind the bar once the page scrolls, so content never reads through it */
@@ -277,6 +300,30 @@ const isServices = pathWithoutLocale.startsWith("/services");
     padding: 0 4px;
   }
 
+  .nav-brand {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    order: 0;
+    padding: 0 12px;
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .nav-brand__tld {
+    color: var(--primary);
+    transition: color 180ms ease;
+  }
+
+  .nav-brand:hover .nav-brand__tld {
+    color: var(--primary-bright);
+  }
+
   .site-nav__end {
     display: flex;
     min-width: 0;
@@ -285,6 +332,7 @@ const isServices = pathWithoutLocale.startsWith("/services");
     justify-content: flex-start;
     gap: 4px;
     order: 1;
+    margin-left: 40px;
   }
 
   [data-nav-utils] {
@@ -295,12 +343,14 @@ const isServices = pathWithoutLocale.startsWith("/services");
     order: 3;
   }
 
+  .site-nav:not(.is-intro-done) .nav-brand,
   .site-nav:not(.is-intro-done) .nav-toggle,
   .site-nav:not(.is-intro-done) .nav-link,
   .site-nav:not(.is-intro-done) .nav-utils {
     opacity: 0;
   }
 
+  .site-nav.is-intro-done .nav-brand,
   .site-nav.is-intro-done .nav-toggle,
   .site-nav.is-intro-done .nav-link:not(.is-disabled):not(:disabled),
   .site-nav.is-intro-done .nav-utils {
@@ -420,7 +470,7 @@ const isServices = pathWithoutLocale.startsWith("/services");
   }
 
   .nav-link.is-active {
-    color: var(--primary);
+    color: var(--text-primary);
   }
 
   .nav-link.is-active::after {
@@ -437,11 +487,7 @@ const isServices = pathWithoutLocale.startsWith("/services");
   }
 
   :global(html.dark) .nav-link.is-active {
-    color: var(--primary);
-  }
-
-  :global(html.dark) .nav-link.is-active::after {
-    box-shadow: 0 0 10px color-mix(in srgb, var(--primary) 70%, transparent);
+    color: var(--text-primary);
   }
 
   .nav-utils {
@@ -449,6 +495,12 @@ const isServices = pathWithoutLocale.startsWith("/services");
     align-items: center;
     gap: 18px;
     flex-shrink: 0;
+  }
+
+  .nav-utils__divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border-strong);
   }
 
   .nav-link.is-disabled,
@@ -563,9 +615,14 @@ const isServices = pathWithoutLocale.startsWith("/services");
       padding: 0;
     }
 
+    .nav-brand {
+      padding: 0 6px;
+      font-size: 20px;
+    }
+
     .nav-toggle {
       display: grid;
-      order: 1;
+      order: 3;
       width: 40px;
       height: 40px;
     }
@@ -574,6 +631,10 @@ const isServices = pathWithoutLocale.startsWith("/services");
       order: 2;
       margin-left: auto;
       gap: 10px;
+    }
+
+    .nav-utils__divider {
+      height: 16px;
     }
 
     .nav-lang__link {
@@ -591,7 +652,8 @@ const isServices = pathWithoutLocale.startsWith("/services");
     }
 
     .site-nav__end {
-      order: 3;
+      order: 4;
+      margin-left: 0;
       position: absolute;
       top: calc(100% + 8px);
       right: 0;
@@ -645,6 +707,7 @@ const isServices = pathWithoutLocale.startsWith("/services");
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .site-nav .nav-brand,
     .site-nav .nav-toggle,
     .site-nav .nav-link:not(.is-disabled):not(:disabled),
     .site-nav .nav-utils {

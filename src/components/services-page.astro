@@ -572,52 +572,55 @@ const profilePhoto = "/images/carlos.jpg";
     });
   });
 
-  // Sections fade up as they enter the viewport; items inside stagger.
+  // Items fade up as they enter the viewport. The Layout head script arms
+  // `html.reveal-armed` before first paint so nothing flashes in and then hides;
+  // if this script loaded too late the Layout disarms it and the page just shows.
+  const root = document.documentElement;
   const process = document.querySelector<HTMLElement>("[data-process]");
 
-  if (!prefersReducedMotion && "IntersectionObserver" in window) {
-    process?.classList.add("is-line-pending");
+  if (root.classList.contains("reveal-armed")) {
+    root.classList.add("reveal-ready");
 
-    const revealSection = (section: HTMLElement) => {
-      const items = Array.from(section.querySelectorAll<HTMLElement>("[data-reveal-item]"));
-      const targets = items.length ? items : [section];
-
-      targets.forEach((el, index) => {
-        el.classList.remove("reveal-pending");
-        el.animate(
-          [
-            { opacity: 0, translate: "0 18px" },
-            { opacity: 1, translate: "0 0" },
-          ],
-          {
-            duration: 620,
-            delay: Math.min(index, 8) * 70,
-            easing: "cubic-bezier(0.2, 0.75, 0.3, 1)",
-            fill: "backwards",
-          }
-        );
-      });
-
-      if (process && section.contains(process)) {
-        window.setTimeout(() => process.classList.remove("is-line-pending"), 200);
-      }
+    const settle = (el: HTMLElement) => {
+      el.classList.add("is-revealed");
+      if (process?.contains(el)) process.classList.add("is-line-drawn");
     };
 
+    // Each item is watched on its own, so items low in a tall section (stacked
+    // package cards on a phone) still animate when they are actually seen.
     const observer = new IntersectionObserver(
       (entries) => {
+        let index = 0;
         entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          observer.unobserve(entry.target);
-          revealSection(entry.target as HTMLElement);
+          const el = entry.target as HTMLElement;
+          if (entry.isIntersecting) {
+            observer.unobserve(el);
+            settle(el);
+            el.animate(
+              [
+                { opacity: 0, translate: "0 18px" },
+                { opacity: 1, translate: "0 0" },
+              ],
+              {
+                duration: 620,
+                delay: Math.min(index++, 8) * 70,
+                easing: "cubic-bezier(0.2, 0.75, 0.3, 1)",
+                fill: "backwards",
+              }
+            );
+          } else if (entry.boundingClientRect.bottom < 0) {
+            // Already scrolled past (restored scroll position): show it without a replay.
+            observer.unobserve(el);
+            settle(el);
+          }
         });
       },
-      { rootMargin: "0px 0px -12% 0px", threshold: 0.08 }
+      { rootMargin: "0px 0px -8% 0px", threshold: 0 }
     );
 
     document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((section) => {
       const items = Array.from(section.querySelectorAll<HTMLElement>("[data-reveal-item]"));
-      (items.length ? items : [section]).forEach((el) => el.classList.add("reveal-pending"));
-      observer.observe(section);
+      (items.length ? items : [section]).forEach((el) => observer.observe(el));
     });
   }
 </script>
@@ -732,10 +735,6 @@ const profilePhoto = "/images/carlos.jpg";
 
   .services-hero__tagline :global(.text-accent) {
     font-weight: 650;
-  }
-
-  :global(.reveal-pending) {
-    opacity: 0;
   }
 
   .btn-ghost:hover .btn-ghost__arrow {
@@ -1081,7 +1080,7 @@ const profilePhoto = "/images/carlos.jpg";
     transition: transform 1100ms cubic-bezier(0.2, 0.75, 0.3, 1);
   }
 
-  .process.is-line-pending::before {
+  :global(html.reveal-armed) .process:not(.is-line-drawn)::before {
     transform: scaleY(0);
   }
 
@@ -1155,7 +1154,7 @@ const profilePhoto = "/images/carlos.jpg";
       transform-origin: left;
     }
 
-    .process.is-line-pending::before {
+    :global(html.reveal-armed) .process:not(.is-line-drawn)::before {
       transform: scaleX(0);
     }
 

@@ -75,9 +75,8 @@ const { subtle = false } = Astro.props;
   function startAutoFloat() {
     if (!background || autoFrame) return;
 
-    const start = corners[Math.floor(Math.random() * corners.length)];
-    posX = start.x;
-    posY = start.y;
+    // Drift away from wherever the glow is drawn now (the CSS default on load).
+    // Starting at a random corner made the glow jump right after every page load.
     pickTarget(true);
     setGlow(posX, posY);
 
@@ -161,7 +160,7 @@ const { subtle = false } = Astro.props;
     --ambient-a: var(--sky-atmo);
     --ambient-b: var(--sky-atmo-bright);
     --ring: 148, 163, 184;
-    --dot: 94, 234, 212;
+    --dot: 141, 216, 197;
     --vignette: rgba(0, 0, 0, 0.16);
     --mouse-opacity: 0.08;
     --ambient-left-opacity: 0.11;

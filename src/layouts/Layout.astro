@@ -23,6 +23,7 @@ const {
 
 import "@fontsource/inter";
 import "@fontsource-variable/inter";
+import "@fontsource-variable/manrope";
 import "../styles/tokens.css";
 import AmbientBackground from "../components/ambient-background.astro";
 import SiteNav from "../components/site-nav.astro";
@@ -105,6 +106,17 @@ const lockDark = forceDark || isMelodia;
         }
       } catch {
         document.documentElement.classList.add("dark");
+      }
+
+      // Hide [data-reveal] content before first paint so scroll reveals never flash.
+      // Page scripts are deferred modules that run before DOMContentLoaded; one that
+      // animates reveals adds `reveal-ready`. If none did, show everything as is.
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+        const root = document.documentElement;
+        root.classList.add("reveal-armed");
+        document.addEventListener("DOMContentLoaded", () => {
+          if (!root.classList.contains("reveal-ready")) root.classList.remove("reveal-armed");
+        });
       }
     </script>
 
@@ -200,6 +212,31 @@ const lockDark = forceDark || isMelodia;
 
     html {
       background: var(--canvas);
+    }
+
+    html.reveal-armed [data-reveal-item]:not(.is-revealed),
+    html.reveal-armed [data-reveal]:not(:has([data-reveal-item])):not(.is-revealed) {
+      opacity: 0;
+    }
+
+    /* Cross-page transitions on normal link clicks (Chrome, Edge, Safari 18.2+).
+       The nav keeps its own name so it stays put while the page underneath fades. */
+    @view-transition {
+      navigation: auto;
+    }
+
+    /* Only retime the browser's own crossfade. Its animations also blend the two pages
+       with plus-lighter so they always add up to full opacity; replacing them with
+       custom keyframes drops that blend and the page dims halfway, which reads as a flash. */
+    ::view-transition-group(*) {
+      animation-duration: 280ms;
+      animation-timing-function: cubic-bezier(0.2, 0.75, 0.3, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      @view-transition {
+        navigation: none;
+      }
     }
 
     html.hero-ready .hero-enter {

@@ -1,4 +1,7 @@
 :root {
+  /* Type */
+  --font-heading: "Manrope Variable", InterVariable, sans-serif;
+
   /* Canvas */
   --canvas: #eef2f6;
   --canvas-depth: #e4eaf1;
@@ -47,27 +50,44 @@ html.dark {
   --canvas: #0b1220;
   --canvas-depth: #09111f;
 
+  /* Cool white text, a step brighter than before for contrast on navy */
   --text-primary: #f1f5f9;
-  --text-secondary: #a3b1c2;
-  --text-muted: #8191a5;
+  --text-secondary: #b3bfce;
+  --text-muted: #8d9bae;
 
-  --teal-signal: #5eead4;
-  --teal-functional: #2dd4bf;
+  /* Soft mint: calmer than a neon teal, so it needs less glow to read */
+  --teal-signal: #8dd8c5;
+  --teal-functional: #8dd8c5;
 
   --primary: var(--teal-signal);
-  --primary-bright: #99f6e4;
+  --primary-bright: #a7e5d6;
   --primary-on: #0b1220;
   --primary-surface: color-mix(in srgb, var(--teal-signal) 14%, transparent);
   --primary-surface-strong: color-mix(in srgb, var(--teal-signal) 22%, transparent);
 
-  --border-subtle: rgba(51, 68, 91, 0.45);
-  --border-strong: rgba(71, 93, 117, 0.62);
+  --border-subtle: #2a384b;
+  --border-strong: #3b4b61;
 
-  --glass-bg: rgba(30, 48, 70, 0.35);
-  --glass-border: rgba(226, 232, 240, 0.08);
+  /* Solid surfaces: crisper card edges than translucent glass */
+  --glass-bg: rgba(19, 29, 45, 0.88);
+  --glass-border: #2a384b;
   --surface-quiet: rgba(255, 255, 255, 0.04);
-  --surface-interactive: rgba(30, 48, 70, 0.42);
-  --surface-interactive-hover: rgba(30, 48, 70, 0.58);
+  --surface-interactive: #131d2d;
+  --surface-interactive-hover: #1a283a;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+}
+
+h1 {
+  letter-spacing: -0.035em;
+}
+
+h2 {
+  letter-spacing: -0.025em;
 }
 
 .surface-quiet {
@@ -182,23 +202,24 @@ html.dark {
   transition: transform 200ms ease;
 }
 
+/* Dark mode: a flat mint fill with a small shadow; the hover lightens the fill
+   instead of growing a glow. */
 html.dark .btn-cta {
   color: var(--primary-on);
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    color-mix(in srgb, var(--primary-bright) 55%, var(--primary)) 100%
-  );
+  background: var(--primary);
   box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.22),
-    0 10px 24px color-mix(in srgb, var(--primary) 28%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease;
 }
 
 html.dark .btn-cta:hover {
+  background: var(--primary-bright);
+  filter: none;
   box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.26),
-    0 14px 32px color-mix(in srgb, var(--primary) 34%, transparent),
+    0 2px 6px rgba(0, 0, 0, 0.32),
     inset 0 1px 0 rgba(255, 255, 255, 0.28);
 }
 
