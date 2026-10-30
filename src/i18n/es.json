@@ -40,12 +40,14 @@
       "incorporated": "Empresa incorporada en Ontario, Canadá",
       "location": "Con base en Toronto",
       "languages": "Español e inglés",
-      "firstCall": "La primera llamada es gratis",
+      "firstCall": "La primera llamada corre por mi cuenta",
       "founder": "Fundada por Carlos Zabaleta"
     },
-    "title": "Un desarrollador, no una agencia",
-    "tagline": "Sitios web, herramientas internas y el código que |conecta tus apps|.",
-    "heroLine": "Tomo pocos proyectos a la vez, así que trabajas directamente conmigo.",
+    "title": "Un desarrollador, menos complicaciones.",
+    "titleLead": "Un desarrollador,",
+    "titleEndings": ["menos complicaciones.", "sin intermediarios.", "menos correos."],
+    "tagline": "Sitios web, herramientas internas y automatizaciones hechas por |la persona con la que hablas|.",
+    "heroBenefits": ["Hablas con quien programa", "Pocos proyectos a la vez", "El código es tuyo"],
     "heroPrimary": "Agenda una llamada gratis",
     "heroSecondary": "Ver paquetes",
     "intro": "Sitios web, herramientas internas y productos digitales que la gente usa a diario. Tomo pocos proyectos a la vez — cada uno recibe |atención real|, no tiempo en cola.",
@@ -58,7 +60,7 @@
     "seoTitle": "Trabaja con Carlos Zabaleta",
     "seoDescription": "Sitios web, herramientas internas y productos digitales. Empieza con una llamada gratis, un proyecto cerrado o ayuda continua.",
     "help": {
-      "title": "Lo que construyo",
+      "title": "En qué te puedo ayudar",
       "lead": "Casi todos los proyectos se conectan con herramientas que ya usas, como Excel, QuickBooks o Google Workspace.",
       "tools": [
         "Excel y Google Sheets",
@@ -75,28 +77,34 @@
       ],
       "items": {
         "websites": {
-          "title": "Sitios web y landing pages",
-          "body": "Sitios rápidos que funcionan bien en el teléfono."
+          "label": "Sitios web y landings",
+          "title": "Que te encuentren y te tomen en serio",
+          "body": "Sitios rápidos que funcionan bien en el celular y convierten visitas en llamadas."
         },
         "internal": {
-          "title": "Herramientas internas",
-          "body": "Paneles, administradores y formularios que reducen el trabajo manual."
+          "label": "Herramientas internas",
+          "title": "Deja de copiar datos entre hojas de cálculo",
+          "body": "Dashboards, paneles y formularios hechos a la medida de tu equipo."
         },
         "ideas": {
-          "title": "Ideas que quieres llevar a la realidad",
+          "label": "Prototipos y primeras versiones",
+          "title": "Convierte una idea en algo que se pueda probar",
           "body": "De un prototipo funcional a una primera versión real."
         },
         "integrations": {
-          "title": "Integraciones y APIs",
-          "body": "Formularios a un CRM, pagos, notificaciones y más."
+          "label": "Integraciones y APIs",
+          "title": "Que tus apps hablen entre sí",
+          "body": "Formularios a tu CRM, pagos, notificaciones y más."
         },
         "automations": {
-          "title": "Automatizaciones",
-          "body": "Las tareas repetitivas que te quitan la semana."
+          "label": "Automatizaciones",
+          "title": "Deja de hacer la misma tarea cada semana",
+          "body": "El trabajo repetitivo que te come las horas, resuelto por ti."
         },
         "maintenance": {
-          "title": "Mantenimiento y mejoras",
-          "body": "Arreglos, actualizaciones y funciones nuevas sobre lo que ya tienes."
+          "label": "Mantenimiento y mejoras",
+          "title": "Que lo que ya tienes siga funcionando y creciendo",
+          "body": "Arreglos, actualizaciones y nuevas funciones en tu sitio o app actual."
         }
       }
     },
@@ -106,29 +114,29 @@
       "discovery": {
         "name": "Discovery Call",
         "timing": "Gratis",
-        "lead": "Una conversación sin compromiso. Ideal si aún no sabes por dónde empezar o quieres validar una idea.",
+        "lead": "Una llamada gratis y sin compromiso para ver si encajamos. Trae tu idea o lo que te tiene atascado.",
         "cta": "Agendar Discovery Call",
-        "includesTitle": "Qué te llevas",
+        "includesTitle": "De qué hablamos",
         "chips": {
-          "hours": "1–2 horas",
+          "hours": "30 minutos",
           "format": "Presencial o videollamada"
         },
         "tech": ["HTML", "CSS", "JavaScript"],
-        "details": ["Un plan de trabajo", "Algo online para empezar", "Hosting si es un landing básico"]
+        "details": ["Qué quieres construir y por qué", "Si soy la persona indicada", "Próximos pasos claros"]
       },
       "launch": {
         "name": "Launch",
         "timing": "Proyecto fijo",
-        "lead": "Para cuando ya quieres construir. Empezamos con la Discovery Call, dejamos el alcance por escrito y te entrego algo listo para usar. Es tuyo, sin cuota mensual después.",
+        "lead": "Para cuando ya quieres construir. Empezamos con un Plan pagado que se descuenta del proyecto. Lo que construyo es tuyo, sin pagos mensuales.",
         "cta": "Preguntar por un Launch",
-        "includesTitle": "Incluye Discovery Call +",
+        "includesTitle": "Empieza con un Plan, y luego",
         "chips": {
           "scope": "Alcance por escrito",
           "revisions": "1–2 revisiones"
         },
         "tech": ["Full-stack", "React & APIs", "Automatizaciones", "IA"],
         "details": [
-          "Discovery Call incluida",
+          "Plan pagado, descontado del proyecto",
           "Sitios y landings",
           "Herramientas internas y chatbots",
           "Tienda online (v1)",
@@ -156,6 +164,27 @@
       "custom": {
         "name": "Aún no lo sé",
         "timing": "Hablemos"
+      }
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "items": {
+        "cost": {
+          "q": "¿Cuánto cuesta un proyecto?",
+          "a": "Depende de lo que necesites. Después de la llamada gratis de 30 minutos, el Plan pagado te da el alcance por escrito y un precio fijo antes de empezar a construir. El costo del Plan se descuenta del proyecto."
+        },
+        "timeline": {
+          "q": "¿Cuánto tarda?",
+          "a": "Un proyecto básico suele estar listo en 3–5 semanas. Los más grandes se dividen en fases, y cada dos semanas recibes algo que puedes probar."
+        },
+        "after": {
+          "q": "¿Qué pasa después del lanzamiento?",
+          "a": "Es tuyo, código incluido, sin pagos mensuales. Si quieres ayuda continua, Retain cubre mejoras y soporte mes a mes."
+        },
+        "language": {
+          "q": "¿Podemos trabajar en español?",
+          "a": "Sí. Trabajo en español e inglés, desde Toronto."
+        }
       }
     },
     "process": {
@@ -187,14 +216,13 @@
       "photoAlt": "Carlos Zabaleta",
       "photoPlaceholder": "Foto próximamente",
       "points": [
-        "Hablas conmigo directamente. Sin intermediarios",
-        "Pocos proyectos a la vez, el tuyo no se queda en cola",
         "Empiezo por lo que te ahorra tiempo o genera ingresos, no por modas",
         "Código limpio que es tuyo, para pasárselo a otro dev si quieres",
         "He entregado APIs, automatizaciones y herramientas internas a clientes reales"
       ],
       "cta": "¿Tienes algo en mente?",
-      "ctaSub": "Mándame una nota corta sobre lo que necesitas."
+      "ctaSub": "Mándame una nota corta sobre lo que necesitas.",
+      "emailAlt": "O escríbeme a"
     },
     "contact": {
       "title": "Hablemos",
@@ -217,6 +245,7 @@
       "sending": "Enviando…",
       "privacy": "Tu información está segura y no se comparte.",
       "success": "Gracias, recibí tu mensaje. Te respondo en un día hábil.",
+      "emailAlt": "¿Prefieres correo?",
       "human": {
         "pickColor": {
           "prefix": "Elige el",

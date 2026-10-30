@@ -40,12 +40,14 @@
       "incorporated": "Incorporated in Ontario, Canada",
       "location": "Based in Toronto",
       "languages": "English and Spanish",
-      "firstCall": "The first call is free",
+      "firstCall": "The first call's on me",
       "founder": "Founded by Carlos Zabaleta"
     },
-    "title": "One developer, not an agency",
-    "tagline": "Websites, internal tools, and the code that |connects your apps|.",
-    "heroLine": "I only take a few projects at a time, so you work with me directly.",
+    "title": "One developer, fewer headaches.",
+    "titleLead": "One developer,",
+    "titleEndings": ["fewer headaches.", "no middlemen.", "fewer emails."],
+    "tagline": "Websites, internal tools, and automations built by |the person you actually talk to|.",
+    "heroBenefits": ["You talk to the developer", "A few projects at a time", "You own the code"],
     "heroPrimary": "Book a free call",
     "heroSecondary": "See packages",
     "intro": "Websites, internal tools, and digital products people use every day. I take on a few projects at a time — each one gets |real attention|, not queue time.",
@@ -58,7 +60,7 @@
     "seoTitle": "Work with Carlos Zabaleta",
     "seoDescription": "Websites, internal tools, and digital products. Start with a free call, a fixed project, or ongoing help.",
     "help": {
-      "title": "What I build",
+      "title": "What I can help with",
       "lead": "Most projects connect to tools you already use, like Excel, QuickBooks, or Google Workspace.",
       "tools": [
         "Excel & Google Sheets",
@@ -75,28 +77,34 @@
       ],
       "items": {
         "websites": {
-          "title": "Websites and landing pages",
-          "body": "Fast sites that work well on phones."
+          "label": "Websites and landing pages",
+          "title": "Look credible and get found",
+          "body": "Fast sites that work well on phones and turn visits into calls."
         },
         "internal": {
-          "title": "Internal tools",
-          "body": "Dashboards, admin panels, and forms that cut manual work."
+          "label": "Internal tools",
+          "title": "Stop copying data between spreadsheets",
+          "body": "Dashboards, admin panels, and forms built around how your team works."
         },
         "ideas": {
-          "title": "Ideas you want to make real",
+          "label": "Prototypes and first versions",
+          "title": "Turn an idea into something people can try",
           "body": "From a working prototype to a first real version."
         },
         "integrations": {
-          "title": "Integrations and APIs",
-          "body": "Forms to a CRM, payments, notifications, and more."
+          "label": "Integrations and APIs",
+          "title": "Make your apps talk to each other",
+          "body": "Forms to your CRM, payments, notifications, and more."
         },
         "automations": {
-          "title": "Automations",
-          "body": "The repetitive tasks that eat up your week."
+          "label": "Automations",
+          "title": "Stop doing the same task every week",
+          "body": "The repetitive work that eats up your hours, handled for you."
         },
         "maintenance": {
-          "title": "Maintenance and improvements",
-          "body": "Fixes, updates, and new features on what you have."
+          "label": "Maintenance and improvements",
+          "title": "Keep what you have working and growing",
+          "body": "Fixes, updates, and new features on your current site or app."
         }
       }
     },
@@ -106,29 +114,29 @@
       "discovery": {
         "name": "Discovery Call",
         "timing": "Free",
-        "lead": "A no-commitment conversation. Best if you're not sure where to start, or you want to validate an idea.",
+        "lead": "A free, no-commitment call to see if we're a good fit. Bring your idea or whatever you're stuck on.",
         "cta": "Book a Discovery Call",
-        "includesTitle": "What you leave with",
+        "includesTitle": "What we cover",
         "chips": {
-          "hours": "1–2 hours",
+          "hours": "30 minutes",
           "format": "In person or by video call"
         },
         "tech": ["HTML", "CSS", "JavaScript"],
-        "details": ["A work plan", "Something online to get started", "Hosting if it's a simple landing"]
+        "details": ["What you want to build and why", "Whether I'm the right fit", "Clear next steps"]
       },
       "launch": {
         "name": "Launch",
         "timing": "Fixed project",
-        "lead": "For when you're ready to build. We start with the Discovery Call, agree on scope in writing, and I hand you something you can use. It's yours, with no monthly fee after.",
+        "lead": "For when you're ready to build. We start with a short paid Plan, and its cost comes off the project. What I build is yours, with no monthly fees.",
         "cta": "Ask about a Launch",
-        "includesTitle": "Includes Discovery Call +",
+        "includesTitle": "Starts with a Plan, then",
         "chips": {
           "scope": "Written scope",
           "revisions": "1–2 revisions"
         },
         "tech": ["Full-stack", "React & APIs", "Automations", "AI"],
         "details": [
-          "Discovery Call included",
+          "Paid Plan, credited toward the project",
           "Sites and landings",
           "Internal tools and chatbots",
           "Online store (v1)",
@@ -156,6 +164,27 @@
       "custom": {
         "name": "Not sure yet",
         "timing": "Let's talk"
+      }
+    },
+    "faq": {
+      "title": "Common questions",
+      "items": {
+        "cost": {
+          "q": "How much does a project cost?",
+          "a": "It depends on what you need. After the free 30-minute call, the paid Plan gives you a written scope and a fixed price before any building starts. The Plan's cost comes off the project."
+        },
+        "timeline": {
+          "q": "How long does it take?",
+          "a": "A basic project is usually ready in 3–5 weeks. Larger ones are split into phases, and every two weeks you get something you can try."
+        },
+        "after": {
+          "q": "What happens after launch?",
+          "a": "It's yours, code included, with no monthly fees. If you want ongoing help, Retain covers improvements and support month to month."
+        },
+        "language": {
+          "q": "Can we work in Spanish?",
+          "a": "Yes. I work in English and Spanish, from Toronto."
+        }
       }
     },
     "process": {
@@ -187,14 +216,13 @@
       "photoAlt": "Carlos Zabaleta",
       "photoPlaceholder": "Photo coming soon",
       "points": [
-        "You talk to me directly. No account manager in the middle",
-        "A few projects at a time, so yours isn't stuck in a queue",
         "I start with what saves you time or makes money, not what's trendy",
         "Clean code you own, so you can hand it to another dev later",
         "I've shipped APIs, automations, and internal tools for real clients"
       ],
       "cta": "Got something in mind?",
-      "ctaSub": "Send me a short note about what you're stuck on."
+      "ctaSub": "Send me a short note about what you're stuck on.",
+      "emailAlt": "Or email me at"
     },
     "contact": {
       "title": "Let's talk",
@@ -217,6 +245,7 @@
       "sending": "Sending…",
       "privacy": "Your information is safe and never shared.",
       "success": "Thanks, I got your message. I'll reply within one business day.",
+      "emailAlt": "Prefer email?",
       "human": {
         "pickColor": {
           "prefix": "Pick the",

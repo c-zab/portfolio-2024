@@ -11,8 +11,9 @@ export type Typewriter = {
   done: Promise<void>;
   /** Skip to the end: show everything and leave the caret blinking. */
   finish(): void;
-  /** Backspace the current text and type a new one (used on language switch). */
-  retype(text: string): void;
+  /** Backspace the current text and type a new one (used on language switch). Resolves
+      when typing ends, or early if another retype interrupts it. */
+  retype(text: string): Promise<void>;
 };
 
 type Options = {
@@ -73,6 +74,7 @@ export function createTypewriter(root: HTMLElement, { startDelay = 600 }: Option
       finish() {},
       retype(text) {
         textEl.textContent = text;
+        return Promise.resolve();
       },
     };
   }
@@ -153,7 +155,7 @@ export function createTypewriter(root: HTMLElement, { startDelay = 600 }: Option
     },
     retype(text) {
       const id = ++run;
-      (async () => {
+      return (async () => {
         root.classList.add("is-typing");
         for (let i = typed; i > 0; i -= 1) {
           // Held backspace: quick and steady.

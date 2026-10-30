@@ -133,6 +133,19 @@ h2 {
   font-weight: 600;
 }
 
+.email-link {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--primary) 35%, transparent);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 160ms ease;
+}
+
+.email-link:hover {
+  text-decoration-color: currentColor;
+}
+
 .btn-cta {
   display: inline-flex;
   align-items: center;
