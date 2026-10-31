@@ -45,3 +45,8 @@ export function verifyVisitorToken(token: string | undefined) {
 
   return { id, issuedAt };
 }
+
+/** Keyed hash of the client IP for rate limiting, so raw IPs never reach the database. */
+export function hashClientIp(ip: string) {
+  return createHmac("sha256", secret()).update(`ip:${ip}`).digest("base64url");
+}

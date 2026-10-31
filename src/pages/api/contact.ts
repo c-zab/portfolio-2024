@@ -1,7 +1,7 @@
-import type { APIRoute } from "astro";
+import type { APIContext, APIRoute } from "astro";
 import { normalizePhone, validateContact } from "../../utils/contact-validation";
 import { isHumanAnswer } from "../../utils/human-check";
-import { VISITOR_TOKEN_COOKIE, verifyVisitorToken } from "../../utils/visitor-token";
+import { hashClientIp, VISITOR_TOKEN_COOKIE, verifyVisitorToken } from "../../utils/visitor-token";
 
 export const prerender = false;
 
@@ -9,7 +9,17 @@ function asString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+// clientAddress throws when the adapter can't tell; the per-token limit still applies then.
+function clientIpHash(context: APIContext) {
+  try {
+    return context.clientAddress ? hashClientIp(context.clientAddress) : null;
+  } catch {
+    return null;
+  }
+}
+
+export const POST: APIRoute = async (context) => {
+  const { request, cookies } = context;
   let body: Record<string, unknown>;
   try {
     body = await request.json();
@@ -54,8 +64,13 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       package: input.package,
       message: input.message,
       token_id: token.id,
+      ip_hash: clientIpHash(context),
     });
 
+    // Limits live in a trigger on contact_messages (supabase/contact_messages.sql).
+    if (error?.message === "rate_limited") {
+      return json({ ok: false, error: "rate" }, 429);
+    }
     if (error) {
       console.error("[contact] supabase insert failed:", error.message);
       return json({ ok: false, error: "server" }, 500);
