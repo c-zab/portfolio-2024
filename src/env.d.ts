@@ -6,6 +6,7 @@ interface ImportMetaEnv {
   readonly VISITOR_TOKEN_SECRET: string;
   readonly CONTACT_EMAIL?: string;
   readonly RESEND_API_KEY?: string;
+  readonly CONTACT_FROM?: string;
 }
 
 interface ImportMeta {

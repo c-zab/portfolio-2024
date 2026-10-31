@@ -1,4 +1,5 @@
 import type { APIContext, APIRoute } from "astro";
+import { notifyContact } from "../../utils/contact-notify";
 import { normalizePhone, validateContact } from "../../utils/contact-validation";
 import { isHumanAnswer } from "../../utils/human-check";
 import { hashClientIp, VISITOR_TOKEN_COOKIE, verifyVisitorToken } from "../../utils/visitor-token";
@@ -56,16 +57,18 @@ export const POST: APIRoute = async (context) => {
       return json({ ok: false, error: "token" }, 401);
     }
 
-    const { supabase } = await import("../../db/supabase.js");
-    const { error } = await supabase.from("contact_messages").insert({
+    const message = {
       name: input.name,
       email: input.email || null,
       phone: normalizePhone(input.phone, input.phoneCountry),
       package: input.package,
       message: input.message,
-      token_id: token.id,
-      ip_hash: clientIpHash(context),
-    });
+    };
+
+    const { supabase } = await import("../../db/supabase.js");
+    const { error } = await supabase
+      .from("contact_messages")
+      .insert({ ...message, token_id: token.id, ip_hash: clientIpHash(context) });
 
     // Limits live in a trigger on contact_messages (supabase/contact_messages.sql).
     if (error?.message === "rate_limited") {
@@ -75,6 +78,9 @@ export const POST: APIRoute = async (context) => {
       console.error("[contact] supabase insert failed:", error.message);
       return json({ ok: false, error: "server" }, 500);
     }
+
+    // Awaited so the serverless function doesn't exit before the email goes out.
+    await notifyContact(message);
   } catch (err) {
     console.error("[contact] failed:", err instanceof Error ? err.message : err);
     return json({ ok: false, error: "server" }, 500);
