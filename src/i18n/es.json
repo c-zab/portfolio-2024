@@ -311,7 +311,8 @@
         "human": "Esa no era. Prueba otra vez.",
         "token": "Tu sesión expiró. Recarga la página e inténtalo otra vez.",
         "network": "No hay conexión con el servidor. Revisa tu internet e inténtalo otra vez.",
-        "server": "Algo falló de mi lado y el mensaje no se guardó. Inténtalo en unos minutos."
+        "server": "Algo falló de mi lado y el mensaje no se guardó. Inténtalo en unos minutos.",
+        "rate": "Demasiados mensajes en poco tiempo. Inténtalo más tarde o escribe a hello@czab.dev."
       }
     }
   },

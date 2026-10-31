@@ -311,7 +311,8 @@
         "human": "That wasn't it. Try again.",
         "token": "Your session expired. Reload the page and try again.",
         "network": "Couldn't reach the server. Check your connection and try again.",
-        "server": "Something broke on my end and your message wasn't saved. Try again in a few minutes."
+        "server": "Something broke on my end and your message wasn't saved. Try again in a few minutes.",
+        "rate": "Too many messages in a short time. Try again later or email hello@czab.dev."
       }
     }
   },
