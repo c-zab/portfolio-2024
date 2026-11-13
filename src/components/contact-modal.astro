@@ -220,6 +220,7 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
   import { createHumanChallenge, HUMAN_SHAPE_COLORS, isHumanAnswer, type HumanChallengeType } from "../utils/human-check";
   import { getLocaleFromPath, getTranslation } from "../utils/i18n";
   import { CONTACT_PACKAGES as PACKAGES, normalizePhone, validateContact } from "../utils/contact-validation";
+  import { trackSiteEvent } from "../utils/track-event";
   import {
     AsYouType,
     getCountries,
@@ -615,6 +616,7 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
         input.checked = input.value === packageId;
       });
       if (packageId) fillTemplate(packageId);
+      trackSiteEvent("contact_open", packageId || "general");
       modal!.classList.remove("hidden");
       modal!.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
@@ -631,7 +633,9 @@ const packageIds = ["discovery", "launch", "retain", "custom"] as const;
     modeButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
         const mode = btn.dataset.contactMode as "email" | "phone" | undefined;
-        if (mode) setContactMode(mode);
+        if (!mode || mode === contactMode) return;
+        trackSiteEvent("contact_mode", mode);
+        setContactMode(mode);
       });
     });
 

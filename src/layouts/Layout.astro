@@ -127,7 +127,7 @@ const lockDark = forceDark || isMelodia;
         "@type": "Person",
         "name": "Carlos Zabaleta",
         "jobTitle": "Software Engineer",
-        "email": "mailto:hello@czab.dev",
+        "email": "mailto:carlos@czab.dev",
         "description": "Skilled Software Engineer specializing in full-stack development and modern web technologies",
         "url": "https://czab.dev",
         "image": "https://czab.dev/favicon.ico",
@@ -185,10 +185,33 @@ const lockDark = forceDark || isMelodia;
     {showChrome && <ContactModal />}
 
     <script>
+      import { trackSiteEvent } from "../utils/track-event";
+
       const isHBPage = document.body && document.body.dataset.page === "hb";
       if (isHBPage) {
         document.documentElement.style.opacity = "1";
       }
+
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        const link = target.closest("a[href]");
+        if (!link) return;
+        const href = link.getAttribute("href") ?? "";
+        if (href.startsWith("mailto:")) {
+          const address = href.slice("mailto:".length).split("?")[0];
+          trackSiteEvent("mailto", address);
+          return;
+        }
+        try {
+          const url = new URL(href, window.location.href);
+          if (url.origin === window.location.origin) return;
+          if (url.protocol !== "http:" && url.protocol !== "https:") return;
+          trackSiteEvent("outbound", url.hostname.replace(/^www\./, ""));
+        } catch {
+          // ignore bad hrefs
+        }
+      });
     </script>
   </body>
 

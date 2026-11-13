@@ -11,6 +11,26 @@ export const VISITOR_TOKEN_MAX_AGE = 60 * 60 * 24 * 30; // 30 days, in seconds
 
 const ID_RE = /^[0-9a-f-]{36}$/;
 
+const LABEL_ADJECTIVES = [
+  "amber", "bold", "bright", "calm", "clear", "cool", "crisp", "fair", "fresh", "gentle", "glad", "gold",
+  "green", "kind", "light", "lively", "lucky", "mellow", "neat", "nimble", "plain", "quick", "quiet",
+  "sharp", "silver", "soft", "sunny", "swift", "tidy", "warm", "wild", "young",
+];
+
+const LABEL_NOUNS = [
+  "badger", "birch", "brook", "cedar", "cloud", "comet", "coral", "creek", "daisy", "dune", "falcon",
+  "fern", "finch", "flint", "fox", "harbor", "heron", "lark", "maple", "meadow", "otter", "pebble",
+  "pine", "quartz", "ridge", "robin", "sparrow", "stone", "summit", "trail", "willow", "wren",
+];
+
+/** Same cookie always maps to the same name, e.g. calm-otter-3dcd. */
+export function sessionLabel(id: string) {
+  const hex = id.replace(/-/g, "");
+  const adjective = LABEL_ADJECTIVES[parseInt(hex.slice(0, 2), 16) % LABEL_ADJECTIVES.length];
+  const noun = LABEL_NOUNS[parseInt(hex.slice(2, 4), 16) % LABEL_NOUNS.length];
+  return `${adjective}-${noun}-${hex.slice(4, 8)}`;
+}
+
 function secret() {
   const value = import.meta.env.VISITOR_TOKEN_SECRET;
   if (!value) {
