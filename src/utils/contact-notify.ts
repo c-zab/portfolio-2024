@@ -4,7 +4,7 @@ import { CONTACT_EMAIL } from "./site";
  * Emails a saved contact message to the inbox via Resend (https://resend.com).
  * Server-only — never import from client scripts.
  *
- * Env: RESEND_API_KEY (required to send), CONTACT_EMAIL (recipient, defaults to hello@czab.dev),
+ * Env: RESEND_API_KEY (required to send), CONTACT_EMAIL (recipient, defaults to carlos@czab.dev),
  * CONTACT_FROM (sender; must be on a domain verified in Resend, or Resend's onboarding@resend.dev for testing).
  */
 

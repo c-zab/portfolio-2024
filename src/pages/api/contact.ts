@@ -2,6 +2,7 @@ import type { APIContext, APIRoute } from "astro";
 import { notifyContact } from "../../utils/contact-notify";
 import { normalizePhone, validateContact } from "../../utils/contact-validation";
 import { isHumanAnswer } from "../../utils/human-check";
+import { pathFromReferer, recordSiteEvent } from "../../utils/record-event";
 import { hashClientIp, VISITOR_TOKEN_COOKIE, verifyVisitorToken } from "../../utils/visitor-token";
 
 export const prerender = false;
@@ -78,6 +79,13 @@ export const POST: APIRoute = async (context) => {
       console.error("[contact] supabase insert failed:", error.message);
       return json({ ok: false, error: "server" }, 500);
     }
+
+    await recordSiteEvent({
+      tokenId: token.id,
+      name: "contact_sent",
+      detail: input.package,
+      path: pathFromReferer(request),
+    });
 
     // Awaited so the serverless function doesn't exit before the email goes out.
     await notifyContact(message);
